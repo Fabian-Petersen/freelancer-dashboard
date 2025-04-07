@@ -1,18 +1,22 @@
 import React from "react";
-import { Container, Text, Box, Flex } from "@chakra-ui/react";
-import { MdWavingHand } from "react-icons/md";
-import { WavingHand } from "lucide-react";
+import { Box, Text, Flex } from "@chakra-ui/react";
 
 const WelcomeMessage = () => {
   return (
-    <Container>
-      <Flex fontSize="1rem" fontWeight="bold" justifyContent={"center"} gap={2}>
-        <Text>Welcome Back, Fabian</Text>
-        <Box as="span">
-          <MdWavingHand size={24} color="gray.500" />
+    <Flex
+      fontSize="1rem"
+      color="black"
+      fontWeight="bold"
+      justifyContent={"center"}
+      gap={4}
+    >
+      <Text>
+        Welcome back, Fabian
+        <Box as="span" fontSize={20}>
+          👋
         </Box>
-      </Flex>
-    </Container>
+      </Text>
+    </Flex>
   );
 };
 

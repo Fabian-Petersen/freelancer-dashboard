@@ -6,10 +6,10 @@ import WelcomeMessage from "./WelcomeMessage";
 
 const HeaderActionButtons = () => {
   return (
-    <Flex gap="4" alignItems="center">
+    <Flex gap="6" alignItems="center">
       <WelcomeMessage />
       <SearchInput />
-      <BellDot size={32} />
+      <BellDot size={24} color="black" />
     </Flex>
   );
 };

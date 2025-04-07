@@ -3,11 +3,13 @@ import { LuSearch } from "react-icons/lu";
 
 const SearchInput = () => (
   <InputGroup
-    borderRadius="50%"
-    startElement={<LuSearch fontSize={"50px"} />}
+    maxWidth="500px"
+    width="350px"
+    fontSize="20px"
     endElement={<Kbd>⌘K</Kbd>}
+    startElement={<LuSearch />}
   >
-    <Input placeholder="Search contacts" />
+    <Input fontSize="1rem" placeholder="Search..." />
   </InputGroup>
 );
 

@@ -1,29 +1,66 @@
-"use client";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 
-import { Grid, GridItem } from "@chakra-ui/react";
-import Header from "../header/Header";
+import MonthlyRevenueChart from "../charts/MonthlyRevenueChart";
+import RevenueExpenseChart from "../charts/RevenueExpenseChart";
+import ProjectSummaryTable from "../charts/ProjectSummaryTable";
+import ActiveProjectsTable from "../charts/ActiveProjectsTable";
+
 const DashboardLayout = () => {
   return (
-    <Grid
-      minH="100vh"
-      templateColumns="(1fr,auto, 1fr)"
-      templateRows="(10rem, auto)"
-    >
-      {/* Main content area with padding to account for fixed sidebar */}
-      <GridItem as="header" w="100%" bg="gray.100" colSpan={3}>
-        <Header />
-      </GridItem>
-      <GridItem
-        as="main"
-        w="100%"
-        height={"100%"}
-        bg="gray.50"
-        colSpan={3}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      ></GridItem>
-    </Grid>
+    <Box p={4}>
+      <Grid
+        templateColumns={{ base: "1fr", md: "1fr 2fr", lg: "1fr 2fr 1fr" }}
+        gap={4}
+      >
+        {/* //$  ============================= Chart - Monthly Revenue ======================== */}
+        <GridItem
+          bg="white"
+          p={4}
+          borderRadius="md"
+          boxShadow="sm"
+          height="300px"
+          colSpan={1}
+        >
+          <MonthlyRevenueChart />
+        </GridItem>
+
+        {/* //$  ============================= Chart - Expense & Revenue ====================== */}
+        <GridItem
+          bg="white"
+          p={4}
+          borderRadius="md"
+          boxShadow="sm"
+          height="300px"
+          colSpan={{ base: 1, md: 1, lg: 1 }}
+        >
+          <RevenueExpenseChart />
+        </GridItem>
+
+        {/* //$  ============================= Table - Active Projects ========================= */}
+        <GridItem
+          rowSpan={2}
+          colSpan={{ base: 1, md: 2, lg: 1 }}
+          bg="white"
+          p={4}
+          borderRadius="md"
+          // boxShadow="sm"
+          shadow={"sm"}
+        >
+          <ActiveProjectsTable />
+        </GridItem>
+
+        {/* //$  ============================= Table - Projects List =========================== */}
+        <GridItem
+          colSpan={{ base: 1, md: 2, lg: 2 }}
+          bg="white"
+          p={4}
+          borderRadius="md"
+          boxShadow="sm"
+        >
+          <ProjectSummaryTable />
+        </GridItem>
+      </Grid>
+    </Box>
   );
 };
 
