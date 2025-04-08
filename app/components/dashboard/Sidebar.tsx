@@ -1,6 +1,14 @@
 "use client";
 
-import { Box, Text, Flex, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  List,
+  VStack,
+  Container,
+  Separator,
+} from "@chakra-ui/react";
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarLogoutButton from "./SidebarLogoutButton";
 import {
@@ -11,59 +19,80 @@ import {
 // $ Sidebar Component
 const Sidebar = () => {
   return (
-    <Box
+    <Container
       as="nav"
       pos="fixed"
       top="0"
       left="0"
-      width={"233px"}
+      width={{ lg: "240px" }}
       bg="#f8fafd"
       opacity={{ base: "hidden", lg: "visible" }}
       borderRight="1px"
       borderRightColor="gray.300"
       overflow-y="auto"
-      zIndex={"100"}
+      zIndex="100"
+      maxHeight={"100vh"}
+      // border="1px solid red"
+      p={2}
     >
-      <Text fontSize="2xl" fontWeight="bold" color="blue.500" p="4">
-        Freelancer
-      </Text>
+      <Box py="20px"></Box>
+      <Flex height="100vh" direction={"column"}>
+        <Text
+          color="gray.700"
+          fontSize={{ base: "0.75rem", lg: "1rem" }}
+          paddingBottom="0.2rem"
+        >
+          Main Menu
+        </Text>
+        <Separator />
+        {/* Main navigation links */}
+        <List.Root>
+          <VStack align="stretch">
+            {navbarLinks.map((item) => (
+              <SidebarNavItem
+                key={item.name}
+                icon={item.icon}
+                isActive={item.isActive}
+              >
+                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+              </SidebarNavItem>
+            ))}
+            {/* Divider for preferences links */}
+            <Separator />
+            {/* // $ Middle Section */}
 
-      <Flex height="100vh">
-        <VStack>
-          <Text color="gray.100" fontSize="0.8rem" paddingBottom="0.2rem">
-            Main Menu
-          </Text>
-          {/* Main navigation links */}
-          {navbarLinks.map((item) => (
-            <SidebarNavItem
-              key={item.name}
-              icon={item.icon}
-              isActive={item.isActive}
+            <Text
+              color="gray.700"
+              fontSize={{ base: "0.75rem", lg: "1rem" }}
+              paddingBottom="0.2rem"
             >
-              {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-            </SidebarNavItem>
-          ))}
-          {/* Divider for preferences links */}
-          {/* <Box h="1px" bg="gray.100/30" my={4} /> */}
-          {/* // $ Middle Section */}
-
-          <Text color="gray.100" fontSize="0.8rem" paddingBottom="0.2rem">
-            Preferences
-          </Text>
-          {/* Preferences links */}
-          {PreferencesLinks.map((item) => (
-            <SidebarNavItem key={item.name} icon={item.icon}>
-              {item.name}
-            </SidebarNavItem>
-          ))}
-          <Box h="1px" bg="gray.100/30" my={4} />
-          <Box flexGrow={1}>
-            <SidebarLogoutButton />
-          </Box>
-          {/* Logout at the very bottom */}
-        </VStack>
+              Preferences
+            </Text>
+            {/* Preferences links */}
+            {PreferencesLinks.map((item) => (
+              <SidebarNavItem key={item.name} icon={item.icon}>
+                {item.name}
+              </SidebarNavItem>
+            ))}
+          </VStack>
+        </List.Root>
+        <Box h="1px" bg="gray.100/30" my={4} />
+        {/* Logout at the very bottom */}
+        <Separator />
       </Flex>
-    </Box>
+      <Box
+        cursor="pointer"
+        position="absolute"
+        bottom="00%"
+        translate="auto"
+        translateY="-50"
+        zIndex={1000}
+        left="0"
+        width="100%"
+      >
+        <SidebarLogoutButton />
+      </Box>
+    </Container>
   );
 };
 

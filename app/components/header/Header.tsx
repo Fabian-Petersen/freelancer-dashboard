@@ -32,7 +32,7 @@ const Header = () => {
         fontWeight="bold"
         color={"blue.500"}
       >
-        Dashboard
+        Freelancer Dashboard
       </Text>
       {/* Right section with Notifications and User Profile */}
       <Flex alignItems="center" gap={4}>
@@ -57,8 +57,14 @@ const Header = () => {
         <IconButton
           aria-label="Notifications"
           variant="solid"
-          colorScheme="gray"
+          // colorPalette="teal"
           position="relative"
+          bgColor="transparent"
+          color={"gray.600"}
+          _hover={{
+            bgColor: "gray.100",
+            color: "gray.700",
+          }}
         >
           <BellIcon size={20} />
           {/* Notification badge */}
@@ -71,7 +77,7 @@ const Header = () => {
             fontSize="xs"
             fontWeight="bold"
             lineHeight="none"
-            color="white"
+            color="gray.100"
             bg="red.500"
             borderRadius="full"
           >
@@ -79,15 +85,24 @@ const Header = () => {
           </Box>
         </IconButton>
 
-        <IconButton aria-label="Settings" variant="solid" colorScheme="gray">
+        <IconButton
+          aria-label="Settings"
+          variant="solid"
+          bgColor="transparent"
+          color={"gray.600"}
+          _hover={{
+            bgColor: "gray.100",
+            color: "gray.700",
+          }}
+        >
           <SettingsIcon size={20} />
         </IconButton>
 
         {/* User Menu */}
         <Menu.Root>
           <Menu.Trigger asChild>
-            <Button cursor="pointer">
-              <Avatar.Root size="md">
+            <Button cursor="pointer" bgColor="white">
+              <Avatar.Root size="md" variant="solid" bgColor="white">
                 <Avatar.Fallback name="Fabian Petersen" />
                 <Avatar.Image src="https://bit.ly/sage-adebayo" />
               </Avatar.Root>

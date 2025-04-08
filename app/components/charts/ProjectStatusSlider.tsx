@@ -4,8 +4,6 @@ import { Slider } from "@chakra-ui/react";
 type Props = { status: number; onChange: (value: number) => void };
 
 const ProjectStatusSlider = ({ status, onChange }: Props) => {
-  console.log(status);
-
   return (
     <Slider.Root
       width="200px"
@@ -15,6 +13,7 @@ const ProjectStatusSlider = ({ status, onChange }: Props) => {
       step={1}
       _hover={{ cursor: "pointer" }}
       _active={{ cursor: "grabbing" }}
+      colorPalette={status < 20 ? "red" : status < 80 ? "blue" : "green"}
     >
       <Slider.Control
         onChange={(event) => {
@@ -22,10 +21,24 @@ const ProjectStatusSlider = ({ status, onChange }: Props) => {
           onChange(value);
         }}
       >
-        <Slider.Track bgColor={"blue.100"}>
-          <Slider.Range bgColor={"blue.500"} />
+        <Slider.Track
+          bgColor={
+            status < 20 ? "red.100" : status < 80 ? "blue.100" : "green.100"
+          }
+          ring="1px"
+          ringColor={"blue.200"}
+        >
+          <Slider.Range
+            bgColor={
+              status < 20 ? "red.500" : status < 80 ? "blue.500" : "green.500"
+            }
+          />
         </Slider.Track>
-        <Slider.Thumbs bgColor={"blue.200"} />
+        <Slider.Thumbs
+          bgColor={
+            status < 20 ? "red.200" : status < 80 ? "blue.200" : "green.200"
+          }
+        />
       </Slider.Control>
     </Slider.Root>
   );
