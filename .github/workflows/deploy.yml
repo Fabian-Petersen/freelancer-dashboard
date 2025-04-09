@@ -4,7 +4,7 @@ on:
     branches: [main]
 
 env:
-  NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
+  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
 
 jobs:
   deploy:
@@ -22,7 +22,7 @@ jobs:
 
       - name: Build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.API_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
         run: |
           echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL"
           npm run build

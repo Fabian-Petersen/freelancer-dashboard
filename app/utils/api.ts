@@ -46,7 +46,8 @@ export const apiService = {
   getProjects: async (): Promise<Project[]> => {
     try {
       const response = await apiClient.get("/projects");
-      const projects: Project[] = JSON.parse(response.data.body);
+      console.log("API Response All Projects:", response.data);
+      const projects: Project[] = response.data;
       return projects;
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -58,9 +59,8 @@ export const apiService = {
   getApplications: async (): Promise<JobApplicationProps[]> => {
     try {
       const response = await apiClient.get("/applications");
-      const applications: JobApplicationProps[] = JSON.parse(
-        response.data.body
-      );
+      console.log("API Response All Applciations:", response.data);
+      const applications: JobApplicationProps[] = response.data;
       return applications;
     } catch (error) {
       console.error("Error fetching applications:", error);
