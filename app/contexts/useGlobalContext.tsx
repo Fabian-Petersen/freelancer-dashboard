@@ -4,16 +4,25 @@ import { JobApplicationProps } from "../components/charts/ApplicationCards";
 
 // Define the shape of our context state
 type GlobalContextType = {
+  // $ State to open the project modal
   isProjectModalOpen: boolean;
   setIsProjectModalOpen: (isOpen: boolean) => void;
+  // $
   projectStatus: number;
   setProjectStatus: (prev: number) => void;
+  // $
   isUpdateModalOpen: boolean;
   setIsUpdateModalOpen: (isOpen: boolean) => void;
+  // $ State to open the update application modal
   isUpdateApplicationOpen: boolean;
   setIsUpdateApplicationOpen: (isOpen: boolean) => void;
+  // $ State to open the new job application modal
+  isNewApplicationOpen: boolean;
+  setIsNewApplicationOpen: (isOpen: boolean) => void;
+  // $ State to select as project from the project summary table
   selectedProject: Project | null;
   setSelectedProject: (project: Project | null) => void;
+  // $ State to select a specific job application card on click.
   selectedApplication: JobApplicationProps | null;
   setSelectedApplication: (application: JobApplicationProps | null) => void;
 };
@@ -36,7 +45,7 @@ export function GlobalContextProvider({
   const [isProjectModalOpen, setIsProjectModalOpen] = useState<boolean>(false);
   const [projectStatus, setProjectStatus] = useState<number>(0);
 
-  // $ Update Project MOdal State
+  // $ Update Project Modal State
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
 
@@ -44,6 +53,10 @@ export function GlobalContextProvider({
   const [selectedApplication, setSelectedApplication] =
     useState<JobApplicationProps | null>(null);
   const [isUpdateApplicationOpen, setIsUpdateApplicationOpen] =
+    useState<boolean>(false);
+
+  // $ New Application Modal State
+  const [isNewApplicationOpen, setIsNewApplicationOpen] =
     useState<boolean>(false);
 
   // Memoize the context value to prevent unnecessary re-renders
@@ -61,6 +74,8 @@ export function GlobalContextProvider({
       setIsUpdateApplicationOpen,
       selectedApplication,
       setSelectedApplication,
+      isNewApplicationOpen,
+      setIsNewApplicationOpen,
     }),
     [
       isProjectModalOpen,
@@ -70,6 +85,7 @@ export function GlobalContextProvider({
       isUpdateApplicationOpen,
       selectedApplication,
       setSelectedApplication,
+      isNewApplicationOpen,
     ]
   );
 

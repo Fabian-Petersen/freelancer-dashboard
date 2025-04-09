@@ -1,7 +1,7 @@
 import React from "react";
 import { Heading } from "@chakra-ui/react";
 
-type Props = { title?: string };
+type Props = { title?: string; style: string };
 
 function ChartHeading({ title }: Props) {
   return (

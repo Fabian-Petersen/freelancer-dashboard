@@ -1,11 +1,21 @@
 "use client";
 import React, { useState } from "react";
-import ChartHeading from "./ChartHeading";
-import { Box, Text, Flex, Badge, Button, Spinner } from "@chakra-ui/react";
+
+import {
+  Box,
+  Text,
+  Flex,
+  Badge,
+  Button,
+  Spinner,
+  Heading,
+} from "@chakra-ui/react";
 import { XCircleIcon } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import UpdateApplicationModal from "../modals/UpdateApplicationModal";
 import { useApplications } from "@/app/hooks/useProjects";
+import AddApplicationButton from "./AddApplicationButton";
+import NewApplicationModal from "../modals/NewApplicationModal";
 
 export type JobApplicationProps = {
   id?: string;
@@ -28,7 +38,7 @@ const ApplciationCards = () => {
 
   // $ Fetch the data from the database
   const { data: Applications, isPending, isError, error } = useApplications();
-  console.log("data for applications:", Applications);
+  // console.log("data for applications:", Applications);
 
   if (isPending) {
     return (
@@ -73,14 +83,18 @@ const ApplciationCards = () => {
     setIsUpdateApplicationOpen(true);
   };
 
-  console.log("open application", isUpdateApplicationOpen);
   return (
     <>
+      <NewApplicationModal />
       {isUpdateApplicationOpen && selectedApplication && (
         <UpdateApplicationModal application={selectedApplication} />
       )}
-
-      <ChartHeading title="Jobs Application Status" />
+      <Flex justify="space-between" alignItems="center" mb={4}>
+        <Heading size="md" color="blue.500">
+          Jobs Application Status
+        </Heading>
+        <AddApplicationButton />
+      </Flex>
       <Flex direction="column" gap={3}>
         {Applications && Applications.length > 0 ? (
           Applications.map((item) => (
