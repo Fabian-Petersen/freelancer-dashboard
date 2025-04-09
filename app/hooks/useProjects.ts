@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiService, Project } from "../utils/api";
+import { apiService, JobApplicationProps, Project } from "../utils/api";
 
 // Query key for projects
 const PROJECTS_QUERY_KEY = "projects";
+const APPLICATIONS_QUERY_KEY = "applications";
 
 /**
  * Hook to fetch all projects
@@ -11,6 +12,13 @@ export const useProjects = () => {
   return useQuery({
     queryKey: [PROJECTS_QUERY_KEY],
     queryFn: apiService.getProjects,
+  });
+};
+
+export const useApplications = () => {
+  return useQuery({
+    queryKey: [APPLICATIONS_QUERY_KEY],
+    queryFn: apiService.getApplications,
   });
 };
 
@@ -36,6 +44,20 @@ export const useCreateProject = () => {
     onSuccess: () => {
       // Invalidate the projects query to refetch the updated list
       queryClient.invalidateQueries({ queryKey: [PROJECTS_QUERY_KEY] });
+    },
+  });
+};
+
+// $ Create Job Application
+export const useCreateApplication = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (newApplication: JobApplicationProps) =>
+      apiService.createApplication(newApplication),
+    onSuccess: () => {
+      // Invalidate the projects query to refetch the updated list
+      queryClient.invalidateQueries({ queryKey: [APPLICATIONS_QUERY_KEY] });
     },
   });
 };

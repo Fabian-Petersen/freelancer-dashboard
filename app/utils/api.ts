@@ -22,10 +22,20 @@ export type Project = {
   status: number;
 };
 
+export type JobApplicationProps = {
+  id?: string;
+  description: string;
+  company: string;
+  location: string;
+  date_applied: string;
+  job_details: string[];
+  status: "applied" | "interview" | "on hold" | "failed";
+};
+
 // Format the project data according to API requirements
-const formatProjectData = (project: Project) => {
+const formatProjectData = (item: Project | JobApplicationProps) => {
   return {
-    body: JSON.stringify(project),
+    body: JSON.stringify(item),
     isBase64Encoded: false,
   };
 };
@@ -44,6 +54,20 @@ export const apiService = {
     }
   },
 
+  // $ Get all applications
+  getApplications: async (): Promise<JobApplicationProps[]> => {
+    try {
+      const response = await apiClient.get("/applications");
+      const applications: JobApplicationProps[] = JSON.parse(
+        response.data.body
+      );
+      return applications;
+    } catch (error) {
+      console.error("Error fetching applications:", error);
+      throw error;
+    }
+  },
+
   // Get a specific project
   getProject: async (id: string): Promise<Project> => {
     try {
@@ -56,6 +80,18 @@ export const apiService = {
     }
   },
 
+  // Get a specific application
+  getApplication: async (id: string): Promise<JobApplicationProps> => {
+    try {
+      const response = await apiClient.get(`/applications/${id}`);
+      console.log("/GET:", response);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching application ${id}:`, error);
+      throw error;
+    }
+  },
+
   // Create a new project
   createProject: async (project: Project): Promise<Project> => {
     try {
@@ -64,6 +100,20 @@ export const apiService = {
       return response.data;
     } catch (error) {
       console.error("Error creating project:", error);
+      throw error;
+    }
+  },
+
+  // Create a new application
+  createApplication: async (
+    application: JobApplicationProps
+  ): Promise<JobApplicationProps> => {
+    try {
+      const formattedData = formatProjectData(application);
+      const response = await apiClient.post("/application", formattedData);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating application:", error);
       throw error;
     }
   },

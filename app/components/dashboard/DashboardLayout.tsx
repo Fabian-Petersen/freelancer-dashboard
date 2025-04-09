@@ -3,7 +3,7 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 import MonthlyRevenueChart from "../charts/MonthlyRevenueChart";
 import RevenueExpenseChart from "../charts/RevenueExpenseChart";
 import ProjectSummaryTable from "../charts/ProjectSummaryTable";
-import ActiveProjectsTable from "../charts/ActiveProjectsTable";
+import ActiveProjectsTable from "../charts/ApplicationCards";
 
 const DashboardLayout = () => {
   return (

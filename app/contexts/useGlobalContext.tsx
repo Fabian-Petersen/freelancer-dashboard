@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { Project } from "../utils/api";
+import { JobApplicationProps } from "../components/charts/ApplicationCards";
 
 // Define the shape of our context state
 type GlobalContextType = {
@@ -9,8 +10,12 @@ type GlobalContextType = {
   setProjectStatus: (prev: number) => void;
   isUpdateModalOpen: boolean;
   setIsUpdateModalOpen: (isOpen: boolean) => void;
+  isUpdateApplicationOpen: boolean;
+  setIsUpdateApplicationOpen: (isOpen: boolean) => void;
   selectedProject: Project | null;
   setSelectedProject: (project: Project | null) => void;
+  selectedApplication: JobApplicationProps | null;
+  setSelectedApplication: (application: JobApplicationProps | null) => void;
 };
 
 // Create the context with default values
@@ -35,6 +40,12 @@ export function GlobalContextProvider({
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
 
+  // $ Update Application Modal State
+  const [selectedApplication, setSelectedApplication] =
+    useState<JobApplicationProps | null>(null);
+  const [isUpdateApplicationOpen, setIsUpdateApplicationOpen] =
+    useState<boolean>(false);
+
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
@@ -46,8 +57,20 @@ export function GlobalContextProvider({
       setIsUpdateModalOpen,
       selectedProject,
       setSelectedProject,
+      isUpdateApplicationOpen,
+      setIsUpdateApplicationOpen,
+      selectedApplication,
+      setSelectedApplication,
     }),
-    [isProjectModalOpen, projectStatus, isUpdateModalOpen, selectedProject]
+    [
+      isProjectModalOpen,
+      projectStatus,
+      isUpdateModalOpen,
+      selectedProject,
+      isUpdateApplicationOpen,
+      selectedApplication,
+      setSelectedApplication,
+    ]
   );
 
   return (

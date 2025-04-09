@@ -1,0 +1,38 @@
+export const applciationCardData = [
+  {
+    id: "1",
+    description: "Frontend Developer",
+    company: "ABC Corp",
+    date_applied: "2025-04-26",
+    job_details: ["Remote", "Contract"],
+    status: "applied",
+    location: "cape town",
+  },
+  {
+    id: "2",
+    description: "Cloud Engineer",
+    company: "XYZ Inc",
+    date_applied: "2025-02-01",
+    job_details: ["Remote", "Permanent"],
+    status: "interview",
+    location: "cape town",
+  },
+  {
+    id: "3",
+    description: "Cloud Engineer",
+    company: "123 Retail",
+    job_details: ["on-Site", "Permanent"],
+    date_applied: "2025-02-13",
+    status: "on hold",
+    location: "cape town",
+  },
+  {
+    id: "4",
+    description: "Fullstack Developer",
+    company: "BlogCo",
+    job_details: ["Remote", "Contract"],
+    date_applied: "2025-03-21",
+    status: "applied",
+    location: "cape town",
+  },
+];

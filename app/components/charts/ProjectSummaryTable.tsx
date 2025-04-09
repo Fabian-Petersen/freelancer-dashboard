@@ -76,11 +76,9 @@ function ProjectSummaryTable() {
   return (
     <>
       <NewProjectModal />
-      {isUpdateModalOpen ? (
-        <UpdateProjectModal project={selectedProject} />
-      ) : (
-        ""
-      )}
+      {isUpdateModalOpen
+        ? selectedProject && <UpdateProjectModal project={selectedProject} />
+        : ""}
       <Box
         display="flex"
         alignItems="center"
