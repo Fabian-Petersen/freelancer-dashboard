@@ -25,10 +25,10 @@ const Sidebar = () => {
       top="0"
       left="0"
       width={{ lg: "240px" }}
-      bg="#f8fafd"
+      bgColor={{ base: "#f8fafd", _dark: "#002147" }}
       opacity={{ base: "hidden", lg: "visible" }}
       borderRight="1px"
-      borderRightColor="gray.300"
+      borderRightColor={{ base: "gray.300", _dark: "white" }}
       overflow-y="auto"
       zIndex="100"
       maxHeight={"100vh"}

@@ -1,5 +1,6 @@
 "use client";
 
+import { ColorModeButton } from "@/components/ui/color-mode";
 import {
   Box,
   Flex,
@@ -23,6 +24,7 @@ const Header = () => {
       w="100%"
       px={4}
       py={3}
+      bgColor={{ base: "#f8fafd", _dark: "#002147" }}
     >
       {/* Left section with Title */}
 
@@ -40,9 +42,19 @@ const Header = () => {
           <InputGroup
             width={{ base: "100%", md: "300px" }}
             maxWidth="600px"
-            startElement={<SearchIcon size={20} color="black" />}
+            startElement={
+              <Box pl={{ lg: "0.8rem" }}>
+                <SearchIcon size={20} />
+              </Box>
+            }
           >
-            <Input placeholder="Search..." borderRadius="md" />
+            <Input
+              placeholder="Search..."
+              borderRadius="md"
+              borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+              color={{ base: "gray.700", _dark: "gray.50/60" }}
+              _placeholder={{ color: "inherit" }}
+            />
           </InputGroup>
         </Box>
         <IconButton
@@ -53,17 +65,30 @@ const Header = () => {
         >
           <SearchIcon size={20} />
         </IconButton>
-
+        <IconButton
+          bg="transparent"
+          color={{ base: "yellow.500", _dark: "blue.200" }}
+          _hover={{
+            bgColor: { base: "transparent", _dark: "transparent" },
+          }}
+        >
+          <ColorModeButton
+            color={{ base: "yellow.500", _dark: "blue.200" }}
+            _hover={{
+              bgColor: { base: "gray.200/70", _dark: "gray.500/40" },
+            }}
+          />
+        </IconButton>
         <IconButton
           aria-label="Notifications"
           variant="solid"
           // colorPalette="teal"
           position="relative"
-          bgColor="transparent"
-          color={"gray.600"}
+          bgColor={{ base: "transparent" }}
+          color={{ base: "gray.600", _dark: "blue.200" }}
           _hover={{
-            bgColor: "gray.100",
-            color: "gray.700",
+            bgColor: { base: "transparent", _dark: "gray.500/40" },
+            color: { base: "gray.700", _dark: "gray.200" },
           }}
         >
           <BellIcon size={20} />
@@ -89,10 +114,10 @@ const Header = () => {
           aria-label="Settings"
           variant="solid"
           bgColor="transparent"
-          color={"gray.600"}
+          color={{ base: "gray.600", _dark: "blue.200" }}
           _hover={{
-            bgColor: "gray.100",
-            color: "gray.700",
+            bgColor: { base: "transparent", _dark: "gray.500/40" },
+            color: { base: "gray.700", _dark: "gray.200" },
           }}
         >
           <SettingsIcon size={20} />

@@ -6,7 +6,5 @@ export type Project = {
   price: number;
   deadline: string;
   email: string;
-  phone: string;
-  //   country: string;
   status: number;
 };

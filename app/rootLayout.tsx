@@ -12,6 +12,8 @@ import { Toaster } from "@/components/ui/toaster";
 
 // $ Chakra Provider
 import Provider from "./provider";
+import { ColorModeProvider } from "@/components/ui/color-mode";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 
 export default function RootLayout({
   children,
@@ -23,10 +25,14 @@ export default function RootLayout({
       <head />
       <body>
         <Provider>
-          <Providers>
-            <Toaster />
-            <Provider>{children}</Provider>
-          </Providers>
+          <ChakraProvider value={defaultSystem}>
+            <ColorModeProvider>
+              <Providers>
+                <Toaster />
+                <Provider>{children}</Provider>
+              </Providers>
+            </ColorModeProvider>
+          </ChakraProvider>
         </Provider>
       </body>
     </html>

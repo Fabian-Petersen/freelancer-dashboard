@@ -7,7 +7,7 @@ import ActiveProjectsTable from "../charts/ApplicationCards";
 
 const DashboardLayout = () => {
   return (
-    <Box p={4}>
+    <Box p={4} color={{ base: "gray.700", _dark: "gray.700" }}>
       <Grid
         templateColumns={{ base: "1fr", md: "1fr 2fr", lg: "1fr 2fr 1fr" }}
         gap={4}

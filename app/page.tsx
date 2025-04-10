@@ -5,12 +5,14 @@ import Sidebar from "./components/dashboard/Sidebar";
 import Header from "./components/header/Header";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import SidebarToggleButton from "../app/components/dashboard/SidebarToggleButton";
+// import { ColorModeProvider } from "@/components/ui/color-mode";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Box minH="100vh">
+    // <ColorModeProvider forcedTheme="light">
+    <Box minH="100vh" bgColor={{ base: "#f8fafd", _dark: "#002147/85" }}>
       {/* Sidebar Toggle Button - visible only on small screens */}
       <Box
         display={{ base: "block", lg: "none" }}
@@ -36,6 +38,7 @@ export default function Home() {
           lg: "translateX(0)",
         }}
         transition="transform 0.3s ease"
+        className="dark"
       >
         <Sidebar />
       </Box>
@@ -62,5 +65,6 @@ export default function Home() {
         <DashboardLayout />
       </Box>
     </Box>
+    // </ColorModeProvider>
   );
 }
