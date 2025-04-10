@@ -1,26 +1,33 @@
 "use client";
 
+import { Inter } from "next/font/google";
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
+
 // $ Context Providers
 import Providers from "./providers";
 import { Toaster } from "@/components/ui/toaster";
 
 // $ Chakra Provider
-import { Provider } from "@/components/ui/provider";
+import Provider from "./provider";
 
-type Props = {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-};
-
-export default function RootLayout({ children }: Props) {
+}) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html className={inter.className} suppressHydrationWarning>
+      <head />
       <body>
-        <Providers>
-          <Provider>
+        <Provider>
+          <Providers>
             <Toaster />
-            {children}
-          </Provider>
-        </Providers>
+            <Provider>{children}</Provider>
+          </Providers>
+        </Provider>
       </body>
     </html>
   );
