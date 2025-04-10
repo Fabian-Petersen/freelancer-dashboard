@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Project } from "../utils/api";
-import { JobApplicationProps } from "../components/charts/ApplicationCards";
+import { Project } from "@/types/project";
+import { Job } from "@/types/job";
 
 // Define the shape of our context state
 type GlobalContextType = {
@@ -23,8 +23,8 @@ type GlobalContextType = {
   selectedProject: Project | null;
   setSelectedProject: (project: Project | null) => void;
   // $ State to select a specific job application card on click.
-  selectedApplication: JobApplicationProps | null;
-  setSelectedApplication: (application: JobApplicationProps | null) => void;
+  selectedApplication: Job | null;
+  setSelectedApplication: (application: Job | null) => void;
 };
 
 // Create the context with default values
@@ -50,8 +50,9 @@ export function GlobalContextProvider({
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
 
   // $ Update Application Modal State
-  const [selectedApplication, setSelectedApplication] =
-    useState<JobApplicationProps | null>(null);
+  const [selectedApplication, setSelectedApplication] = useState<Job | null>(
+    null
+  );
   const [isUpdateApplicationOpen, setIsUpdateApplicationOpen] =
     useState<boolean>(false);
 
