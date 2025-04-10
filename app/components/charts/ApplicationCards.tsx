@@ -13,9 +13,10 @@ import {
 import { XCircleIcon } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import UpdateApplicationModal from "../modals/UpdateApplicationModal";
-import { useApplications } from "@/app/hooks/useProjects";
+import { useGetAll } from "@/app/hooks/useFetchDataHook";
 import AddApplicationButton from "./AddApplicationButton";
 import NewApplicationModal from "../modals/NewApplicationModal";
+import { Job } from "@/types/job";
 
 export type JobApplicationProps = {
   id?: string;
@@ -37,7 +38,12 @@ const ApplciationCards = () => {
   } = useGlobalContext();
 
   // $ Fetch the data from the database
-  const { data: Applications, isPending, isError, error } = useApplications();
+  const {
+    data: Applications,
+    isPending,
+    isError,
+    error,
+  } = useGetAll<Job>("applications");
   // console.log("data for applications:", Applications);
 
   if (isPending) {

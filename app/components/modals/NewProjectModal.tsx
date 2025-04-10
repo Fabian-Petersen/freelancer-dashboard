@@ -2,28 +2,26 @@
 
 import { useState } from "react";
 import { toaster } from "@/components/ui/toaster";
+import { Project } from "@/types/project";
 
 import {
   Container,
   Button,
   Field,
   Fieldset,
-  //   For,
   Input,
   Flex,
-  //   NativeSelect,
   Stack,
   SimpleGrid,
 } from "@chakra-ui/react";
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useCreateProject } from "../../hooks/useProjects";
-import type { Project } from "@/app/utils/api";
+import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewProjectModal = () => {
   const { setIsProjectModalOpen, isProjectModalOpen } = useGlobalContext();
 
-  const createProject = useCreateProject();
+  const createProject = useCreate("projects");
 
   // Initialize project form state
   const [projectForm, setProjectForm] = useState<Omit<Project, "id">>({

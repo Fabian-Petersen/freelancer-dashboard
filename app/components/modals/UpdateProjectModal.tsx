@@ -16,8 +16,8 @@ import {
 } from "@chakra-ui/react";
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useUpdateProject } from "../../hooks/useProjects";
-import type { Project } from "@/app/utils/api";
+import { useUpdate } from "../../hooks/useFetchDataHook";
+import { Project } from "@/types/project";
 
 type UpdateProjectModalProps = {
   project: Project;
@@ -26,7 +26,7 @@ type UpdateProjectModalProps = {
 const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
   const { setIsUpdateModalOpen, isUpdateModalOpen } = useGlobalContext();
 
-  const updateProject = useUpdateProject();
+  const updateProject = useUpdate("projects");
 
   const [projectForm, setProjectForm] = useState<Project>(project);
 
@@ -50,7 +50,7 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
     try {
       await updateProject.mutateAsync({
         id: projectForm.id || "",
-        project: { ...projectForm },
+        entity: { ...projectForm },
       });
       toaster.promise(promise, {
         success: {

@@ -1,42 +1,42 @@
 "use client";
 
-import { Box, Button, HStack, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Spinner, Text, Flex } from "@chakra-ui/react";
 import ChartHeading from "../charts/ChartHeading";
 import ProjectStatusSlider from "./ProjectStatusSlider";
 import { PlusCircle } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import NewProjectModal from "../modals/NewProjectModal";
-import { useUpdateProject, useProjects } from "@/app/hooks/useProjects";
-import UpdateProjectModal from "../modals/UpdateProjectModal";
 
-import { Project } from "@/app/utils/api";
+import { useGetAll } from "@/app/hooks/useFetchDataHook";
+import UpdateProjectModal from "../modals/UpdateProjectModal";
+import { Project } from "@/types/project";
+import ProjectSummaryMenuButton from "./ProjectSummaryMenuButton";
 
 function ProjectSummaryTable() {
-  const {
-    setIsProjectModalOpen,
-    setProjectStatus,
-    setIsUpdateModalOpen,
-    isUpdateModalOpen,
-    selectedProject,
-    setSelectedProject,
-  } = useGlobalContext();
-  // const { data: projects } = useUpdateProject();
-  const { data: Projects, isPending, isError, error } = useProjects();
+  const { setIsProjectModalOpen, isUpdateModalOpen, selectedProject } =
+    useGlobalContext();
 
-  // console.log("Projects Data:", Projects);
+  // $ Fetch all the projects Data
+  const {
+    data: Projects,
+    isPending,
+    isError,
+    error,
+  } = useGetAll<Project>("projects");
+
   // $ Function to update a specific project's status
-  const updateProject = useUpdateProject();
-  const handleStatusUpdate = async (projectId: string, newStatus: number) => {
-    try {
-      await updateProject.mutateAsync({
-        id: projectId,
-        project: { status: newStatus },
-      });
-      setProjectStatus(newStatus);
-    } catch (err) {
-      console.error("Error updating project status:", err);
-    }
-  };
+  // const updateProject = useUpdate("projects");
+  // const handleStatusUpdate = async (projectId: string, newStatus: number) => {
+  //   try {
+  //     await updateProject.mutateAsync({
+  //       id: projectId,
+  //       project: { status: newStatus },
+  //     });
+  //     setProjectStatus(newStatus);
+  //   } catch (err) {
+  //     console.error("Error updating project status:", err);
+  //   }
+  // };
 
   if (isPending) {
     return (
@@ -57,21 +57,6 @@ function ProjectSummaryTable() {
       </Box>
     );
   }
-
-  // Function to update a specific project's status
-  // const handleStatusUpdate = (id: string, newStatus: number) => {
-  //   setProjectStatus((prev) =>
-  //     prevProjects.map((project) =>
-  //       project.id === projectId ? { ...project, status: newStatus } : project
-  //     )
-  //   );
-  // };
-
-  // Function to handle clicking on a project row
-  const handleProjectClick = (project: Project) => {
-    setSelectedProject(project);
-    setIsUpdateModalOpen(true);
-  };
 
   return (
     <>
@@ -106,7 +91,7 @@ function ProjectSummaryTable() {
                 px={4}
                 py={2}
                 textAlign="left"
-                fontSize={{ base: "0.85rem", lg: "0.95rem" }}
+                fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Client
               </Box>
@@ -115,7 +100,7 @@ function ProjectSummaryTable() {
                 px={4}
                 py={2}
                 textAlign="left"
-                fontSize={{ base: "0.85rem", lg: "0.95rem" }}
+                fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Project
               </Box>
@@ -124,16 +109,19 @@ function ProjectSummaryTable() {
                 px={4}
                 py={2}
                 textAlign="left"
-                fontSize={{ base: "0.8rem", lg: "1rem" }}
+                fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Price
+                <Box as="sup" fontSize={{ base: "0.65rem", lg: "0.7rem" }}>
+                  (R)
+                </Box>
               </Box>
               <Box
                 as="th"
                 px={4}
                 py={2}
                 textAlign="left"
-                fontSize={{ base: "0.85rem", lg: "0.95rem" }}
+                fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Deadline
               </Box>
@@ -142,18 +130,9 @@ function ProjectSummaryTable() {
                 px={4}
                 py={2}
                 textAlign="left"
-                fontSize={{ base: "0.85rem", lg: "0.95rem" }}
+                fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Status
-              </Box>
-              <Box
-                as="th"
-                px={4}
-                py={2}
-                textAlign="left"
-                fontSize={{ base: "0.85rem", lg: "0.95rem" }}
-              >
-                Progress
               </Box>
             </Box>
           </Box>
@@ -163,15 +142,15 @@ function ProjectSummaryTable() {
                 <Box
                   as="tr"
                   key={project.id}
-                  _hover={{ bg: "gray.50", cursor: "pointer" }}
-                  onClick={() => handleProjectClick(project)}
+                  _hover={{ bg: "gray.50" }}
+                  // onClick={() => handleProjectClick(project)}
                   transition="all 0.2s"
                 >
                   <Box
                     as="td"
                     px={4}
                     py={3}
-                    fontSize={{ base: "0.6rem", lg: "0.875rem" }}
+                    fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {project.client}
                   </Box>
@@ -179,7 +158,7 @@ function ProjectSummaryTable() {
                     as="td"
                     px={4}
                     py={3}
-                    fontSize={{ base: "0.6rem", lg: "0.875rem" }}
+                    fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {project.name}
                   </Box>
@@ -187,44 +166,47 @@ function ProjectSummaryTable() {
                     as="td"
                     px={4}
                     py={3}
-                    fontSize={{ base: "0.6rem", lg: "0.875rem" }}
+                    fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
-                    R {project.price.toLocaleString()}
+                    {project.price.toLocaleString()}
                   </Box>
                   <Box
                     as="td"
                     px={4}
                     py={3}
-                    fontSize={{ base: "0.6rem", lg: "0.875rem" }}
+                    fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {new Date(project.deadline).toLocaleDateString()}
                   </Box>
-                  <Box as="td" px={4} py={3}>
-                    {project.status !== undefined && (
-                      <ProjectStatusSlider
-                        status={project.status}
-                        onChange={(newStatus) => {
-                          if (project.id) {
-                            handleStatusUpdate(project.id, newStatus);
-                          }
-                        }}
-                      />
-                    )}
-                  </Box>
                   <Box
                     as="td"
                     px={4}
                     py={3}
-                    fontSize={{ base: "0.6rem", lg: "0.875rem" }}
-                    color={
-                      (project.status || 0) < 40
-                        ? "red.500"
-                        : (project.status || 0) >= 80
-                        ? "green.500"
-                        : "blue.500"
-                    }
+                    fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
-                    {project.status || 0}%
+                    <Flex gap={2} justifyContent="space-evenly" align="center">
+                      {project.status !== undefined && (
+                        <ProjectStatusSlider
+                          status={project.status}
+                          onChange={(newStatus) => {
+                            console.log(newStatus);
+                            // handleStatusUpdate(project.id, newStatus);
+                          }}
+                        />
+                      )}
+                      <Box
+                        color={
+                          (project.status || 0) < 40
+                            ? "red.500"
+                            : (project.status || 0) >= 80
+                            ? "green.500"
+                            : "blue.500"
+                        }
+                      >
+                        {project.status || 0}%
+                      </Box>
+                      <ProjectSummaryMenuButton project={project} />
+                    </Flex>
                   </Box>
                 </Box>
               ))

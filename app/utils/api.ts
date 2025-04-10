@@ -1,6 +1,14 @@
 import axios from "axios";
 
-// Create an axios instance with default configs
+// $ Types
+import { Project } from "@/types/project";
+import { Job } from "@/types/job";
+export type ResourceType = "projects" | "applications";
+
+// $ Combine the types into a union type for the generic functions
+export type EntityType = Project | Job;
+
+// $ Create an axios instance with default configs
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL as string,
   headers: {
@@ -8,32 +16,8 @@ const apiClient = axios.create({
   },
 });
 
-// Project type definition based on the NewProjectModal
-export type Project = {
-  id?: string;
-  client: string;
-  name: string;
-  description: string;
-  price: number;
-  deadline: string;
-  email: string;
-  phone: string;
-  //   country: string;
-  status: number;
-};
-
-export type JobApplicationProps = {
-  id?: string;
-  description: string;
-  company: string;
-  location: string;
-  date_applied: string;
-  job_details: string[];
-  status: "applied" | "interview" | "on hold" | "failed";
-};
-
-// Format the project data according to API requirements
-const formatProjectData = (item: Project | JobApplicationProps) => {
+// $ Format the data according to API requirements
+const formatData = <T extends EntityType>(item: T) => {
   return {
     body: JSON.stringify(item),
     isBase64Encoded: false,
@@ -42,104 +26,162 @@ const formatProjectData = (item: Project | JobApplicationProps) => {
 
 // $ API service functions
 export const apiService = {
-  // $ Get all projects
-  getProjects: async (): Promise<Project[]> => {
+  // $ Get all items for a resource
+  getAll: async <T extends EntityType>(
+    resourcePath: ResourceType
+  ): Promise<T[]> => {
     try {
-      const response = await apiClient.get("/projects");
-      console.log("API Response All Projects:", response.data);
-      const projects: Project[] = response.data;
-      return projects;
+      const response = await apiClient.get(`/${resourcePath}`);
+      console.log(`API Response All ${resourcePath}:`, response.data);
+      return response.data as T[];
     } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error(`Error fetching ${resourcePath}:`, error);
       throw error;
     }
   },
 
-  // $ Get all applications
-  getApplications: async (): Promise<JobApplicationProps[]> => {
+  // $ Get a specific entity by ID
+  getById: async <T extends EntityType>(
+    resourcePath: ResourceType,
+    id: string
+  ): Promise<T> => {
     try {
-      const response = await apiClient.get("/applications");
-      console.log("API Response All Applciations:", response.data);
-      const applications: JobApplicationProps[] = response.data;
-      return applications;
-    } catch (error) {
-      console.error("Error fetching applications:", error);
-      throw error;
-    }
-  },
-
-  // Get a specific project
-  getProject: async (id: string): Promise<Project> => {
-    try {
-      const response = await apiClient.get(`/projects/${id}`);
+      const response = await apiClient.get(`/${resourcePath}/${id}`);
       console.log("/GET:", response);
-      return response.data;
+      return response.data as T;
     } catch (error) {
-      console.error(`Error fetching project ${id}:`, error);
+      console.error(`Error fetching ${resourcePath} ${id}:`, error);
       throw error;
     }
   },
 
-  // Get a specific application
-  getApplication: async (id: string): Promise<JobApplicationProps> => {
+  // $ Create a new entity
+  create: async <T extends EntityType>(
+    resourcePath: ResourceType,
+    entity: T
+  ): Promise<T> => {
     try {
-      const response = await apiClient.get(`/applications/${id}`);
-      console.log("/GET:", response);
-      return response.data;
+      const formattedData = formatData(entity);
+      const response = await apiClient.post(`/${resourcePath}`, formattedData);
+      return response.data as T;
     } catch (error) {
-      console.error(`Error fetching application ${id}:`, error);
+      console.error(`Error creating ${resourcePath}:`, error);
       throw error;
     }
   },
 
-  // Create a new project
-  createProject: async (project: Project): Promise<Project> => {
-    try {
-      const formattedData = formatProjectData(project);
-      const response = await apiClient.post("/projects", formattedData);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating project:", error);
-      throw error;
-    }
-  },
-
-  // Create a new application
-  createApplication: async (
-    application: JobApplicationProps
-  ): Promise<JobApplicationProps> => {
-    try {
-      const formattedData = formatProjectData(application);
-      const response = await apiClient.post("/application", formattedData);
-      return response.data;
-    } catch (error) {
-      console.error("Error creating application:", error);
-      throw error;
-    }
-  },
-
-  // Update an existing project
-  updateProject: async (
+  // $ Update an existing entity
+  update: async <T extends EntityType>(
+    resourcePath: ResourceType,
     id: string,
-    project: Partial<Project>
-  ): Promise<Project> => {
+    entity: Partial<T>
+  ): Promise<T> => {
     try {
-      const formattedData = formatProjectData(project as Project);
-      const response = await apiClient.put(`/projects/${id}`, formattedData);
-      return response.data;
+      const formattedData = formatData(entity as T);
+      const response = await apiClient.put(
+        `/${resourcePath}/${id}`,
+        formattedData
+      );
+      return response.data as T;
     } catch (error) {
-      console.error(`Error updating project ${id}:`, error);
+      console.error(`Error updating ${resourcePath} ${id}:`, error);
       throw error;
     }
   },
 
-  // Delete a project
-  deleteProject: async (id: string): Promise<void> => {
+  // $ Delete an entity
+  delete: async (resourcePath: ResourceType, id: string): Promise<void> => {
     try {
-      await apiClient.delete(`/projects/${id}`);
+      await apiClient.delete(`/${resourcePath}/${id}`);
     } catch (error) {
-      console.error(`Error deleting project ${id}:`, error);
+      console.error(`Error deleting ${resourcePath} ${id}:`, error);
       throw error;
     }
   },
+
+  // // $ Get all applications
+  // getApplications: async (): Promise<Job[]> => {
+  //   try {
+  //     const response = await apiClient.get("/applications");
+  //     console.log("API Response All Applciations:", response.data);
+  //     const applications: Job[] = response.data;
+  //     return applications;
+  //   } catch (error) {
+  //     console.error("Error fetching applications:", error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Get a specific project
+  // getProject: async (id: string): Promise<Project> => {
+  //   try {
+  //     const response = await apiClient.get(`/projects/${id}`);
+  //     console.log("/GET:", response);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(`Error fetching project ${id}:`, error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Get a specific application
+  // getApplication: async (id: string): Promise<Job> => {
+  //   try {
+  //     const response = await apiClient.get(`/applications/${id}`);
+  //     console.log("/GET:", response);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(`Error fetching application ${id}:`, error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Create a new project
+  // createProject: async (project: Project): Promise<Project> => {
+  //   try {
+  //     const formattedData = formatData(project);
+  //     const response = await apiClient.post("/projects", formattedData);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error creating project:", error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Create a new application
+  // createApplication: async (application: Job): Promise<Job> => {
+  //   try {
+  //     const formattedData = formatData(application);
+  //     const response = await apiClient.post("/application", formattedData);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error creating application:", error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Update an existing project
+  // updateProject: async (
+  //   id: string,
+  //   project: Partial<Project>
+  // ): Promise<Project> => {
+  //   try {
+  //     const formattedData = formatData(project as Project);
+  //     const response = await apiClient.put(`/projects/${id}`, formattedData);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error(`Error updating project ${id}:`, error);
+  //     throw error;
+  //   }
+  // },
+
+  // // Delete a project
+  // deleteProject: async (id: string): Promise<void> => {
+  //   try {
+  //     await apiClient.delete(`/projects/${id}`);
+  //   } catch (error) {
+  //     console.error(`Error deleting project ${id}:`, error);
+  //     throw error;
+  //   }
+  // },
 };

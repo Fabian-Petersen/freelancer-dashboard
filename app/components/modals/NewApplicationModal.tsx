@@ -16,14 +16,14 @@ import {
 } from "@chakra-ui/react";
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useUpdateProject } from "../../hooks/useProjects";
+import { useUpdate } from "../../hooks/useFetchDataHook";
 
 const NewApplicationModal = () => {
   // $ State to open the modal to add a new project
   const { setIsNewApplicationOpen, isNewApplicationOpen } = useGlobalContext();
   console.log("open modal new job:", isNewApplicationOpen);
 
-  const updateProject = useUpdateProject();
+  const updateProject = useUpdate("projects");
 
   const [newApplicationForm, setNewApplicationForm] =
     useState<JobApplicationProps>({
