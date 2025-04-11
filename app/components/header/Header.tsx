@@ -65,7 +65,7 @@ const Header = () => {
         >
           <SearchIcon size={20} />
         </IconButton>
-        <IconButton
+        <Box
           bg="transparent"
           color={{ base: "yellow.500", _dark: "blue.200" }}
           _hover={{
@@ -78,7 +78,7 @@ const Header = () => {
               bgColor: { base: "gray.200/70", _dark: "gray.500/40" },
             }}
           />
-        </IconButton>
+        </Box>
         <IconButton
           aria-label="Notifications"
           variant="solid"

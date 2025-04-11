@@ -7,4 +7,5 @@ export type Project = {
   deadline: string;
   email: string;
   status: number;
+  phone: string;
 };

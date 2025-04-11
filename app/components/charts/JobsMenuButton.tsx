@@ -1,27 +1,31 @@
-import { Flex, Menu, Box, Portal } from "@chakra-ui/react";
+import { Box, Menu, Portal, Flex } from "@chakra-ui/react";
 import { MoreVertical } from "lucide-react";
-import { Project } from "@/types/project";
+import { Job } from "@/types/job";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useDelete } from "@/app/hooks/useFetchDataHook";
 
-type Props = {
-  project: Project;
+type JobsMenuButtonProps = {
+  job: Job;
 };
 
-const ProjectSummaryMenuButton = ({ project }: Props) => {
-  const { setIsUpdateProjectModalOpen, isUpdateProjectModalOpen } =
-    useGlobalContext();
-  console.log("open update modal:", isUpdateProjectModalOpen);
+const JobsMenuButton = ({ job }: JobsMenuButtonProps) => {
+  const { setIsUpdateJobModalOpen, setSelectedJob } = useGlobalContext();
 
-  const deleteProject = useDelete("projects");
-  const handleDeleteProject = async (id: string) => {
+  const deleteJob = useDelete("applications");
+
+  const handleDeleteJob = async (id: string) => {
     try {
-      await deleteProject.mutateAsync(id);
+      await deleteJob.mutateAsync(id);
       // Success handling (optional) - could show a toast notification
     } catch (error) {
-      console.error("Error deleting project:", error);
+      console.error("Error deleting job:", error);
       // Error handling (optional) - could show error toast
     }
+  };
+
+  const handleEditClick = () => {
+    setSelectedJob(job);
+    setIsUpdateJobModalOpen(true);
   };
 
   return (
@@ -32,7 +36,6 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
           _hover={{ cursor: "pointer" }}
           color={"gray.500"}
           fontSize={{ base: "0.6rem", lg: "0.5rem" }}
-          onClick={() => {}}
         >
           <MoreVertical size="1rem" />
         </Box>
@@ -46,8 +49,9 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                 p={1.5}
                 letterSpacing={"0.08rem"}
                 _hover={{ cursor: "pointer", bg: "transparent" }}
-                onClick={() => {
-                  setIsUpdateProjectModalOpen(true);
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling
+                  handleEditClick();
                 }}
               >
                 Edit
@@ -62,7 +66,12 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                   color: "fg.error",
                   cursor: "pointer",
                 }}
-                onClick={() => project.id && handleDeleteProject(project.id)}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event bubbling
+                  if (job?.id) {
+                    handleDeleteJob(job.id);
+                  }
+                }}
               >
                 Delete
               </Menu.Item>
@@ -74,4 +83,4 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
   );
 };
 
-export default ProjectSummaryMenuButton;
+export default JobsMenuButton;

@@ -1,105 +1,99 @@
 "use client";
 import { useState } from "react";
-// import { toaster } from "@/components/ui/toaster";
-import { JobApplicationProps } from "../charts/ApplicationCards";
-import SelectJobStatus from "./SelectJobStatus";
+import { toaster } from "@/components/ui/toaster";
+import { Job } from "@/types/job";
+// import SelectJobStatus from "./SelectJobStatus";
+import ModalFormInput from "./ModalFormInput";
+import { useRef } from "react";
+// import { status } from "@/public/data/selectInputData";
 
 import {
-  Container,
   Button,
-  Field,
   Fieldset,
-  Input,
   Flex,
   Stack,
   SimpleGrid,
+  Container,
+  Field,
 } from "@chakra-ui/react";
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useUpdate } from "../../hooks/useFetchDataHook";
+import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewApplicationModal = () => {
   // $ State to open the modal to add a new project
-  const { setIsNewApplicationOpen, isNewApplicationOpen } = useGlobalContext();
-  console.log("open modal new job:", isNewApplicationOpen);
+  const { setIsNewJobModalOpen, isNewJobModalOpen } = useGlobalContext();
 
-  const updateProject = useUpdate("projects");
-
-  const [newApplicationForm, setNewApplicationForm] =
-    useState<JobApplicationProps>({
-      id: "",
-      description: "",
+  // $ Initialize project form state
+  const [newApplicationForm, setNewApplicationForm] = useState<Omit<Job, "id">>(
+    {
+      job_title: "",
       company: "",
-      location: "",
+      city: "",
       date_applied: "",
-      job_details: [],
-      status: "applied",
-    });
+      location_type: "",
+      // tags: [""],
+      status: "",
+      contract: "",
+    }
+  );
 
-  // Handle input change
+  const contentRef = useRef<HTMLDivElement>(null); // Initialize project form state
+
+  // $ Handle input change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
 
     setNewApplicationForm((prev) => ({
       ...prev,
-      name: value,
+      [name]: value,
     }));
   };
 
-  //   const handleProjectSubmit = async () => {
-  //     const promise = new Promise<void>((resolve) => {
-  //       setTimeout(() => resolve(), 5000);
-  //     });
+  const createJob = useCreate("applications");
+  const handleJobSubmit = async () => {
+    const promise = new Promise<void>((resolve) => {
+      setTimeout(() => resolve(), 5000);
+      console.log("Job POST Data:", newApplicationForm);
+    });
 
-  //     try {
-  //       await updateProject.mutateAsync({
-  //         id: newApplicationForm.id || "",
-  //         newApplicationForm: { ...newApplicationForm },
-  //       });
-  //       toaster.promise(promise, {
-  //         success: {
-  //           title: "new application",
-  //           description: "JobApplicationProps Successfully Created",
-  //         },
-  //         error: {
-  //           title: "Upload failed",
-  //           description: "Something wrong with the upload",
-  //         },
-  //         loading: { title: "Uploading...", description: "Please wait" },
-  //       });
+    try {
+      console.log("Payload sent:", newApplicationForm);
+      console.log("Stringified:", JSON.stringify(newApplicationForm));
+      await createJob.mutateAsync(newApplicationForm as Job);
+      toaster.promise(promise, {
+        success: {
+          title: "New Job Application",
+          description: "Job Successfully Created",
+        },
+        error: {
+          title: "Upload Failed",
+          description: "Something wrong with the upload",
+        },
+        loading: { title: "Uploading...", description: "Please wait" },
+      });
 
-  //       // Close the modal and reset form
-  //       setIsUpdateApplicationOpen(false);
-  //       setApplicationForm({
-  //         id: "",
-  //         client: "",
-  //         name: "",
-  //         description: "",
-  //         price: 0,
-  //         deadline: "",
-  //         email: "",
-  //         phone: "",
-  //         // country: "",
-  //         status: ['applied'],
-  //       });
-  //     } catch (error) {
-  //       toaster.create({
-  //         title: "error",
-  //         description: "An error occured creating new application",
-  //         type: "error",
-  //       });
-  //       console.error("Error creating application:", error);
-  //     }
-  //   };
+      // Close the modal and reset form
+      setIsNewJobModalOpen(false);
+      // setNewApplicationForm(initialFormData);
+    } catch (error) {
+      toaster.create({
+        title: "Error!!",
+        description: "An error occured creating new application",
+        type: "error",
+      });
+      console.error("Error creating application:", error);
+    }
+  };
 
   return (
     <Container
       position={"absolute"}
       width={"100%"}
       height={"100vh"}
-      display={isNewApplicationOpen ? "block" : "none"}
+      display={isNewJobModalOpen ? "block" : "none"}
       top="0"
       left="0"
       p={4}
@@ -133,64 +127,67 @@ const NewApplicationModal = () => {
             Please enter the details below.
           </Fieldset.HelperText>
         </Stack>
-        <Fieldset.Content>
+        <Fieldset.Content ref={contentRef}>
           <SimpleGrid columns={2} mt={4} gap={4}>
+            <ModalFormInput
+              name="job_title"
+              label="Job Title"
+              onChange={handleInputChange}
+              value={newApplicationForm.job_title}
+            />
+            <ModalFormInput
+              name="company"
+              label="company"
+              onChange={handleInputChange}
+              value={newApplicationForm.company}
+            />
+            <ModalFormInput
+              name="contract"
+              label="Contract Type"
+              onChange={handleInputChange}
+              value={newApplicationForm.contract}
+            />
+            <ModalFormInput
+              name="city"
+              label="City"
+              onChange={handleInputChange}
+              value={newApplicationForm.city}
+            />
+            <ModalFormInput
+              name="location_type"
+              label="location"
+              onChange={handleInputChange}
+              value={newApplicationForm.location_type}
+            />
+            <ModalFormInput
+              name="status"
+              label="status"
+              onChange={handleInputChange}
+              value={newApplicationForm.status}
+            />
             <Field.Root>
-              <Field.Label>Company</Field.Label>
-              <Input
-                name="company"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.company}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Position</Field.Label>
-              <Input
-                name="description"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.description}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Location</Field.Label>
-              <Input
-                name="location"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.location}
-              />
-            </Field.Root>
-            <SelectJobStatus />
-            {/* <Field.Root> */}
-            {/* <Field.Label>Status</Field.Label> */}
-            {/* <Input
-                name="status"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.status}
+              {/* <Field.Label htmlFor={"status"} textTransform={"capitalize"}>
+                status
+              </Field.Label> */}
+              {/* <SelectInput
+                contentRef={contentRef}
+                items={status}
+                value={newApplicationForm.status?.[0] || ""}
+                onChange={(val) =>
+                  setNewApplicationForm((prev) => ({
+                    ...prev,
+                    status: val as Job["status"],
+                  }))
+                }
               /> */}
-            {/* </Field.Root> */}
-            <Field.Root>
-              <Field.Label>Benefits</Field.Label>
-              <Input
-                name="status"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.status}
-              />
             </Field.Root>
-            <Field.Root>
-              <Field.Label>Date Applied</Field.Label>
-              <Input
-                name="date_applied"
-                type="date"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={newApplicationForm.date_applied}
-              />
-            </Field.Root>
+            <ModalFormInput
+              name="date_applied"
+              label="Date Applied"
+              type="date"
+              onChange={handleInputChange}
+              value={newApplicationForm.date_applied}
+            />
           </SimpleGrid>
         </Fieldset.Content>
         <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
@@ -206,9 +203,9 @@ const NewApplicationModal = () => {
             rounded="full"
             colorPalette="red"
             onClick={() => {
-              setIsNewApplicationOpen(false);
+              setIsNewJobModalOpen(false);
             }}
-            disabled={updateProject.isPending}
+            disabled={createJob.isPending}
           >
             Cancel
           </Button>
@@ -223,9 +220,9 @@ const NewApplicationModal = () => {
             colorPalette="teal"
             rounded="full"
             onClick={() => {
-              alert("submit new application");
+              handleJobSubmit();
             }}
-            // loading={updateProject.isPending}
+            loading={createJob.isPending}
             loadingText="Submitting"
           >
             Submit

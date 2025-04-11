@@ -1,20 +1,32 @@
 "use client";
 
+// $ Chakra UI Components
 import { Box, Button, HStack, Spinner, Text, Flex } from "@chakra-ui/react";
+
+// $ components
 import ChartHeading from "../charts/ChartHeading";
 import ProjectStatusSlider from "./ProjectStatusSlider";
 import { PlusCircle } from "lucide-react";
-import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import NewProjectModal from "../modals/NewProjectModal";
-
-import { useGetAll } from "@/app/hooks/useFetchDataHook";
-import UpdateProjectModal from "../modals/UpdateProjectModal";
-import { Project } from "@/types/project";
 import ProjectSummaryMenuButton from "./ProjectSummaryMenuButton";
 
+// $ modals
+import NewProjectModal from "../modals/NewProjectModal";
+import UpdateProjectModal from "../modals/UpdateProjectModal";
+
+// $ types
+import { Project } from "@/types/project";
+
+// $ functions
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
+import { useGetAll } from "@/app/hooks/useFetchDataHook";
+
 function ProjectSummaryTable() {
-  const { setIsProjectModalOpen, isUpdateModalOpen, selectedProject } =
-    useGlobalContext();
+  const {
+    setIsNewProjectModalOpen,
+    isNewProjectModalOpen,
+    isUpdateProjectModalOpen,
+    selectedProject,
+  } = useGlobalContext();
 
   // $ Fetch all the projects Data
   const {
@@ -23,20 +35,6 @@ function ProjectSummaryTable() {
     isError,
     error,
   } = useGetAll<Project>("projects");
-
-  // $ Function to update a specific project's status
-  // const updateProject = useUpdate("projects");
-  // const handleStatusUpdate = async (projectId: string, newStatus: number) => {
-  //   try {
-  //     await updateProject.mutateAsync({
-  //       id: projectId,
-  //       project: { status: newStatus },
-  //     });
-  //     setProjectStatus(newStatus);
-  //   } catch (err) {
-  //     console.error("Error updating project status:", err);
-  //   }
-  // };
 
   if (isPending) {
     return (
@@ -60,10 +58,10 @@ function ProjectSummaryTable() {
 
   return (
     <>
-      <NewProjectModal />
-      {isUpdateModalOpen
-        ? selectedProject && <UpdateProjectModal project={selectedProject} />
-        : ""}
+      {isNewProjectModalOpen ? <NewProjectModal /> : null}
+      {isUpdateProjectModalOpen && selectedProject ? (
+        <UpdateProjectModal project={selectedProject} />
+      ) : null}
       <Box
         display="flex"
         alignItems="center"
@@ -76,7 +74,10 @@ function ProjectSummaryTable() {
             colorPalette="teal"
             variant="solid"
             px={4}
-            onClick={() => setIsProjectModalOpen(true)}
+            onClick={() => {
+              setIsNewProjectModalOpen(true);
+              console.log("Open New Project Button:", isNewProjectModalOpen);
+            }}
           >
             <PlusCircle /> Add New Project
           </Button>
@@ -184,7 +185,7 @@ function ProjectSummaryTable() {
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
-                    <Flex gap={2} justifyContent="space-evenly" align="center">
+                    <Flex gap={2} justifyContent="space-between" align="center">
                       {project.status !== undefined && (
                         <ProjectStatusSlider
                           status={project.status}

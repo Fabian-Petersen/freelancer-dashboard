@@ -4,28 +4,44 @@ import { Job } from "@/types/job";
 
 // Define the shape of our context state
 type GlobalContextType = {
-  // $ State to open the project modal
-  isProjectModalOpen: boolean;
-  setIsProjectModalOpen: (isOpen: boolean) => void;
-  // $
-  projectStatus: number;
-  setProjectStatus: (prev: number) => void;
-  // $
-  isUpdateModalOpen: boolean;
-  setIsUpdateModalOpen: (isOpen: boolean) => void;
-  // $ State to open the update application modal
-  isUpdateApplicationOpen: boolean;
-  setIsUpdateApplicationOpen: (isOpen: boolean) => void;
-  // $ State to open the new job application modal
-  isNewApplicationOpen: boolean;
-  setIsNewApplicationOpen: (isOpen: boolean) => void;
-  // $ State to select as project from the project summary table
+  // $ State to open and close modals
+  // %  ========= Projects Modal ========= //
+  // % Projects Modal - Create Project
+  isNewProjectModalOpen: boolean;
+  setIsNewProjectModalOpen: (isOpen: boolean) => void;
+
+  // % Projects Modal - Update Project
+  isUpdateProjectModalOpen: boolean;
+  setIsUpdateProjectModalOpen: (isOpen: boolean) => void;
+
+  // *  ========= Jobs Modal ========= //
+  // # Jobs Modal - Creat Job
+  isNewJobModalOpen: boolean;
+  setIsNewJobModalOpen: (isOpen: boolean) => void;
+
+  // # Jobs Modal - Update Job
+  isUpdateJobModalOpen: boolean;
+  setIsUpdateJobModalOpen: (isOpen: boolean) => void;
+
+  // %  ========= Projects State ========= //
+  // % State to select as project from the project summary table
   selectedProject: Project | null;
   setSelectedProject: (project: Project | null) => void;
-  // $ State to select a specific job application card on click.
-  selectedApplication: Job | null;
-  setSelectedApplication: (application: Job | null) => void;
+
+  // % State to update the project status with the slideer in the project summary table
+  projectProgressStatus: number;
+  setProjectProgressStatus: (prev: number) => void;
+
+  // #  ========= Jobs State ========= //
+  // # State to select as job from the applications status cards
+  selectedJob: Job | null;
+  setSelectedJob: (application: Job | null) => void;
+
+  // # State to display the menu button for the job card when hovered over
+  hoveredCardId: string;
+  setHoveredCardId: (id: string) => void;
 };
+// $ State to select a specific job application card on click.
 
 // Create the context with default values
 const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
@@ -42,51 +58,56 @@ export function GlobalContextProvider({
   children,
 }: GlobalContextProviderProps) {
   // $ Main state to Open and Close the Add New Project Modal
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState<boolean>(false);
-  const [projectStatus, setProjectStatus] = useState<number>(0);
+  const [isNewProjectModalOpen, setIsNewProjectModalOpen] =
+    useState<boolean>(false);
+  const [projectProgressStatus, setProjectProgressStatus] = useState<number>(0);
 
   // $ Update Project Modal State
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
-
-  // $ Update Application Modal State
-  const [selectedApplication, setSelectedApplication] = useState<Job | null>(
-    null
-  );
-  const [isUpdateApplicationOpen, setIsUpdateApplicationOpen] =
+  const [isUpdateProjectModalOpen, setIsUpdateProjectModalOpen] =
     useState<boolean>(false);
 
-  // $ New Application Modal State
-  const [isNewApplicationOpen, setIsNewApplicationOpen] =
+  // $ Update Job Modal State
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isUpdateJobModalOpen, setIsUpdateJobModalOpen] =
     useState<boolean>(false);
+
+  // $ New Job Modal State
+  const [isNewJobModalOpen, setIsNewJobModalOpen] = useState<boolean>(false);
+
+  // $ Set State when a card is hover to display the menu button for the card
+  const [hoveredCardId, setHoveredCardId] = useState<string>("");
 
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
-      isProjectModalOpen,
-      setIsProjectModalOpen,
-      projectStatus,
-      setProjectStatus,
-      isUpdateModalOpen,
-      setIsUpdateModalOpen,
+      isNewProjectModalOpen,
+      setIsNewProjectModalOpen,
+      projectProgressStatus,
+      setProjectProgressStatus,
+      isUpdateProjectModalOpen,
+      setIsUpdateProjectModalOpen,
       selectedProject,
       setSelectedProject,
-      isUpdateApplicationOpen,
-      setIsUpdateApplicationOpen,
-      selectedApplication,
-      setSelectedApplication,
-      isNewApplicationOpen,
-      setIsNewApplicationOpen,
+      isUpdateJobModalOpen,
+      setIsUpdateJobModalOpen,
+      selectedJob,
+      setSelectedJob,
+      isNewJobModalOpen,
+      setIsNewJobModalOpen,
+      hoveredCardId,
+      setHoveredCardId,
     }),
     [
-      isProjectModalOpen,
-      projectStatus,
-      isUpdateModalOpen,
+      isNewProjectModalOpen,
+      projectProgressStatus,
+      isUpdateProjectModalOpen,
       selectedProject,
-      isUpdateApplicationOpen,
-      selectedApplication,
-      setSelectedApplication,
-      isNewApplicationOpen,
+      isUpdateJobModalOpen,
+      selectedJob,
+      setSelectedJob,
+      isNewJobModalOpen,
+      hoveredCardId,
     ]
   );
 

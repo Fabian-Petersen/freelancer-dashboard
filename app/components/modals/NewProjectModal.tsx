@@ -19,11 +19,10 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewProjectModal = () => {
-  const { setIsProjectModalOpen, isProjectModalOpen } = useGlobalContext();
+  const { setIsNewProjectModalOpen, isNewProjectModalOpen } =
+    useGlobalContext();
 
-  const createProject = useCreate("projects");
-
-  // Initialize project form state
+  // $ Initialize project form state
   const [projectForm, setProjectForm] = useState<Omit<Project, "id">>({
     client: "",
     name: "",
@@ -32,11 +31,10 @@ const NewProjectModal = () => {
     deadline: "",
     email: "",
     phone: "",
-    // country: "",
     status: 0,
   });
 
-  // Handle input change
+  // $ Handle input change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -49,6 +47,7 @@ const NewProjectModal = () => {
     }));
   };
 
+  const createProject = useCreate("projects");
   const handleProjectSubmit = async () => {
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 5000);
@@ -69,7 +68,7 @@ const NewProjectModal = () => {
       });
 
       // Close the modal and reset form
-      setIsProjectModalOpen(false);
+      setIsNewProjectModalOpen(false);
       // $ Uncomment when POST method is working to reset the input fields
       //   setProjectForm({
       //     client: "",
@@ -84,7 +83,7 @@ const NewProjectModal = () => {
       //   });
     } catch (error) {
       toaster.create({
-        title: "error",
+        title: "Error!!",
         description: "An error occured creating new project",
         type: "error",
       });
@@ -97,7 +96,7 @@ const NewProjectModal = () => {
       position={"absolute"}
       width={"100%"}
       height={"100vh"}
-      display={isProjectModalOpen ? "block" : "none"}
+      display={isNewProjectModalOpen ? "block" : "none"}
       top="0"
       left="0"
       p={4}
@@ -200,28 +199,6 @@ const NewProjectModal = () => {
                 value={projectForm.phone}
               />
             </Field.Root>
-            {/* <Field.Root>
-              <Field.Label>Country</Field.Label>
-              <NativeSelect.Root>
-                <NativeSelect.Field name="country">
-                  <For
-                    each={[
-                      "United Kingdom",
-                      "Canada",
-                      "United States",
-                      "South Africa",
-                    ]}
-                  >
-                    {(item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    )}
-                  </For>
-                </NativeSelect.Field>
-                <NativeSelect.Indicator />
-              </NativeSelect.Root>
-            </Field.Root> */}
           </SimpleGrid>
         </Fieldset.Content>
         <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
@@ -237,7 +214,7 @@ const NewProjectModal = () => {
             rounded="full"
             colorPalette="red"
             onClick={() => {
-              setIsProjectModalOpen(false);
+              setIsNewProjectModalOpen(false);
             }}
             disabled={createProject.isPending}
           >

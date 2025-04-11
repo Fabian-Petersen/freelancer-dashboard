@@ -61,8 +61,8 @@ export const apiService = {
     entity: T
   ): Promise<T> => {
     try {
-      const formattedData = formatData(entity);
-      const response = await apiClient.post(`/${resourcePath}`, formattedData);
+      // const formattedData = formatData(entity);
+      const response = await apiClient.post(`/${resourcePath}`, entity);
       return response.data as T;
     } catch (error) {
       console.error(`Error creating ${resourcePath}:`, error);

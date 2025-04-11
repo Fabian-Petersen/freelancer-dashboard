@@ -5,7 +5,7 @@ import { PlusCircle } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 const AddApplicationButton = () => {
-  const { setIsNewApplicationOpen } = useGlobalContext();
+  const { setIsNewJobModalOpen } = useGlobalContext();
 
   return (
     <Tooltip showArrow content="Add New Application">
@@ -15,7 +15,7 @@ const AddApplicationButton = () => {
         maxWidth="2rem"
         variant="solid"
         bgColor="transparent"
-        onClick={() => setIsNewApplicationOpen(true)}
+        onClick={() => setIsNewJobModalOpen(true)}
       >
         <PlusCircle />
       </Button>

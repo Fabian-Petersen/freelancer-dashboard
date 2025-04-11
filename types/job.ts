@@ -1,9 +1,11 @@
 export type Job = {
   id?: string;
-  description: string;
+  job_title: string;
   company: string;
-  location: string;
+  city: string;
   date_applied: string;
-  job_details: string[];
-  status: "applied" | "interview" | "on hold" | "failed";
+  location_type: "" | "remote" | "on site" | "hybrid";
+  status: "" | "applied" | "interview" | "on hold" | "unsuccessful";
+  contract: "" | "permanent" | "contract" | "freelance" | "part-time";
+  // tags?: string[];
 };

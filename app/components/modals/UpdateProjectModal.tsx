@@ -7,10 +7,8 @@ import {
   Button,
   Field,
   Fieldset,
-  //   For,
   Input,
   Flex,
-  //   NativeSelect,
   Stack,
   SimpleGrid,
 } from "@chakra-ui/react";
@@ -24,9 +22,11 @@ type UpdateProjectModalProps = {
 };
 
 const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
-  const { setIsUpdateModalOpen, isUpdateModalOpen } = useGlobalContext();
-
-  const updateProject = useUpdate("projects");
+  const {
+    setIsUpdateProjectModalOpen,
+    setSelectedProject,
+    isUpdateProjectModalOpen,
+  } = useGlobalContext();
 
   const [projectForm, setProjectForm] = useState<Project>(project);
 
@@ -34,24 +34,22 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
 
     setProjectForm((prev) => ({
       ...prev,
-      name: value,
+      [name]: value,
     }));
   };
 
-  const handleProjectSubmit = async () => {
+  const updateProject = useUpdate("projects");
+  const handleUpdateProject = async (id: string, entity: Partial<Project>) => {
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 5000);
     });
-
     try {
-      await updateProject.mutateAsync({
-        id: projectForm.id || "",
-        entity: { ...projectForm },
-      });
+      await updateProject.mutateAsync({ id, entity });
+      // Success handling (optional) - could show a toast notification
       toaster.promise(promise, {
         success: {
           title: "new project",
@@ -65,7 +63,7 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
       });
 
       // Close the modal and reset form
-      setIsUpdateModalOpen(false);
+      setIsUpdateProjectModalOpen(false);
       setProjectForm({
         id: "",
         client: "",
@@ -75,25 +73,27 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
         deadline: "",
         email: "",
         phone: "",
-        // country: "",
         status: 0,
       });
     } catch (error) {
       toaster.create({
         title: "error",
-        description: "An error occured creating new project",
+        description: "An error occured updating project",
         type: "error",
       });
       console.error("Error creating project:", error);
     }
+    setSelectedProject(project);
   };
+
+  console.log("open modal, modal component:", isUpdateProjectModalOpen);
 
   return (
     <Container
       position={"absolute"}
+      display={isUpdateProjectModalOpen ? "block" : "none"}
       width={"100%"}
       height={"100vh"}
-      display={isUpdateModalOpen ? "block" : "none"}
       top="0"
       left="0"
       p={4}
@@ -195,28 +195,6 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
                 value={projectForm.phone}
               />
             </Field.Root>
-            {/* <Field.Root>
-              <Field.Label>Country</Field.Label>
-              <NativeSelect.Root>
-                <NativeSelect.Field name="country">
-                  <For
-                    each={[
-                      "United Kingdom",
-                      "Canada",
-                      "United States",
-                      "South Africa",
-                    ]}
-                  >
-                    {(item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    )}
-                  </For>
-                </NativeSelect.Field>
-                <NativeSelect.Indicator />
-              </NativeSelect.Root>
-            </Field.Root> */}
           </SimpleGrid>
         </Fieldset.Content>
         <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
@@ -232,7 +210,7 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
             rounded="full"
             colorPalette="red"
             onClick={() => {
-              setIsUpdateModalOpen(false);
+              setIsUpdateProjectModalOpen(false);
             }}
             disabled={updateProject.isPending}
           >
@@ -248,7 +226,17 @@ const UpdateProjectModal = ({ project }: UpdateProjectModalProps) => {
             mt={4}
             colorPalette="teal"
             rounded="full"
-            onClick={handleProjectSubmit}
+            onClick={() => {
+              if (projectForm.id) {
+                handleUpdateProject(projectForm.id, projectForm);
+              } else {
+                toaster.create({
+                  title: "Error",
+                  description: "Project ID is missing.",
+                  type: "error",
+                });
+              }
+            }}
             loading={updateProject.isPending}
             loadingText="Submitting"
           >

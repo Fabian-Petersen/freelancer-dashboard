@@ -1,41 +1,27 @@
 "use client";
-import React, { useState } from "react";
 
-import {
-  Box,
-  Text,
-  Flex,
-  Badge,
-  Button,
-  Spinner,
-  Heading,
-} from "@chakra-ui/react";
-import { XCircleIcon } from "lucide-react";
-import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import UpdateApplicationModal from "../modals/UpdateApplicationModal";
-import { useGetAll } from "@/app/hooks/useFetchDataHook";
+// $ Chakra UI Components
+import { Box, Text, Flex, Badge, Spinner, Heading } from "@chakra-ui/react";
+
+// $ components
+// import { XCircleIcon } from "lucide-react";
 import AddApplicationButton from "./AddApplicationButton";
+import JobsMenuButton from "./JobsMenuButton";
+
+// $ modals
 import NewApplicationModal from "../modals/NewApplicationModal";
+import UpdateJobModal from "../modals/UpdateJobModal";
+
+// $ types
 import { Job } from "@/types/job";
 
-export type JobApplicationProps = {
-  id?: string;
-  description: string;
-  company: string;
-  location: string;
-  date_applied: string;
-  job_details: string[];
-  status: "applied" | "interview" | "on hold" | "failed";
-};
+// $ functions
+// import { useDelete } from "@/app/hooks/useFetchDataHook";
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
+import { useGetAll } from "@/app/hooks/useFetchDataHook";
 
 const ApplciationCards = () => {
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
-  const {
-    setIsUpdateApplicationOpen,
-    isUpdateApplicationOpen,
-    selectedApplication,
-    setSelectedApplication,
-  } = useGlobalContext();
+  const { isUpdateJobModalOpen, selectedJob } = useGlobalContext();
 
   // $ Fetch the data from the database
   const {
@@ -44,7 +30,6 @@ const ApplciationCards = () => {
     isError,
     error,
   } = useGetAll<Job>("applications");
-  // console.log("data for applications:", Applications);
 
   if (isPending) {
     return (
@@ -77,45 +62,29 @@ const ApplciationCards = () => {
     return formattedDate;
   };
 
-  // $ handle Delete of Card
-  const handleDeleteApplication = (id: string) => {
-    console.log(`Deleting application ${id}`);
-    // Add your delete logic here
-  };
-
-  // $ handle Opening Update Modal for the Applications
-  const handleCardClick = (application: JobApplicationProps) => {
-    setSelectedApplication(application);
-    setIsUpdateApplicationOpen(true);
-  };
-
   return (
     <>
       <NewApplicationModal />
-      {isUpdateApplicationOpen && selectedApplication && (
-        <UpdateApplicationModal application={selectedApplication} />
+      {isUpdateJobModalOpen && selectedJob && (
+        <UpdateJobModal application={selectedJob} />
       )}
       <Flex justify="space-between" alignItems="center" mb={4}>
         <Heading size="md" color="blue.500">
-          Jobs Application Status
+          Jobs Applications
         </Heading>
         <AddApplicationButton />
       </Flex>
       <Flex direction="column" gap={3}>
         {Applications && Applications.length > 0 ? (
-          Applications.map((item) => (
+          Applications.map((item: Job) => (
             <Box
               key={item.id}
               p={3}
+              position="relative"
               bg="gray.100"
               borderRadius={"lg"}
-              onMouseEnter={() => item.id && setHoveredCardId(item.id)}
-              onMouseLeave={() => setHoveredCardId(null)}
               _hover={{ cursor: "pointer" }}
-              position="relative"
-              onClick={() => {
-                handleCardClick(item);
-              }}
+              zIndex={100}
             >
               <Flex
                 justify="space-evenly"
@@ -123,27 +92,9 @@ const ApplciationCards = () => {
                 flexDirection="column"
                 gap={3}
               >
-                <Button
-                  variant="solid"
-                  bgColor="transparent"
-                  color="gray.500"
-                  display={hoveredCardId === item.id ? "flex" : "none"}
-                  onClick={() =>
-                    handleDeleteApplication(item.id ? item.id : "")
-                  }
-                  _hover={{
-                    color: "gray.700",
-                    cursor: "pointer",
-                  }}
-                  position="absolute"
-                  top="0"
-                  right="0"
-                  translate={"50% -50%"}
-                >
-                  <XCircleIcon />
-                </Button>
-                <Flex justify="space-between">
+                <Flex align={"center"} gap={2}>
                   <Badge
+                    marginRight={"auto"}
                     rounded={"full"}
                     textTransform={"capitalize"}
                     px={{ base: "5px", lg: "7px" }}
@@ -172,28 +123,42 @@ const ApplciationCards = () => {
                   <Text fontSize={{ base: "", lg: "0.7rem" }} color="green.500">
                     {`applied on ${FormatDate(item.date_applied)}`}
                   </Text>
+                  <JobsMenuButton job={item} />
                 </Flex>
-                <Flex direction="row" align="center" justify={"space-between"}>
-                  <Text fontWeight="bold">{item.description}</Text>
+                <Flex
+                  direction="row"
+                  align="center"
+                  justify={"space-between"}
+                  textTransform={"capitalize"}
+                >
+                  <Text fontWeight="bold">{item.job_title}</Text>
                 </Flex>
-                <Text fontSize="sm" color="gray.600">
+                <Text
+                  fontSize="sm"
+                  color="gray.600"
+                  textTransform={"capitalize"}
+                >
                   Company: {item.company}
                 </Text>
                 <Flex gap={2}>
-                  {item.job_details.map((item, index) => {
-                    return (
-                      <Badge
-                        rounded={"full"}
-                        textTransform={"capitalize"}
-                        px={{ base: "sm", lg: "7px" }}
-                        py={{ base: "sm", lg: "3px" }}
-                        variant={"outline"}
-                        key={index}
-                      >
-                        {item}
-                      </Badge>
-                    );
-                  })}
+                  <Badge
+                    rounded={"full"}
+                    textTransform={"capitalize"}
+                    px={{ base: "sm", lg: "7px" }}
+                    py={{ base: "sm", lg: "3px" }}
+                    variant={"outline"}
+                  >
+                    {item.contract}
+                  </Badge>
+                  <Badge
+                    rounded={"full"}
+                    textTransform={"capitalize"}
+                    px={{ base: "sm", lg: "7px" }}
+                    py={{ base: "sm", lg: "3px" }}
+                    variant={"outline"}
+                  >
+                    {item.location_type}
+                  </Badge>
                 </Flex>
               </Flex>
             </Box>
@@ -201,7 +166,7 @@ const ApplciationCards = () => {
         ) : (
           <Box as="tr">
             <Box as="td" textAlign="center" py={4}>
-              No projects found. Add a new project to get started.
+              No Jobs found. Add a new job to get started.
             </Box>
           </Box>
         )}
