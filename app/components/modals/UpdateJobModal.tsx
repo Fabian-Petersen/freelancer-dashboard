@@ -144,7 +144,7 @@ const UpdateJobModal = ({ application }: UpdateJobModalProps) => {
                 name="description"
                 px="0.5rem"
                 onChange={handleInputChange}
-                value={jobForm.description || ""}
+                value={jobForm.job_title || ""}
               />
             </Field.Root>
 
