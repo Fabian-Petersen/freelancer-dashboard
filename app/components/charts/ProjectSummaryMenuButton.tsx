@@ -9,9 +9,8 @@ type Props = {
 };
 
 const ProjectSummaryMenuButton = ({ project }: Props) => {
-  const { setIsUpdateProjectModalOpen, isUpdateProjectModalOpen } =
-    useGlobalContext();
-  console.log("open update modal:", isUpdateProjectModalOpen);
+  const { setIsUpdateProjectModalOpen } = useGlobalContext();
+  // console.log("open update modal:", isUpdateProjectModalOpen);
 
   const deleteProject = useDelete("projects");
   const handleDeleteProject = async (id: string) => {

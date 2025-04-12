@@ -1,18 +1,42 @@
 "use client";
 import { useState } from "react";
-import { Box } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import Sidebar from "./components/dashboard/Sidebar";
 import Header from "./components/header/Header";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import SidebarToggleButton from "../app/components/dashboard/SidebarToggleButton";
-// import { ColorModeProvider } from "@/components/ui/color-mode";
+import NewApplicationModal from "./components/modals/NewApplicationModal";
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isNewJobModalOpen } = useGlobalContext();
 
   return (
-    // <ColorModeProvider forcedTheme="light">
-    <Box minH="100vh" bgColor={{ base: "#f8fafd", _dark: "#002147/85" }}>
+    <Box
+      minH="100vh"
+      bgColor={{ base: "#f8fafd", _dark: "#002147/85" }}
+      position="relative"
+    >
+      {/* //$  ============================= Modals Component - RHF  ====================== */}
+
+      {isNewJobModalOpen && (
+        <Container
+          position={"fixed"}
+          height={"100vh"}
+          width="100%"
+          visibility={isNewJobModalOpen ? "visible" : "hidden"}
+          top="0"
+          left="0"
+          p={4}
+          backdropBlur={"xl"}
+          mx="auto"
+          bgColor="black/60"
+          zIndex={2000}
+        >
+          <NewApplicationModal />
+        </Container>
+      )}
       {/* Sidebar Toggle Button - visible only on small screens */}
       <Box
         display={{ base: "block", lg: "none" }}
@@ -31,7 +55,10 @@ export default function Home() {
         left="0"
         width="240px"
         height="100vh"
-        bg="#f8fafd"
+        bgColor={{
+          base: "#3D90D7/20",
+          _dark: "#102E50",
+        }}
         zIndex="sticky"
         transform={{
           base: isOpen ? "translateX(0)" : "translateX(-100%)",
@@ -65,6 +92,5 @@ export default function Home() {
         <DashboardLayout />
       </Box>
     </Box>
-    // </ColorModeProvider>
   );
 }

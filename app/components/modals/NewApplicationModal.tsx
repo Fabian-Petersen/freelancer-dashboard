@@ -1,68 +1,47 @@
 "use client";
-import { useState } from "react";
 import { toaster } from "@/components/ui/toaster";
-import { Job } from "@/types/job";
-// import SelectJobStatus from "./SelectJobStatus";
 import ModalFormInput from "./ModalFormInput";
-import { useRef } from "react";
-// import { status } from "@/public/data/selectInputData";
 
-import {
-  Button,
-  Fieldset,
-  Flex,
-  Stack,
-  SimpleGrid,
-  Container,
-  Field,
-} from "@chakra-ui/react";
+// $ Chakra Components
+import { Button, Fieldset, Flex, Stack, SimpleGrid } from "@chakra-ui/react";
+
+// $ React-Hook-Form, zod & schema
+import { jobSchema } from "@/app/schemas";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+type FormValues = z.infer<typeof jobSchema>;
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewApplicationModal = () => {
+  const { setIsNewJobModalOpen } = useGlobalContext();
+
+  // $ Form Schema
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(jobSchema),
+  });
+
+  // const onSubmit = handleSubmit((data) => console.log(data));
+
   // $ State to open the modal to add a new project
-  const { setIsNewJobModalOpen, isNewJobModalOpen } = useGlobalContext();
-
-  // $ Initialize project form state
-  const [newApplicationForm, setNewApplicationForm] = useState<Omit<Job, "id">>(
-    {
-      job_title: "",
-      company: "",
-      city: "",
-      date_applied: "",
-      location_type: "",
-      // tags: [""],
-      status: "",
-      contract: "",
-    }
-  );
-
-  const contentRef = useRef<HTMLDivElement>(null); // Initialize project form state
-
-  // $ Handle input change
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-
-    setNewApplicationForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const createJob = useCreate("applications");
-  const handleJobSubmit = async () => {
+  const handleJobSubmit = async (formData: FormValues) => {
+    console.log("form errors:", errors);
+    console.log("RHF FormData:", formData);
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 5000);
-      console.log("Job POST Data:", newApplicationForm);
     });
 
     try {
-      console.log("Payload sent:", newApplicationForm);
-      console.log("Stringified:", JSON.stringify(newApplicationForm));
-      await createJob.mutateAsync(newApplicationForm as Job);
+      await createJob.mutateAsync(formData);
       toaster.promise(promise, {
         success: {
           title: "New Job Application",
@@ -74,10 +53,9 @@ const NewApplicationModal = () => {
         },
         loading: { title: "Uploading...", description: "Please wait" },
       });
-
-      // Close the modal and reset form
+      // $ Close the modal and reset form
       setIsNewJobModalOpen(false);
-      // setNewApplicationForm(initialFormData);
+      reset();
     } catch (error) {
       toaster.create({
         title: "Error!!",
@@ -89,147 +67,139 @@ const NewApplicationModal = () => {
   };
 
   return (
-    <Container
-      position={"absolute"}
-      width={"100%"}
-      height={"100vh"}
-      display={isNewJobModalOpen ? "block" : "none"}
-      top="0"
-      left="0"
-      p={4}
-      backdropBlur={"sm"}
-      mx={"auto"}
-      bgColor="black/60"
-      zIndex={2000}
-    >
-      <Fieldset.Root
-        size="lg"
-        position={"absolute"}
-        maxW="2xl"
-        mx={"auto"}
-        my={"auto"}
-        bg="white"
-        p={6}
-        translate={"-50% -50%"}
-        left={"50%"}
-        top={"50%"}
-        rounded="md"
-      >
-        <Stack>
-          <Fieldset.Legend
-            color="blue.500"
-            fontWeight={"bold"}
-            fontSize={{ base: "lg", lg: "xl" }}
-          >
-            New Job Applciation Details
-          </Fieldset.Legend>
-          <Fieldset.HelperText>
-            Please enter the details below.
-          </Fieldset.HelperText>
-        </Stack>
-        <Fieldset.Content ref={contentRef}>
+    <form onSubmit={handleSubmit(handleJobSubmit)}>
+      <Stack gap="4" align="flex-start" maxW="lg" width={"lg"} rounded="lg">
+        <Fieldset.Root
+          size="lg"
+          position={"absolute"}
+          maxW="2xl"
+          mx={"auto"}
+          my={"auto"}
+          bg="white"
+          p={6}
+          translate={"-50% -50%"}
+          left={"50%"}
+          top={"50%"}
+          rounded="md"
+          backdropBlur={"xl"}
+        >
+          <Stack>
+            <Fieldset.Legend
+              color="blue.500"
+              fontWeight={"bold"}
+              fontSize={{ base: "lg", lg: "xl" }}
+            >
+              New Job Applciation Details
+            </Fieldset.Legend>
+            <Fieldset.HelperText>
+              Please enter the details below.
+            </Fieldset.HelperText>
+          </Stack>
           <SimpleGrid columns={2} mt={4} gap={4}>
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="job_title"
               label="Job Title"
-              onChange={handleInputChange}
-              value={newApplicationForm.job_title}
+              register={register}
+              error={errors?.job_title}
             />
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="company"
               label="company"
-              onChange={handleInputChange}
-              value={newApplicationForm.company}
+              register={register}
+              error={errors?.company}
             />
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="contract"
               label="Contract Type"
-              onChange={handleInputChange}
-              value={newApplicationForm.contract}
+              register={register}
+              error={errors?.contract}
             />
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="city"
               label="City"
-              onChange={handleInputChange}
-              value={newApplicationForm.city}
+              register={register}
+              error={errors?.city}
             />
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="location_type"
               label="location"
-              onChange={handleInputChange}
-              value={newApplicationForm.location_type}
+              register={register}
+              error={errors?.location_type}
             />
-            <ModalFormInput
+            <ModalFormInput<FormValues>
               name="status"
               label="status"
-              onChange={handleInputChange}
-              value={newApplicationForm.status}
+              register={register}
+              error={errors?.status}
             />
-            <Field.Root>
-              {/* <Field.Label htmlFor={"status"} textTransform={"capitalize"}>
-                status
-              </Field.Label> */}
-              {/* <SelectInput
-                contentRef={contentRef}
-                items={status}
-                value={newApplicationForm.status?.[0] || ""}
-                onChange={(val) =>
-                  setNewApplicationForm((prev) => ({
-                    ...prev,
-                    status: val as Job["status"],
-                  }))
-                }
-              /> */}
-            </Field.Root>
-            <ModalFormInput
+            {/* <Field.Root>
+          <Field.Label htmlFor={"status"} textTransform={"capitalize"}>
+          status
+          </Field.Label>
+          <Controller
+          control={control}
+          name="status"
+          render={({ field }) => (
+            <SelectInput
+            contentRef={contentRef}
+            items={status}
+            value={newApplicationForm.status?.[0] || ""}
+            // onChange={(val) =>
+            // setNewApplicationForm((prev) => ({
+              ...prev,
+              status: val as Job["status"],
+              }))
+              }
+              />
+              )}
+              />
+              </Field.Root> */}
+            <ModalFormInput<FormValues>
               name="date_applied"
               label="Date Applied"
               type="date"
-              onChange={handleInputChange}
-              value={newApplicationForm.date_applied}
+              register={register}
+              error={errors.date_applied}
             />
           </SimpleGrid>
-        </Fieldset.Content>
-        <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
-          <Button
-            type="submit"
-            alignSelf="flex-start"
-            width={{
-              base: "100%",
-              lg: "8rem",
-            }}
-            mt={4}
-            variant="outline"
-            rounded="full"
-            colorPalette="red"
-            onClick={() => {
-              setIsNewJobModalOpen(false);
-            }}
-            disabled={createJob.isPending}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            alignSelf="flex-start"
-            width={{
-              base: "100%",
-              lg: "8rem",
-            }}
-            mt={4}
-            colorPalette="teal"
-            rounded="full"
-            onClick={() => {
-              handleJobSubmit();
-            }}
-            loading={createJob.isPending}
-            loadingText="Submitting"
-          >
-            Submit
-          </Button>
-        </Flex>
-      </Fieldset.Root>
-    </Container>
+          <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
+            <Button
+              alignSelf="flex-start"
+              width={{
+                base: "100%",
+                lg: "8rem",
+              }}
+              mt={4}
+              variant="outline"
+              rounded="full"
+              colorPalette="red"
+              onClick={() => {
+                setIsNewJobModalOpen(false);
+              }}
+              disabled={createJob.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              alignSelf="flex-start"
+              width={{
+                base: "100%",
+                lg: "8rem",
+              }}
+              mt={4}
+              colorPalette="teal"
+              rounded="full"
+              loading={createJob.isPending}
+              loadingText="Submitting"
+              onClick={() => console.log("submit button clicked")}
+            >
+              Submit
+            </Button>
+          </Flex>
+        </Fieldset.Root>
+      </Stack>
+    </form>
   );
 };
 

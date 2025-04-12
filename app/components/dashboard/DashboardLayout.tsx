@@ -3,23 +3,23 @@ import { Box, Grid, GridItem } from "@chakra-ui/react";
 import MonthlyRevenueChart from "../charts/MonthlyRevenueChart";
 import RevenueExpenseChart from "../charts/RevenueExpenseChart";
 import ProjectSummaryTable from "../charts/ProjectSummaryTable";
-import ActiveProjectsTable from "../charts/ApplicationCards";
+import ApplicationCards from "../charts/ApplicationCards";
 
 const DashboardLayout = () => {
   return (
     <Box p={4} color={{ base: "gray.700", _dark: "gray.700" }}>
       <Grid
-        templateColumns={{ base: "1fr", md: "1fr 2fr", lg: "1fr 2fr 1fr" }}
+        templateColumns={{ base: "1fr", md: "1fr 2fr", lg: "repeat(4, 1fr)" }}
         gap={4}
       >
         {/* //$  ============================= Chart - Monthly Revenue ======================== */}
         <GridItem
-          bg="white"
+          bg={{ base: "white", _dark: "black" }}
           p={4}
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={1}
+          colSpan={{ base: 1, md: 2, lg: 1 }}
         >
           <MonthlyRevenueChart />
         </GridItem>
@@ -31,12 +31,11 @@ const DashboardLayout = () => {
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 1, md: 1, lg: 1 }}
+          colSpan={{ base: 1, md: 1, lg: 2 }}
         >
           <RevenueExpenseChart />
         </GridItem>
-
-        {/* //$  ============================= Table - Active Projects ========================= */}
+        {/* //$  ============================= Table - Job Applications ========================= */}
         <GridItem
           rowSpan={2}
           colSpan={{ base: 1, md: 2, lg: 1 }}
@@ -46,12 +45,12 @@ const DashboardLayout = () => {
           // boxShadow="sm"
           shadow={"sm"}
         >
-          <ActiveProjectsTable />
+          <ApplicationCards />
         </GridItem>
 
         {/* //$  ============================= Table - Projects List =========================== */}
         <GridItem
-          colSpan={{ base: 1, md: 2, lg: 2 }}
+          colSpan={{ base: 1, md: 2, lg: 3 }}
           bg="white"
           p={4}
           borderRadius="md"

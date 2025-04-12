@@ -1,39 +1,44 @@
-import React from "react";
+import { Field, Input } from "@chakra-ui/react"; // Adjust if you're using a different lib
+import {
+  FieldError,
+  UseFormRegister,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 
-import { Field, Input } from "@chakra-ui/react";
-
-interface FormInputProps {
+type FormInputProps<TFieldValues extends FieldValues> = {
   label: string;
-  name: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder?: string;
+  name: Path<TFieldValues>;
   type?: string;
-}
+  placeholder?: string;
+  register: UseFormRegister<TFieldValues>;
+  error?: FieldError;
+};
 
-const ModalFormInput: React.FC<FormInputProps> = ({
+const ModalFormInput = <TFieldValues extends FieldValues>({
   label,
   name,
-  value,
-  onChange,
   placeholder,
+  register,
+  error,
   type = "text",
-}) => {
+}: FormInputProps<TFieldValues>) => {
   return (
-    <Field.Root>
-      <Field.Label htmlFor={name} textTransform={"capitalize"}>
+    <Field.Root invalid={!!error}>
+      <Field.Label htmlFor={String(name)} textTransform={"capitalize"}>
         {label}
       </Field.Label>
       <Input
-        id={name}
-        name={name}
-        px="0.5rem"
+        id={String(name)}
         type={type}
-        value={value}
-        onChange={onChange}
         placeholder={placeholder}
         textTransform={type === "date" ? "none" : "capitalize"}
+        {...register(name)}
+        p={1}
       />
+      {error && (
+        <Field.ErrorText color={"red.500"}>{error.message}</Field.ErrorText>
+      )}
     </Field.Root>
   );
 };

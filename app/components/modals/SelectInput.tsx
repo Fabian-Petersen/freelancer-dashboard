@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Select,
   Portal,
@@ -15,15 +17,15 @@ type CustomSelectProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
-  contentRef: React.RefObject<HTMLDivElement>;
 };
+
 function SelectInput({
   items,
   value,
   onChange,
   placeholder = "Select option",
-  contentRef,
-}: CustomSelectProps) {
+}: // contentRef,
+CustomSelectProps) {
   const data = createListCollection({ items });
 
   return (
@@ -45,7 +47,8 @@ function SelectInput({
           <Select.Indicator />
         </Select.IndicatorGroup>
       </Select.Control>
-      <Portal container={{ current: contentRef.current }}>
+      {/* <Portal container={{ current: contentRef.current }}> */}
+      <Portal>
         <Select.Positioner>
           <Select.Content p={2}>
             {items.map((option) => (

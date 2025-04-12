@@ -9,7 +9,7 @@ import AddApplicationButton from "./AddApplicationButton";
 import JobsMenuButton from "./JobsMenuButton";
 
 // $ modals
-import NewApplicationModal from "../modals/NewApplicationModal";
+// import NewApplicationModal from "../modals/NewApplicationModal";
 import UpdateJobModal from "../modals/UpdateJobModal";
 
 // $ types
@@ -20,7 +20,7 @@ import { Job } from "@/types/job";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
 
-const ApplciationCards = () => {
+const ApplicationCards = () => {
   const { isUpdateJobModalOpen, selectedJob } = useGlobalContext();
 
   // $ Fetch the data from the database
@@ -64,7 +64,6 @@ const ApplciationCards = () => {
 
   return (
     <>
-      <NewApplicationModal />
       {isUpdateJobModalOpen && selectedJob && (
         <UpdateJobModal application={selectedJob} />
       )}
@@ -175,4 +174,4 @@ const ApplciationCards = () => {
   );
 };
 
-export default ApplciationCards;
+export default ApplicationCards;

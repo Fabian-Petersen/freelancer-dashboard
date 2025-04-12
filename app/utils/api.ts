@@ -17,11 +17,15 @@ const apiClient = axios.create({
 });
 
 // $ Format the data according to API requirements
-const formatData = <T extends EntityType>(item: T) => {
-  return {
-    body: JSON.stringify(item),
-    isBase64Encoded: false,
-  };
+const formatData = <T extends EntityType>(item: T, resource: string) => {
+  // Only format for projects, not applications
+  if (resource === "projects") {
+    return {
+      body: JSON.stringify(item),
+      isBase64Encoded: false,
+    };
+  }
+  return item;
 };
 
 // $ API service functions
@@ -62,7 +66,10 @@ export const apiService = {
   ): Promise<T> => {
     try {
       // const formattedData = formatData(entity);
-      const response = await apiClient.post(`/${resourcePath}`, entity);
+      const response = await apiClient.post(
+        `/${resourcePath}`,
+        formatData(entity, resourcePath)
+      );
       return response.data as T;
     } catch (error) {
       console.error(`Error creating ${resourcePath}:`, error);
@@ -77,7 +84,7 @@ export const apiService = {
     entity: Partial<T>
   ): Promise<T> => {
     try {
-      const formattedData = formatData(entity as T);
+      const formattedData = formatData(entity as T, resourcePath);
       const response = await apiClient.put(
         `/${resourcePath}/${id}`,
         formattedData
