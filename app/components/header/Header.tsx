@@ -14,8 +14,11 @@ import {
   Portal,
 } from "@chakra-ui/react";
 import { BellIcon, SearchIcon, SettingsIcon } from "lucide-react";
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
+import SidebarToggleButton from "../dashboard/SidebarToggleButton";
 
 const Header = () => {
+  const { isOpen, setIsOpen } = useGlobalContext();
   return (
     <Flex
       as="header"
@@ -37,13 +40,22 @@ const Header = () => {
         Freelancer Dashboard
       </Text>
       {/* Right section with Notifications and User Profile */}
-      <Flex alignItems="center" gap={4}>
+      <Flex
+        alignItems="center"
+        gap={4}
+        justifyContent={{ base: "space-between", lg: "flex-end" }}
+        width={{ base: "100%" }}
+        maxWidth={"50%"}
+      >
+        <Box display={{ base: "block", lg: "none" }}>
+          <SidebarToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+        </Box>
         <Box display={{ base: "none", md: "block" }}>
           <InputGroup
             width={{ base: "100%", md: "300px" }}
             maxWidth="600px"
             startElement={
-              <Box pl={{ lg: "0.8rem" }}>
+              <Box pl={{ lg: "0.8rem" }} bgColor="transparent">
                 <SearchIcon size={20} />
               </Box>
             }
@@ -126,8 +138,12 @@ const Header = () => {
         {/* User Menu */}
         <Menu.Root>
           <Menu.Trigger asChild>
-            <Button cursor="pointer" bgColor="white">
-              <Avatar.Root size="md" variant="solid" bgColor="white">
+            <Button cursor="pointer" bgColor="transparent">
+              <Avatar.Root
+                size="md"
+                variant="solid"
+                bgColor={{ base: "blue.600", _dark: "white" }}
+              >
                 <Avatar.Fallback name="Fabian Petersen" />
                 <Avatar.Image src="https://bit.ly/sage-adebayo" />
               </Avatar.Root>

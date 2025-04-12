@@ -9,7 +9,8 @@ const DashboardLayout = () => {
   return (
     <Box p={4} color={{ base: "gray.700", _dark: "gray.700" }}>
       <Grid
-        templateColumns={{ base: "1fr", md: "1fr 2fr", lg: "repeat(4, 1fr)" }}
+        templateColumns={{ base: "1fr", lg: "1fr 2fr", xl: "repeat(4, 1fr)" }}
+        overflowX={{ base: "hidden" }}
         gap={4}
       >
         {/* //$  ============================= Chart - Monthly Revenue ======================== */}
@@ -19,7 +20,7 @@ const DashboardLayout = () => {
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 1, md: 2, lg: 1 }}
+          colSpan={{ base: 1, lg: 2 }}
         >
           <MonthlyRevenueChart />
         </GridItem>
@@ -31,14 +32,14 @@ const DashboardLayout = () => {
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 1, md: 1, lg: 2 }}
+          colSpan={{ base: 1, lg: 2 }}
         >
           <RevenueExpenseChart />
         </GridItem>
         {/* //$  ============================= Table - Job Applications ========================= */}
         <GridItem
           rowSpan={2}
-          colSpan={{ base: 1, md: 2, lg: 1 }}
+          colSpan={{ base: 1, lg: 1 }}
           bg="white"
           p={4}
           borderRadius="md"
@@ -50,8 +51,10 @@ const DashboardLayout = () => {
 
         {/* //$  ============================= Table - Projects List =========================== */}
         <GridItem
-          colSpan={{ base: 1, md: 2, lg: 3 }}
+          colSpan={{ base: 1, lg: 3 }}
           bg="white"
+          minWidth="0"
+          w="100%"
           p={4}
           borderRadius="md"
           boxShadow="sm"

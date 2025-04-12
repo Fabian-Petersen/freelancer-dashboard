@@ -40,6 +40,10 @@ type GlobalContextType = {
   // # State to display the menu button for the job card when hovered over
   hoveredCardId: string;
   setHoveredCardId: (id: string) => void;
+
+  // * Sidebar Open and Close State
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 };
 // $ State to select a specific job application card on click.
 
@@ -78,6 +82,9 @@ export function GlobalContextProvider({
   // $ Set State when a card is hover to display the menu button for the card
   const [hoveredCardId, setHoveredCardId] = useState<string>("");
 
+  // $ Set state for the sidebar
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
@@ -97,6 +104,8 @@ export function GlobalContextProvider({
       setIsNewJobModalOpen,
       hoveredCardId,
       setHoveredCardId,
+      isOpen,
+      setIsOpen,
     }),
     [
       isNewProjectModalOpen,
@@ -108,6 +117,7 @@ export function GlobalContextProvider({
       setSelectedJob,
       isNewJobModalOpen,
       hoveredCardId,
+      isOpen,
     ]
   );
 

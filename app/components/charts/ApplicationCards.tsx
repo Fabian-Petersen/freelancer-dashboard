@@ -143,8 +143,8 @@ const ApplicationCards = () => {
                   <Badge
                     rounded={"full"}
                     textTransform={"capitalize"}
-                    px={{ base: "sm", lg: "7px" }}
-                    py={{ base: "sm", lg: "3px" }}
+                    px={{ base: "7px", lg: "7px" }}
+                    py={{ base: "4px", lg: "3px" }}
                     variant={"outline"}
                   >
                     {item.contract}
@@ -152,7 +152,7 @@ const ApplicationCards = () => {
                   <Badge
                     rounded={"full"}
                     textTransform={"capitalize"}
-                    px={{ base: "sm", lg: "7px" }}
+                    px={{ base: "7px", lg: "7px" }}
                     py={{ base: "sm", lg: "3px" }}
                     variant={"outline"}
                   >

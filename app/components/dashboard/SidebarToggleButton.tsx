@@ -1,7 +1,7 @@
 "use client";
 
 import { IconButton } from "@chakra-ui/react";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 
 type SidebarButtonProps = {
   isOpen: boolean;
@@ -12,11 +12,12 @@ const SidebarToggleButton = ({ isOpen, setIsOpen }: SidebarButtonProps) => {
   return (
     <IconButton
       aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-      colorScheme="blue"
       size="md"
-      onClick={() => setIsOpen(!isOpen)}
+      color={{ base: "gray.700", _dark: "white" }}
+      bgColor={"transparent"}
+      onClick={() => setIsOpen(true)}
     >
-      {isOpen ? <X size={20} /> : <Menu size={20} />}
+      {!isOpen && <Menu size={20} />}
     </IconButton>
   );
 };

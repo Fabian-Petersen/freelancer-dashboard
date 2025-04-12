@@ -8,16 +8,22 @@ import {
   VStack,
   Container,
   Separator,
+  IconButton,
 } from "@chakra-ui/react";
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarLogoutButton from "./SidebarLogoutButton";
+
 import {
   navbarLinks,
   PreferencesLinks,
 } from "../../../public/data/navbarLinks";
+import { X } from "lucide-react";
+
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 // $ Sidebar Component
 const Sidebar = () => {
+  const { setIsOpen } = useGlobalContext();
   return (
     <Container
       as="nav"
@@ -36,9 +42,23 @@ const Sidebar = () => {
       overflow-y="auto"
       zIndex="100"
       maxHeight={"100vh"}
-      // border="1px solid red"
       p={2}
     >
+      <IconButton
+        onClick={() => setIsOpen(false)}
+        position="absolute"
+        visibility={{ base: "visible", lg: "hidden" }}
+        right={3}
+        top={3.5}
+        bgColor="transparent"
+        color={{ base: "gray.600", _dark: "blue.200" }}
+        _hover={{
+          bgColor: { base: "transparent", _dark: "gray.500/40" },
+          color: { base: "gray.700", _dark: "gray.200" },
+        }}
+      >
+        <X size={20} />
+      </IconButton>
       <Box py="20px"></Box>
       <Flex height="100vh" direction={"column"}>
         <Text

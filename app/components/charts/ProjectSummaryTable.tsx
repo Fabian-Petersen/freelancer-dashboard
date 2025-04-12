@@ -1,7 +1,16 @@
 "use client";
 
 // $ Chakra UI Components
-import { Box, Button, HStack, Spinner, Text, Flex } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Spinner,
+  Text,
+  Flex,
+  Table,
+  IconButton,
+} from "@chakra-ui/react";
 
 // $ components
 import ChartHeading from "../charts/ChartHeading";
@@ -66,6 +75,7 @@ function ProjectSummaryTable() {
         display="flex"
         alignItems="center"
         justifyContent="space-between"
+        w="100%"
         mb={4}
       >
         <ChartHeading title="Project Summary" />
@@ -74,6 +84,7 @@ function ProjectSummaryTable() {
             colorPalette="teal"
             variant="solid"
             px={4}
+            visibility={{ base: "hidden", lg: "visible" }}
             onClick={() => {
               setIsNewProjectModalOpen(true);
               console.log("Open New Project Button:", isNewProjectModalOpen);
@@ -81,32 +92,38 @@ function ProjectSummaryTable() {
           >
             <PlusCircle /> Add New Project
           </Button>
+          <IconButton
+            colorPalette="teal"
+            bgColor={"transparent"}
+            maxWidth={"20%"}
+            color="teal.500"
+            visibility={{ base: "visible", lg: "hidden" }}
+          >
+            <PlusCircle />
+          </IconButton>
         </HStack>
       </Box>
-      <Box overflowX="auto">
-        <Box as="table" width="100%">
-          <Box as="thead" bg="gray.100" borderColor="gray.200" borderRadius={2}>
-            <Box as="tr">
-              <Box
-                as="th"
+      <Table.ScrollArea minWidth="100%" maxWidth="100%">
+        <Table.Root width="100%">
+          <Table.Header>
+            <Table.Row>
+              <Table.ColumnHeader
                 px={4}
                 py={2}
                 textAlign="left"
                 fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Client
-              </Box>
-              <Box
-                as="th"
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
                 px={4}
                 py={2}
                 textAlign="left"
                 fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Project
-              </Box>
-              <Box
-                as="th"
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
                 px={4}
                 py={2}
                 textAlign="left"
@@ -116,71 +133,63 @@ function ProjectSummaryTable() {
                 <Box as="sup" fontSize={{ base: "0.65rem", lg: "0.7rem" }}>
                   (R)
                 </Box>
-              </Box>
-              <Box
-                as="th"
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
                 px={4}
                 py={2}
                 textAlign="left"
                 fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Deadline
-              </Box>
-              <Box
-                as="th"
+              </Table.ColumnHeader>
+              <Table.ColumnHeader
                 px={4}
                 py={2}
                 textAlign="left"
                 fontSize={{ base: "0.85rem", lg: "0.875rem" }}
               >
                 Status
-              </Box>
-            </Box>
-          </Box>
-          <Box as="tbody">
+              </Table.ColumnHeader>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {Projects && Projects.length > 0 ? (
               Projects.map((project) => (
-                <Box
-                  as="tr"
+                <Table.Row
                   key={project.id}
                   _hover={{ bg: "gray.50" }}
                   // onClick={() => handleProjectClick(project)}
                   transition="all 0.2s"
                 >
-                  <Box
-                    as="td"
+                  <Table.Cell
                     px={4}
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {project.client}
-                  </Box>
-                  <Box
-                    as="td"
+                  </Table.Cell>
+                  <Table.Cell
                     px={4}
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {project.name}
-                  </Box>
-                  <Box
-                    as="td"
+                  </Table.Cell>
+                  <Table.Cell
                     px={4}
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {project.price.toLocaleString()}
-                  </Box>
-                  <Box
-                    as="td"
+                  </Table.Cell>
+                  <Table.Cell
                     px={4}
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
                   >
                     {new Date(project.deadline).toLocaleDateString()}
-                  </Box>
-                  <Box
-                    as="td"
+                  </Table.Cell>
+                  <Table.Cell
                     px={4}
                     py={3}
                     fontSize={{ base: "0.6rem", lg: "0.8rem" }}
@@ -208,19 +217,19 @@ function ProjectSummaryTable() {
                       </Box>
                       <ProjectSummaryMenuButton project={project} />
                     </Flex>
-                  </Box>
-                </Box>
+                  </Table.Cell>
+                </Table.Row>
               ))
             ) : (
-              <Box as="tr">
-                <Box as="td" textAlign="center" py={4}>
+              <Table.Row>
+                <Table.Cell as="td" textAlign="center" py={4}>
                   No projects found. Add a new project to get started.
-                </Box>
-              </Box>
+                </Table.Cell>
+              </Table.Row>
             )}
-          </Box>
-        </Box>
-      </Box>
+          </Table.Body>
+        </Table.Root>
+      </Table.ScrollArea>
     </>
   );
 }

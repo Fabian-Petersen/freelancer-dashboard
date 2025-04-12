@@ -1,16 +1,15 @@
 "use client";
-import { useState } from "react";
+
 import { Box, Container } from "@chakra-ui/react";
 import Sidebar from "./components/dashboard/Sidebar";
 import Header from "./components/header/Header";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
-import SidebarToggleButton from "../app/components/dashboard/SidebarToggleButton";
+// import SidebarToggleButton from "../app/components/dashboard/SidebarToggleButton";
 import NewApplicationModal from "./components/modals/NewApplicationModal";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 export default function Home() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { isNewJobModalOpen } = useGlobalContext();
+  const { isNewJobModalOpen, isOpen } = useGlobalContext();
 
   return (
     <Box
@@ -38,7 +37,7 @@ export default function Home() {
         </Container>
       )}
       {/* Sidebar Toggle Button - visible only on small screens */}
-      <Box
+      {/* <Box
         display={{ base: "block", lg: "none" }}
         position="fixed"
         top="4"
@@ -46,20 +45,20 @@ export default function Home() {
         zIndex="overlay"
       >
         <SidebarToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
-      </Box>
+      </Box> */}
 
       {/* Sidebar */}
       <Box
         as="aside"
-        position="fixed"
+        position="absolute"
         left="0"
-        width="240px"
+        width={"240px"}
         height="100vh"
         bgColor={{
           base: "#3D90D7/20",
           _dark: "#102E50",
         }}
-        zIndex="sticky"
+        zIndex={1000}
         transform={{
           base: isOpen ? "translateX(0)" : "translateX(-100%)",
           lg: "translateX(0)",
@@ -71,11 +70,7 @@ export default function Home() {
       </Box>
 
       {/* Main Content */}
-      <Box
-        ml={{ base: isOpen ? "240px" : "0", lg: "240px" }}
-        transition="margin-left 0.3s ease"
-        minH="100vh"
-      >
+      <Box ml={{ lg: "240px" }} transition="margin-left 0.3s ease" minH="100vh">
         {/* Header */}
         <Box
           as="header"
