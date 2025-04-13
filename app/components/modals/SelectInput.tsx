@@ -36,11 +36,14 @@ CustomSelectProps) {
     >
       <Select.HiddenSelect />
       <Select.Control>
-        <Select.Trigger>
+        <Select.Trigger
+          borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+        >
           <Select.ValueText
             placeholder={placeholder}
             px={2}
             textTransform={"capitalize"}
+            color={{ base: "gray.700", _dark: "gray.50/60" }}
           />
         </Select.Trigger>
         <Select.IndicatorGroup>

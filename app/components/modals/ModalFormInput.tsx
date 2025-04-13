@@ -1,4 +1,5 @@
 import { Field, Input } from "@chakra-ui/react"; // Adjust if you're using a different lib
+import { HTMLInputTypeAttribute } from "react";
 import {
   FieldError,
   UseFormRegister,
@@ -9,7 +10,7 @@ import {
 type FormInputProps<TFieldValues extends FieldValues> = {
   label: string;
   name: Path<TFieldValues>;
-  type?: string;
+  type?: HTMLInputTypeAttribute;
   placeholder?: string;
   register: UseFormRegister<TFieldValues>;
   error?: FieldError;
@@ -25,14 +26,20 @@ const ModalFormInput = <TFieldValues extends FieldValues>({
 }: FormInputProps<TFieldValues>) => {
   return (
     <Field.Root invalid={!!error}>
-      <Field.Label htmlFor={String(name)} textTransform={"capitalize"}>
+      <Field.Label
+        color={{ base: "gray.700", _dark: "gray.50/60" }}
+        htmlFor={String(name)}
+        textTransform={"capitalize"}
+      >
         {label}
       </Field.Label>
       <Input
         id={String(name)}
-        type={type}
+        type={String(type)}
         placeholder={placeholder}
-        textTransform={type === "date" ? "none" : "capitalize"}
+        borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+        color={{ base: "gray.700", _dark: "gray.50/60" }}
+        _placeholder={{ color: "inherit" }}
         {...register(name)}
         p={1}
       />

@@ -80,16 +80,22 @@ const ApplicationCards = () => {
               key={item.id}
               p={3}
               position="relative"
-              bg="gray.100"
+              bgColor={{ base: "gray.200/60", _dark: "#222e44" }}
+              border={{
+                base: "1px solid gray.200",
+                _dark: "1px solid #37415180",
+              }}
               borderRadius={"lg"}
               _hover={{ cursor: "pointer" }}
               zIndex={100}
+              color={{ base: "gray.600", _dark: "white" }}
             >
               <Flex
                 justify="space-evenly"
                 mb={1}
                 flexDirection="column"
                 gap={3}
+                borderColor={{ base: "white", _dark: "gray.700" }}
               >
                 <Flex align={"center"} gap={2}>
                   <Badge
@@ -134,8 +140,8 @@ const ApplicationCards = () => {
                 </Flex>
                 <Text
                   fontSize="sm"
-                  color="gray.600"
                   textTransform={"capitalize"}
+                  color={{ base: "gray.600", _dark: "white" }}
                 >
                   Company: {item.company}
                 </Text>
@@ -143,18 +149,29 @@ const ApplicationCards = () => {
                   <Badge
                     rounded={"full"}
                     textTransform={"capitalize"}
-                    px={{ base: "7px", lg: "7px" }}
-                    py={{ base: "4px", lg: "3px" }}
+                    px={{ base: "7px", lg: "10px" }}
+                    py={{ base: "4px", lg: "4px" }}
                     variant={"outline"}
+                    color={{ base: "gray.600", _dark: "white" }}
+                    bgColor={{
+                      base: "gray.200",
+                      _dark: "cyan.400/80",
+                    }}
                   >
                     {item.contract}
                   </Badge>
                   <Badge
                     rounded={"full"}
                     textTransform={"capitalize"}
-                    px={{ base: "7px", lg: "7px" }}
-                    py={{ base: "sm", lg: "3px" }}
+                    px={{ base: "7px", lg: "10px" }}
+                    py={{ base: "4px", lg: "4px" }}
                     variant={"outline"}
+                    color={{ base: "gray.600", _dark: "white" }}
+                    outline="none"
+                    bgColor={{
+                      base: "gray.200",
+                      _dark: "teal.400/80",
+                    }}
                   >
                     {item.location_type}
                   </Badge>

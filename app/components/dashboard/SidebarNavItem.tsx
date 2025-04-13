@@ -17,11 +17,16 @@ const SidebarNavItem = ({ icon: Icon, children, isActive }: NavItemProps) => {
       role="group"
       fontWeight={isActive ? "semibold" : "normal"}
       transition=".15s ease"
-      color={isActive ? "blue.500" : "gray.600"}
-      borderRadius="md"
+      borderLeftWidth={isActive ? "3px" : ""}
+      borderLeftColor={"blue.500"}
+      borderLeftRadius={0}
+      color={{ base: "gray.600", _dark: "white" }}
+      bgColor={isActive ? "transparent" : "transparent"}
       _hover={{
-        bg: "blue.300",
-        color: "blue.500",
+        bg: "blue.600",
+        color: "white",
+        borderRadius: "sm",
+        borderLeftColor: "transparent",
       }}
     >
       <Flex gap="4" alignItems="center" width="100%">

@@ -34,7 +34,7 @@ const JobsMenuButton = ({ job }: JobsMenuButtonProps) => {
         <Box
           as="button"
           _hover={{ cursor: "pointer" }}
-          color={"gray.500"}
+          color={{ base: "gray.500", _dark: "gray.300" }}
           fontSize={{ base: "0.6rem", lg: "0.5rem" }}
         >
           <MoreVertical size="1rem" />

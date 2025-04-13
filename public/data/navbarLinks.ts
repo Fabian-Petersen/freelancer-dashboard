@@ -33,7 +33,7 @@ export const navbarLinks: NavItemProps[] = [
   { name: "My Team", icon: Users, isActive: false },
   { name: "Tax Report", icon: FileText, isActive: false },
   { name: "Billing", icon: DollarSign, isActive: false },
-  { name: "Connected Services", icon: File, isActive: false },
+  { name: "Services", icon: File, isActive: false },
 ] as const;
 
 export const PreferencesLinks: PreferencesLinksProps[] = [

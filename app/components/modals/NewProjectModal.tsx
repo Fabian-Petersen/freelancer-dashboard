@@ -1,63 +1,47 @@
 "use client";
 
-import { useState } from "react";
 import { toaster } from "@/components/ui/toaster";
-import { Project } from "@/types/project";
+import ModalFormInput from "./ModalFormInput";
 
-import {
-  Container,
-  Button,
-  Field,
-  Fieldset,
-  Input,
-  Flex,
-  Stack,
-  SimpleGrid,
-} from "@chakra-ui/react";
+// $ Chakra Components
+import { Button, Fieldset, Flex, Stack, SimpleGrid } from "@chakra-ui/react";
+
+// $ React-Hook-Form, zod & schema
+import { projectSchema } from "@/app/schemas";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+type FormValues = z.infer<typeof projectSchema>;
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewProjectModal = () => {
-  const { setIsNewProjectModalOpen, isNewProjectModalOpen } =
-    useGlobalContext();
+  const { setIsNewProjectModalOpen } = useGlobalContext();
 
-  // $ Initialize project form state
-  const [projectForm, setProjectForm] = useState<Omit<Project, "id">>({
-    client: "",
-    name: "",
-    description: "",
-    price: 0,
-    deadline: "",
-    email: "",
-    phone: "",
-    status: 0,
+  // $ Form Schema
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>({
+    resolver: zodResolver(projectSchema),
   });
 
-  // $ Handle input change
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-
-    setProjectForm((prev) => ({
-      ...prev,
-      [name === "project" ? "name" : name]:
-        name === "price" ? parseFloat(value) || 0 : value,
-    }));
-  };
-
   const createProject = useCreate("projects");
-  const handleProjectSubmit = async () => {
+  const handleProjectSubmit = async (formData: FormValues) => {
+    console.log("RHF FormData:", formData);
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 5000);
     });
 
     try {
-      await createProject.mutateAsync(projectForm as Project);
+      await createProject.mutateAsync(formData);
       toaster.promise(promise, {
         success: {
-          title: "new project",
+          title: "New Project",
           description: "Project Successfully Created",
         },
         error: {
@@ -67,20 +51,10 @@ const NewProjectModal = () => {
         loading: { title: "Uploading...", description: "Please wait" },
       });
 
-      // Close the modal and reset form
+      // $ Close the modal and reset form
       setIsNewProjectModalOpen(false);
+      reset();
       // $ Uncomment when POST method is working to reset the input fields
-      //   setProjectForm({
-      //     client: "",
-      //     name: "",
-      //     description: "",
-      //     price: 0,
-      //     deadline: "",
-      //     email: "",
-      //     phone: "",
-      //     country: "",
-      //     status: 0,
-      //   });
     } catch (error) {
       toaster.create({
         title: "Error!!",
@@ -92,153 +66,130 @@ const NewProjectModal = () => {
   };
 
   return (
-    <Container
-      position={"absolute"}
-      width={"100%"}
-      height={"100vh"}
-      display={isNewProjectModalOpen ? "block" : "none"}
-      top="0"
-      left="0"
-      p={4}
-      backdropBlur={"sm"}
-      mx={"auto"}
-      bgColor="black/60"
-      zIndex={2000}
-    >
-      <Fieldset.Root
-        size="lg"
-        position={"absolute"}
-        maxW="2xl"
-        mx={"auto"}
-        my={"auto"}
-        bg="white"
-        p={6}
-        translate={"-50% -50%"}
-        left={"50%"}
-        top={"50%"}
-        rounded="md"
-      >
-        <Stack>
-          <Fieldset.Legend
-            color="blue.500"
-            fontWeight={"bold"}
-            fontSize={{ base: "lg", lg: "xl" }}
-          >
-            New Project Details
-          </Fieldset.Legend>
-          <Fieldset.HelperText>
-            Please provide project details below.
-          </Fieldset.HelperText>
-        </Stack>
-        <Fieldset.Content>
-          <SimpleGrid columns={2} mt={4} gap={4}>
-            <Field.Root>
-              <Field.Label>Client</Field.Label>
-              <Input
+    <form onSubmit={handleSubmit(handleProjectSubmit)}>
+      <Stack gap="4" align="flex-start" maxW="lg" width={"lg"} rounded="lg">
+        <Fieldset.Root
+          size="lg"
+          position={"absolute"}
+          maxW="2xl"
+          mx={"auto"}
+          my={"auto"}
+          bgColor={{ base: "white", _dark: "#1d2739" }}
+          p={6}
+          translate={"-50% -50%"}
+          left={"50%"}
+          top={"50%"}
+          rounded="md"
+        >
+          <Stack>
+            <Fieldset.Legend
+              color="blue.500"
+              fontWeight={"bold"}
+              fontSize={{ base: "1rem", lg: "1.5rem" }}
+            >
+              New Project Details
+            </Fieldset.Legend>
+            <Fieldset.HelperText>
+              Please provide project details below.
+            </Fieldset.HelperText>
+          </Stack>
+          <Fieldset.Content>
+            <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
+              <ModalFormInput<FormValues>
                 name="client"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.client}
+                label="Client"
+                register={register}
+                error={errors?.client}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Project Name</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="name"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.name}
+                label="Project Name"
+                register={register}
+                error={errors?.name}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Project Description</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="description"
-                type="text"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.description}
+                label="Project Description"
+                register={register}
+                error={errors?.description}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Price</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="price"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.price}
+                label="Project Budget"
+                type="number"
+                register={register}
+                error={errors?.price}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Deadline</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="deadline"
+                label="Deadline"
                 type="date"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.deadline}
+                register={register}
+                error={errors?.deadline}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Email address</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="email"
+                label="Email"
                 type="email"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.email}
+                register={register}
+                error={errors?.email}
               />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Phone number</Field.Label>
-              <Input
+              <ModalFormInput<FormValues>
                 name="phone"
                 type="tel"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={projectForm.phone}
+                label="Contact Number"
+                register={register}
+                error={errors?.phone}
               />
-            </Field.Root>
-          </SimpleGrid>
-        </Fieldset.Content>
-        <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
-          <Button
-            type="submit"
-            alignSelf="flex-start"
-            width={{
-              base: "100%",
-              lg: "8rem",
-            }}
-            mt={4}
-            variant="outline"
-            rounded="full"
-            colorPalette="red"
-            onClick={() => {
-              setIsNewProjectModalOpen(false);
-            }}
-            disabled={createProject.isPending}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            alignSelf="flex-start"
-            width={{
-              base: "100%",
-              lg: "8rem",
-            }}
-            mt={4}
-            colorPalette="teal"
-            rounded="full"
-            onClick={handleProjectSubmit}
-            loading={createProject.isPending}
-            loadingText="Submitting"
-          >
-            Submit
-          </Button>
-        </Flex>
-      </Fieldset.Root>
-    </Container>
+              <ModalFormInput<FormValues>
+                name="status"
+                type="number"
+                label="Project Status"
+                register={register}
+                error={errors?.status}
+              />
+            </SimpleGrid>
+          </Fieldset.Content>
+          <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
+            <Button
+              type="button"
+              alignSelf="flex-start"
+              width={{
+                base: "100%",
+                lg: "8rem",
+              }}
+              mt={4}
+              variant="outline"
+              rounded="full"
+              colorPalette="yellow"
+              color={{ base: "gray.600", _dark: "gray.200" }}
+              _hover={{ bgColor: "red.300", color: "white" }}
+              onClick={() => {
+                setIsNewProjectModalOpen(false);
+              }}
+              disabled={createProject.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              alignSelf="flex-start"
+              width={{
+                base: "100%",
+                lg: "8rem",
+              }}
+              mt={4}
+              colorPalette="teal"
+              rounded="full"
+              loading={createProject.isPending}
+              loadingText="Submitting"
+            >
+              Submit
+            </Button>
+          </Flex>
+        </Fieldset.Root>
+      </Stack>
+    </form>
   );
 };
 

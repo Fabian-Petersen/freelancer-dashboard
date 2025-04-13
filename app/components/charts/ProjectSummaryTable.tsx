@@ -11,6 +11,7 @@ import {
   Table,
   IconButton,
 } from "@chakra-ui/react";
+import { z } from "zod";
 
 // $ components
 import ChartHeading from "../charts/ChartHeading";
@@ -18,24 +19,17 @@ import ProjectStatusSlider from "./ProjectStatusSlider";
 import { PlusCircle } from "lucide-react";
 import ProjectSummaryMenuButton from "./ProjectSummaryMenuButton";
 
-// $ modals
-import NewProjectModal from "../modals/NewProjectModal";
-import UpdateProjectModal from "../modals/UpdateProjectModal";
-
 // $ types
-import { Project } from "@/types/project";
+import { projectSchema } from "@/app/schemas";
+type Project = z.infer<typeof projectSchema>;
 
 // $ functions
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
 
 function ProjectSummaryTable() {
-  const {
-    setIsNewProjectModalOpen,
-    isNewProjectModalOpen,
-    isUpdateProjectModalOpen,
-    selectedProject,
-  } = useGlobalContext();
+  const { setIsNewProjectModalOpen, isNewProjectModalOpen } =
+    useGlobalContext();
 
   // $ Fetch all the projects Data
   const {
@@ -67,10 +61,6 @@ function ProjectSummaryTable() {
 
   return (
     <>
-      {isNewProjectModalOpen ? <NewProjectModal /> : null}
-      {isUpdateProjectModalOpen && selectedProject ? (
-        <UpdateProjectModal project={selectedProject} />
-      ) : null}
       <Box
         display="flex"
         alignItems="center"
@@ -106,7 +96,10 @@ function ProjectSummaryTable() {
       <Table.ScrollArea minWidth="100%" maxWidth="100%">
         <Table.Root width="100%">
           <Table.Header>
-            <Table.Row>
+            <Table.Row
+              bgColor={{ base: "white", _dark: "#1d2739" }}
+              color={{ base: "gray.600", _dark: "white" }}
+            >
               <Table.ColumnHeader
                 px={4}
                 py={2}
@@ -157,9 +150,13 @@ function ProjectSummaryTable() {
               Projects.map((project) => (
                 <Table.Row
                   key={project.id}
-                  _hover={{ bg: "gray.50" }}
-                  // onClick={() => handleProjectClick(project)}
+                  _hover={{
+                    bgColor: { base: "gray.200/50", _dark: "#222e44" },
+                    borderRadius: "15px",
+                  }}
                   transition="all 0.2s"
+                  bgColor={{ base: "white", _dark: "#1d2739" }}
+                  color={{ base: "gray.600", _dark: "gray.400" }}
                 >
                   <Table.Cell
                     px={4}

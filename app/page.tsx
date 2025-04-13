@@ -1,63 +1,29 @@
 "use client";
 
-import { Box, Container } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Sidebar from "./components/dashboard/Sidebar";
 import Header from "./components/header/Header";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
-// import SidebarToggleButton from "../app/components/dashboard/SidebarToggleButton";
-import NewApplicationModal from "./components/modals/NewApplicationModal";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
+import ModalManager from "./components/modals/ModalManager";
 
 export default function Home() {
-  const { isNewJobModalOpen, isOpen } = useGlobalContext();
+  const { isOpen } = useGlobalContext();
 
   return (
     <Box
-      minH="100vh"
-      bgColor={{ base: "#f8fafd", _dark: "#002147/85" }}
+      minHeight="100vh"
+      bgColor={{ base: "#f8fafd", _dark: "#101827" }}
       position="relative"
     >
       {/* //$  ============================= Modals Component - RHF  ====================== */}
-
-      {isNewJobModalOpen && (
-        <Container
-          position={"fixed"}
-          height={"100vh"}
-          width="100%"
-          visibility={isNewJobModalOpen ? "visible" : "hidden"}
-          top="0"
-          left="0"
-          p={4}
-          backdropBlur={"xl"}
-          mx="auto"
-          bgColor="black/60"
-          zIndex={2000}
-        >
-          <NewApplicationModal />
-        </Container>
-      )}
-      {/* Sidebar Toggle Button - visible only on small screens */}
-      {/* <Box
-        display={{ base: "block", lg: "none" }}
-        position="fixed"
-        top="4"
-        left="4"
-        zIndex="overlay"
-      >
-        <SidebarToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
-      </Box> */}
-
-      {/* Sidebar */}
+      <ModalManager />
       <Box
         as="aside"
-        position="absolute"
+        position="fixed"
         left="0"
         width={"240px"}
         height="100vh"
-        bgColor={{
-          base: "#3D90D7/20",
-          _dark: "#102E50",
-        }}
         zIndex={1000}
         transform={{
           base: isOpen ? "translateX(0)" : "translateX(-100%)",

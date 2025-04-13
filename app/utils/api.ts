@@ -1,10 +1,12 @@
 import axios from "axios";
 
 // $ Types
-import { Project } from "@/types/project";
-import { Job } from "@/types/job";
+import { jobSchema, projectSchema } from "../schemas";
 export type ResourceType = "projects" | "applications";
+import { z } from "zod";
 
+type Project = z.infer<typeof projectSchema>;
+type Job = z.infer<typeof jobSchema>;
 // $ Combine the types into a union type for the generic functions
 export type EntityType = Project | Job;
 

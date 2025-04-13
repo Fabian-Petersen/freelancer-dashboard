@@ -15,19 +15,22 @@ const DashboardLayout = () => {
       >
         {/* //$  ============================= Chart - Monthly Revenue ======================== */}
         <GridItem
-          bg={{ base: "white", _dark: "black" }}
+          bg={{ base: "white", _dark: "#1d2739" }}
           p={4}
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 1, lg: 2 }}
+          colSpan={{ base: 1, lg: 1 }}
+          borderColor={{ base: "gray.500", _dark: "dark" }}
         >
           <MonthlyRevenueChart />
         </GridItem>
 
         {/* //$  ============================= Chart - Expense & Revenue ====================== */}
         <GridItem
-          bg="white"
+          bg={{ base: "white", _dark: "#1d2739" }}
+          borderColor={{ base: "gray.500", _dark: "#37415180" }}
+          color={{ base: "gray.600", _dark: "gray.100" }}
           p={4}
           borderRadius="md"
           boxShadow="sm"
@@ -40,7 +43,8 @@ const DashboardLayout = () => {
         <GridItem
           rowSpan={2}
           colSpan={{ base: 1, lg: 1 }}
-          bg="white"
+          bg={{ base: "white", _dark: "#1d2739" }}
+          borderColor={{ base: "gray.500", _dark: "#374151/80" }}
           p={4}
           borderRadius="md"
           // boxShadow="sm"
@@ -52,12 +56,12 @@ const DashboardLayout = () => {
         {/* //$  ============================= Table - Projects List =========================== */}
         <GridItem
           colSpan={{ base: 1, lg: 3 }}
-          bg="white"
+          bg={{ base: "white", _dark: "#1d2739" }}
+          borderColor={{ base: "gray.500", _dark: "#374151/80" }}
           minWidth="0"
           w="100%"
           p={4}
           borderRadius="md"
-          boxShadow="sm"
         >
           <ProjectSummaryTable />
         </GridItem>

@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 // $ Chakra UI Components
 import {
-  Container,
   Button,
   Field,
   Fieldset,
@@ -32,7 +31,7 @@ import { location_type } from "@/public/data/selectInputData";
 import { contract } from "@/public/data/selectInputData";
 
 const UpdateJobModal = ({ application }: UpdateJobModalProps) => {
-  const { setIsUpdateJobModalOpen, isUpdateJobModalOpen } = useGlobalContext();
+  const { setIsUpdateJobModalOpen } = useGlobalContext();
 
   // Use the update hook for applications (not projects)
   const updateJob = useUpdate<Job>("applications");
@@ -97,160 +96,174 @@ const UpdateJobModal = ({ application }: UpdateJobModalProps) => {
   };
 
   return (
-    <Container
-      position="fixed"
-      width="100%"
-      height="100vh"
-      display={isUpdateJobModalOpen ? "block" : "none"}
-      top="0"
-      left="0"
-      p={4}
-      backdropFilter="blur(4px)"
+    <Fieldset.Root
+      size="lg"
+      position="absolute"
+      maxW="2xl"
       mx="auto"
-      bgColor="rgba(0,0,0,0.6)"
-      zIndex={2000}
+      my="auto"
+      bgColor={{ base: "white", _dark: "#1d2739" }}
+      p={6}
+      transform="translate(-50%, -50%)"
+      left="50%"
+      top="50%"
+      rounded="md"
     >
-      <Fieldset.Root
-        size="lg"
-        position="absolute"
-        maxW="2xl"
-        mx="auto"
-        my="auto"
-        bg="white"
-        p={6}
-        transform="translate(-50%, -50%)"
-        left="50%"
-        top="50%"
-        rounded="md"
-      >
-        <Stack>
-          <Fieldset.Legend
-            color="blue.500"
-            fontWeight="bold"
-            fontSize={{ base: "lg", lg: "xl" }}
-          >
-            Update Job Application
-          </Fieldset.Legend>
-          <Fieldset.HelperText>
-            Please edit the application details below.
-          </Fieldset.HelperText>
-        </Stack>
+      <Stack>
+        <Fieldset.Legend
+          color="blue.500"
+          fontWeight="bold"
+          fontSize={{ base: "1rem", lg: "1.5rem" }}
+        >
+          Update Job Application
+        </Fieldset.Legend>
+        <Fieldset.HelperText>
+          Please edit the application details below.
+        </Fieldset.HelperText>
+      </Stack>
 
-        <Fieldset.Content>
-          <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
-            <Field.Root>
-              <Field.Label>Job Title</Field.Label>
-              <Input
-                name="description"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={jobForm.job_title || ""}
-              />
-            </Field.Root>
+      <Fieldset.Content>
+        <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Job Title
+            </Field.Label>
+            <Input
+              name="description"
+              px="0.5rem"
+              onChange={handleInputChange}
+              value={jobForm.job_title || ""}
+              borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+              color={{ base: "gray.700", _dark: "gray.50/60" }}
+              _placeholder={{ color: "inherit" }}
+            />
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Company</Field.Label>
-              <Input
-                name="company"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={jobForm.company || ""}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Location Setting</Field.Label>
-              <SelectInput
-                items={location_type}
-                value={jobForm.location_type}
-                onChange={(val) => {
-                  setJobForm((prev) => ({
-                    ...prev,
-                    location_type: val as Job["location_type"],
-                  }));
-                }}
-              />
-            </Field.Root>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Company
+            </Field.Label>
+            <Input
+              name="company"
+              px="0.5rem"
+              onChange={handleInputChange}
+              value={jobForm.company || ""}
+              borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+              color={{ base: "gray.700", _dark: "gray.50/60" }}
+              _placeholder={{ color: "inherit" }}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Location Setting
+            </Field.Label>
+            <SelectInput
+              items={location_type}
+              value={jobForm.location_type}
+              onChange={(val) => {
+                setJobForm((prev) => ({
+                  ...prev,
+                  location_type: val as Job["location_type"],
+                }));
+              }}
+            />
+          </Field.Root>
 
-            <Field.Root>
-              <Field.Label>Location</Field.Label>
-              <Input
-                name="location"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={jobForm.city || ""}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Date Applied</Field.Label>
-              <Input
-                name="date_applied"
-                type="date"
-                px="0.5rem"
-                onChange={handleInputChange}
-                value={jobForm.date_applied || ""}
-              />
-            </Field.Root>
-            <Field.Root>
-              <Field.Label>Status</Field.Label>
-              <SelectInput
-                items={status}
-                value={jobForm.status}
-                onChange={(val) => {
-                  setJobForm((prev) => ({
-                    ...prev,
-                    status: val as Job["status"],
-                  }));
-                }}
-              />
-            </Field.Root>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Location
+            </Field.Label>
+            <Input
+              borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+              color={{ base: "gray.700", _dark: "gray.50/60" }}
+              _placeholder={{ color: "inherit" }}
+              name="location"
+              px="0.5rem"
+              onChange={handleInputChange}
+              value={jobForm.city || ""}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Date Applied
+            </Field.Label>
+            <Input
+              name="date_applied"
+              type="date"
+              px="0.5rem"
+              onChange={handleInputChange}
+              value={jobForm.date_applied || ""}
+              borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
+              color={{ base: "gray.700", _dark: "gray.50/60" }}
+              _placeholder={{ color: "inherit" }}
+            />
+          </Field.Root>
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Status
+            </Field.Label>
+            <SelectInput
+              items={status}
+              value={jobForm.status}
+              onChange={(val) => {
+                setJobForm((prev) => ({
+                  ...prev,
+                  status: val as Job["status"],
+                }));
+              }}
+            />
+          </Field.Root>
 
-            {/* Job Details - Second item */}
-            <Field.Root>
-              <Field.Label>Contract Type</Field.Label>
-              <SelectInput
-                items={contract}
-                value={jobForm.contract}
-                onChange={(val) => {
-                  setJobForm((prev) => ({
-                    ...prev,
-                    contract: val as Job["contract"],
-                  }));
-                }}
-              />
-            </Field.Root>
-          </SimpleGrid>
-        </Fieldset.Content>
+          {/* Job Details - Second item */}
+          <Field.Root>
+            <Field.Label color={{ base: "gray.700", _dark: "gray.50/60" }}>
+              Contract Type
+            </Field.Label>
+            <SelectInput
+              items={contract}
+              value={jobForm.contract}
+              onChange={(val) => {
+                setJobForm((prev) => ({
+                  ...prev,
+                  contract: val as Job["contract"],
+                }));
+              }}
+            />
+          </Field.Root>
+        </SimpleGrid>
+      </Fieldset.Content>
 
-        <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
-          <Button
-            type="button"
-            alignSelf="flex-start"
-            width={{ base: "100%", lg: "8rem" }}
-            mt={4}
-            variant="outline"
-            rounded="full"
-            colorPalette="red"
-            onClick={() => setIsUpdateJobModalOpen(false)}
-            // isDisabled={updateJob.isPending}
-          >
-            Cancel
-          </Button>
-          <Button
-            type="button"
-            alignSelf="flex-start"
-            width={{ base: "100%", lg: "8rem" }}
-            mt={4}
-            colorPalette="teal"
-            rounded="full"
-            onClick={handleSubmit}
-            // isPending={updateJob.isPending}
-            loadingText="Updating"
-          >
-            Update
-          </Button>
-        </Flex>
-      </Fieldset.Root>
-    </Container>
+      <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
+        <Button
+          type="button"
+          alignSelf="flex-start"
+          width={{ base: "100%", lg: "8rem" }}
+          mt={4}
+          variant="outline"
+          colorPalette="yellow"
+          rounded="full"
+          color={{ base: "gray.600", _dark: "gray.200" }}
+          _hover={{ bgColor: "red.300", color: "white" }}
+          onClick={() => setIsUpdateJobModalOpen(false)}
+          disabled={updateJob.isPending}
+        >
+          Cancel
+        </Button>
+        <Button
+          type="button"
+          alignSelf="flex-start"
+          width={{ base: "100%", lg: "8rem" }}
+          mt={4}
+          colorPalette="teal"
+          rounded="full"
+          onClick={handleSubmit}
+          loading={updateJob.isPending}
+          loadingText="Updating"
+        >
+          Update
+        </Button>
+      </Flex>
+    </Fieldset.Root>
   );
 };
 

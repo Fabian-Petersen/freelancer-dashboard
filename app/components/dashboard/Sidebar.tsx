@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarLogoutButton from "./SidebarLogoutButton";
+import Logo from "../Logo";
 
 import {
   navbarLinks,
@@ -27,23 +28,26 @@ const Sidebar = () => {
   return (
     <Container
       as="nav"
-      pos="fixed"
+      position="fixed"
       top="0"
       left="0"
       width={{ lg: "240px" }}
-      bgColor={{
-        base: "#3D90D7/20",
-        _dark: "#102E50",
-        _current: "#f8fafd",
-      }}
-      // opacity={{ base: "hidden", lg: "visible" }}
-      borderRight="1px"
-      borderRightColor={{ base: "gray.300", _dark: "white" }}
+      bg={{ base: "white", _dark: "#1d2739" }}
+      borderRight={{ base: "1px solid white", _dark: "1px solid #37415180" }}
       overflow-y="auto"
       zIndex="100"
-      maxHeight={"100vh"}
+      height={"100vh"}
       p={2}
     >
+      <Box
+        position="absolute"
+        top={-58}
+        left={-9}
+        zIndex={-100}
+        translate={"-50%, -50%"}
+      >
+        <Logo />
+      </Box>
       <IconButton
         onClick={() => setIsOpen(false)}
         position="absolute"
@@ -59,16 +63,21 @@ const Sidebar = () => {
       >
         <X size={20} />
       </IconButton>
-      <Box py="20px"></Box>
-      <Flex height="100vh" direction={"column"}>
+
+      <Flex height="100vh" direction={"column"} gap={1} mt={"5rem"}>
+        <Box
+          height="1px"
+          border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
+          my={4}
+        />
         <Text
-          color={{ base: "gray.200", _dark: "gray.100" }}
-          fontSize={{ base: "0.75rem", lg: "1rem" }}
+          color={{ base: "gray.200", _dark: "white" }}
+          fontSize={{ base: "0.75rem", lg: "0.8rem" }}
           paddingBottom="0.2rem"
         >
           Main Menu
         </Text>
-        <Separator color={{ base: "gray.700", _dark: "gray.100" }} />
+        <Separator />
         {/* Main navigation links */}
         <List.Root>
           <VStack align="stretch">
@@ -82,12 +91,16 @@ const Sidebar = () => {
               </SidebarNavItem>
             ))}
             {/* Divider for preferences links */}
-            <Separator />
+            <Box
+              height="1px"
+              border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
+              my={4}
+            />
             {/* // $ Middle Section */}
 
             <Text
-              color="gray.700"
-              fontSize={{ base: "0.75rem", lg: "1rem" }}
+              color={{ base: "gray.200", _dark: "white" }}
+              fontSize={{ base: "0.75rem", lg: "0.8rem" }}
               paddingBottom="0.2rem"
             >
               Preferences
@@ -100,14 +113,16 @@ const Sidebar = () => {
             ))}
           </VStack>
         </List.Root>
-        <Box h="1px" bg="gray.100/30" my={4} />
+        <Box
+          h="1px"
+          border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
+          my={4}
+        />
         {/* Logout at the very bottom */}
-        <Separator />
       </Flex>
       <Box
-        cursor="pointer"
         position="absolute"
-        bottom="00%"
+        bottom="0%"
         translate="auto"
         translateY="-50"
         zIndex={1000}

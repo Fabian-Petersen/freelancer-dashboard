@@ -12,9 +12,12 @@ const SidebarToggleButton = ({ isOpen, setIsOpen }: SidebarButtonProps) => {
   return (
     <IconButton
       aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
-      size="md"
-      color={{ base: "gray.700", _dark: "white" }}
-      bgColor={"transparent"}
+      variant="solid"
+      bgColor="transparent"
+      color={{ base: "gray.600", _dark: "blue.200" }}
+      _hover={{
+        bgColor: { base: "gray.200/70", _dark: "gray.500/40" },
+      }}
       onClick={() => setIsOpen(true)}
     >
       {!isOpen && <Menu size={20} />}

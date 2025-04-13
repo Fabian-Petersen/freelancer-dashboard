@@ -29,13 +29,9 @@ const NewApplicationModal = () => {
     resolver: zodResolver(jobSchema),
   });
 
-  // const onSubmit = handleSubmit((data) => console.log(data));
-
   // $ State to open the modal to add a new project
   const createJob = useCreate("applications");
   const handleJobSubmit = async (formData: FormValues) => {
-    console.log("form errors:", errors);
-    console.log("RHF FormData:", formData);
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 5000);
     });
@@ -75,7 +71,7 @@ const NewApplicationModal = () => {
           maxW="2xl"
           mx={"auto"}
           my={"auto"}
-          bg="white"
+          bgColor={{ base: "white", _dark: "#1d2739" }}
           p={6}
           translate={"-50% -50%"}
           left={"50%"}
@@ -87,7 +83,7 @@ const NewApplicationModal = () => {
             <Fieldset.Legend
               color="blue.500"
               fontWeight={"bold"}
-              fontSize={{ base: "lg", lg: "xl" }}
+              fontSize={{ base: "1rem", lg: "1.5rem" }}
             >
               New Job Applciation Details
             </Fieldset.Legend>
@@ -95,7 +91,7 @@ const NewApplicationModal = () => {
               Please enter the details below.
             </Fieldset.HelperText>
           </Stack>
-          <SimpleGrid columns={2} mt={4} gap={4}>
+          <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
             <ModalFormInput<FormValues>
               name="job_title"
               label="Job Title"
@@ -132,28 +128,6 @@ const NewApplicationModal = () => {
               register={register}
               error={errors?.status}
             />
-            {/* <Field.Root>
-          <Field.Label htmlFor={"status"} textTransform={"capitalize"}>
-          status
-          </Field.Label>
-          <Controller
-          control={control}
-          name="status"
-          render={({ field }) => (
-            <SelectInput
-            contentRef={contentRef}
-            items={status}
-            value={newApplicationForm.status?.[0] || ""}
-            // onChange={(val) =>
-            // setNewApplicationForm((prev) => ({
-              ...prev,
-              status: val as Job["status"],
-              }))
-              }
-              />
-              )}
-              />
-              </Field.Root> */}
             <ModalFormInput<FormValues>
               name="date_applied"
               label="Date Applied"
@@ -172,7 +146,9 @@ const NewApplicationModal = () => {
               mt={4}
               variant="outline"
               rounded="full"
-              colorPalette="red"
+              colorPalette="yellow"
+              color={{ base: "gray.600", _dark: "gray.200" }}
+              _hover={{ bgColor: "red.300", color: "white" }}
               onClick={() => {
                 setIsNewJobModalOpen(false);
               }}

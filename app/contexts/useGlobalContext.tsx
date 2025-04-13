@@ -1,6 +1,10 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Project } from "@/types/project";
-import { Job } from "@/types/job";
+
+import { projectSchema, jobSchema } from "@/app/schemas";
+import { z } from "zod";
+
+type Project = z.infer<typeof projectSchema>;
+type Job = z.infer<typeof jobSchema>;
 
 // Define the shape of our context state
 type GlobalContextType = {

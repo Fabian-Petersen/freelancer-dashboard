@@ -1,25 +1,27 @@
 import { Flex, Menu, Box, Portal } from "@chakra-ui/react";
 import { MoreVertical } from "lucide-react";
-import { Project } from "@/types/project";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useDelete } from "@/app/hooks/useFetchDataHook";
+import { projectSchema } from "@/app/schemas";
+
+import { z } from "zod";
+type Project = z.infer<typeof projectSchema>;
 
 type Props = {
   project: Project;
 };
 
 const ProjectSummaryMenuButton = ({ project }: Props) => {
-  const { setIsUpdateProjectModalOpen } = useGlobalContext();
-  // console.log("open update modal:", isUpdateProjectModalOpen);
+  const { setIsUpdateProjectModalOpen, setSelectedProject } =
+    useGlobalContext();
 
   const deleteProject = useDelete("projects");
+
   const handleDeleteProject = async (id: string) => {
     try {
       await deleteProject.mutateAsync(id);
-      // Success handling (optional) - could show a toast notification
     } catch (error) {
       console.error("Error deleting project:", error);
-      // Error handling (optional) - could show error toast
     }
   };
 
@@ -29,9 +31,8 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
         <Box
           as="button"
           _hover={{ cursor: "pointer" }}
-          color={"gray.500"}
+          color={{ base: "gray.500", _dark: "gray.300" }}
           fontSize={{ base: "0.6rem", lg: "0.5rem" }}
-          onClick={() => {}}
         >
           <MoreVertical size="1rem" />
         </Box>
@@ -47,6 +48,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                 _hover={{ cursor: "pointer", bg: "transparent" }}
                 onClick={() => {
                   setIsUpdateProjectModalOpen(true);
+                  setSelectedProject(project);
                 }}
               >
                 Edit
