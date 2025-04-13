@@ -11,6 +11,7 @@ export const jobSchema = z.object({
   location_type: z.enum(["remote", "on site", "hybrid"], {
     errorMap: () => ({ message: "Please select remote | hybrid | on-site." }),
   }),
+  id: z.string().optional(),
   status: z.enum(["applied", "interview", "on hold", "unsuccessful"], {
     errorMap: () => ({ message: "Please select the applciation status." }),
   }),

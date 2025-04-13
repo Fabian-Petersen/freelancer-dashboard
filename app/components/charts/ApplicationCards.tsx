@@ -13,7 +13,9 @@ import JobsMenuButton from "./JobsMenuButton";
 import UpdateJobModal from "../modals/UpdateJobModal";
 
 // $ types
-import { Job } from "@/types/job";
+import { z } from "zod";
+import { jobSchema } from "@/app/schemas";
+type Job = z.infer<typeof jobSchema>;
 
 // $ functions
 // import { useDelete } from "@/app/hooks/useFetchDataHook";
