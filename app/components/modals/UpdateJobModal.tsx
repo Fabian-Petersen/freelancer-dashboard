@@ -20,7 +20,10 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useUpdate } from "../../hooks/useFetchDataHook";
 
 // $ types
-import { Job } from "@/types/job";
+import { z } from "zod";
+import { jobSchema } from "@/app/schemas";
+type Job = z.infer<typeof jobSchema>;
+
 type UpdateJobModalProps = {
   application: Job;
 };

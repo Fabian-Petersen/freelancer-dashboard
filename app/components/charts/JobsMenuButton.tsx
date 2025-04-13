@@ -1,8 +1,11 @@
 import { Box, Menu, Portal, Flex } from "@chakra-ui/react";
 import { MoreVertical } from "lucide-react";
-import { Job } from "@/types/job";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useDelete } from "@/app/hooks/useFetchDataHook";
+
+import { z } from "zod";
+import { jobSchema } from "@/app/schemas";
+type Job = z.infer<typeof jobSchema>;
 
 type JobsMenuButtonProps = {
   job: Job;
