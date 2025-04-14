@@ -66,7 +66,7 @@ export const useUpdate = <T extends EntityType>(resourceType: ResourceType) => {
 /**
  * $ Generic hook to delete an entity
  */
-export const useDelete = (resourceType: ResourceType) => {
+export const useDelete = <T extends EntityType>(resourceType: ResourceType) => {
   const queryClient = useQueryClient();
 
   return useMutation({
