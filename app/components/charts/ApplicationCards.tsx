@@ -4,13 +4,10 @@
 import { Box, Text, Flex, Badge, Spinner, Heading } from "@chakra-ui/react";
 
 // $ components
-// import { XCircleIcon } from "lucide-react";
 import AddApplicationButton from "./AddApplicationButton";
 import JobsMenuButton from "./JobsMenuButton";
 
 // $ modals
-// import NewApplicationModal from "../modals/NewApplicationModal";
-import UpdateJobModal from "../modals/UpdateJobModal";
 
 // $ types
 import { z } from "zod";
@@ -18,13 +15,9 @@ import { jobSchema } from "@/app/schemas";
 type Job = z.infer<typeof jobSchema>;
 
 // $ functions
-// import { useDelete } from "@/app/hooks/useFetchDataHook";
-import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
 
 const ApplicationCards = () => {
-  const { isUpdateJobModalOpen, selectedJob } = useGlobalContext();
-
   // $ Fetch the data from the database
   const {
     data: Applications,
@@ -35,7 +28,11 @@ const ApplicationCards = () => {
 
   if (isPending) {
     return (
-      <Box textAlign="center" py={10}>
+      <Box
+        textAlign="center"
+        py={10}
+        color={{ base: "gray.600", _dark: "white" }}
+      >
         <Spinner size="xl" color="blue.500" />
         <Text mt={4}>Loading Applications...</Text>
       </Box>
@@ -54,8 +51,8 @@ const ApplicationCards = () => {
   }
 
   // $ Function to format the date
-  const FormatDate = (input: string) => {
-    const date = new Date(input);
+  const FormatDate = (input: string | Date) => {
+    const date = typeof input === "string" ? new Date(input) : input;
 
     const formattedDate = date.toLocaleDateString("en-GB", {
       day: "2-digit",
@@ -66,16 +63,18 @@ const ApplicationCards = () => {
 
   return (
     <>
-      {isUpdateJobModalOpen && selectedJob && (
-        <UpdateJobModal application={selectedJob} />
-      )}
       <Flex justify="space-between" alignItems="center" mb={4}>
         <Heading size="md" color="blue.500">
           Jobs Applications
         </Heading>
         <AddApplicationButton />
       </Flex>
-      <Flex direction="column" gap={3}>
+      <Flex
+        direction="column"
+        gap={3}
+        // border="1px dashed yellow"
+        width="100%"
+      >
         {Applications && Applications.length > 0 ? (
           Applications.map((item: Job) => (
             <Box
@@ -127,7 +126,10 @@ const ApplicationCards = () => {
                   >
                     {item.status}
                   </Badge>
-                  <Text fontSize={{ base: "", lg: "0.7rem" }} color="green.500">
+                  <Text
+                    fontSize={{ base: "0.6rem", lg: "0.7rem" }}
+                    color="green.500"
+                  >
                     {`applied on ${FormatDate(item.date_applied)}`}
                   </Text>
                   <JobsMenuButton job={item} />
@@ -183,7 +185,12 @@ const ApplicationCards = () => {
           ))
         ) : (
           <Box as="tr">
-            <Box as="td" textAlign="center" py={4}>
+            <Box
+              as="td"
+              textAlign="center"
+              py={4}
+              color={{ base: "gray.600", _dark: "white" }}
+            >
               No Jobs found. Add a new job to get started.
             </Box>
           </Box>

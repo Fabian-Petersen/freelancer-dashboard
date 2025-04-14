@@ -1,7 +1,6 @@
 import { Box, Menu, Portal, Flex } from "@chakra-ui/react";
 import { MoreVertical } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useDelete } from "@/app/hooks/useFetchDataHook";
 
 import { z } from "zod";
 import { jobSchema } from "@/app/schemas";
@@ -12,23 +11,27 @@ type JobsMenuButtonProps = {
 };
 
 const JobsMenuButton = ({ job }: JobsMenuButtonProps) => {
-  const { setIsUpdateJobModalOpen, setSelectedJob } = useGlobalContext();
+  const {
+    setIsUpdateJobModalOpen,
+    setSelectedJob,
+    setIsDeleteModalOpen,
+    setItemToDelete,
+    setResourceTypeToDelete,
+  } = useGlobalContext();
 
-  const deleteJob = useDelete("applications");
-
-  const handleDeleteJob = async (id: string) => {
-    try {
-      await deleteJob.mutateAsync(id);
-      // Success handling (optional) - could show a toast notification
-    } catch (error) {
-      console.error("Error deleting job:", error);
-      // Error handling (optional) - could show error toast
-    }
+  // $ logic to edit a project
+  const handleEditJob = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setIsUpdateJobModalOpen(true);
+    setSelectedJob(job);
   };
 
-  const handleEditClick = () => {
-    setSelectedJob(job);
-    setIsUpdateJobModalOpen(true);
+  // $ logic to delete a project
+  const handleDeleteJob = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setItemToDelete(job);
+    setResourceTypeToDelete("applications");
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -52,10 +55,7 @@ const JobsMenuButton = ({ job }: JobsMenuButtonProps) => {
                 p={1.5}
                 letterSpacing={"0.08rem"}
                 _hover={{ cursor: "pointer", bg: "transparent" }}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event bubbling
-                  handleEditClick();
-                }}
+                onClick={handleEditJob}
               >
                 Edit
               </Menu.Item>
@@ -69,12 +69,7 @@ const JobsMenuButton = ({ job }: JobsMenuButtonProps) => {
                   color: "fg.error",
                   cursor: "pointer",
                 }}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event bubbling
-                  if (job?.id) {
-                    handleDeleteJob(job.id);
-                  }
-                }}
+                onClick={handleDeleteJob}
               >
                 Delete
               </Menu.Item>

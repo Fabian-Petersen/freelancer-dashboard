@@ -12,9 +12,11 @@ export default function Home() {
 
   return (
     <Box
+      height={{ base: "auto" }}
       minHeight="100vh"
       bgColor={{ base: "#f8fafd", _dark: "#101827" }}
       position="relative"
+      // border="1px dashed red"
     >
       {/* //$  ============================= Modals Component - RHF  ====================== */}
       <ModalManager />
@@ -36,10 +38,14 @@ export default function Home() {
       </Box>
 
       {/* Main Content */}
-      <Box ml={{ lg: "240px" }} transition="margin-left 0.3s ease" minH="100vh">
+
+      <Box
+        ml={{ lg: "240px" }}
+        transition="margin-left 0.3s ease"
+        height="auto"
+      >
         {/* Header */}
         <Box
-          as="header"
           position="sticky"
           top="0"
           zIndex="docked"
@@ -50,6 +56,7 @@ export default function Home() {
         </Box>
 
         {/* Dashboard Content */}
+
         <DashboardLayout />
       </Box>
     </Box>

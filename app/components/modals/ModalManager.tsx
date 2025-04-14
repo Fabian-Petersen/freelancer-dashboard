@@ -7,6 +7,7 @@ import NewProjectModal from "@/app/components/modals/NewProjectModal";
 import UpdateProjectModal from "@/app/components/modals/UpdateProjectModal";
 import NewApplicationModal from "@/app/components/modals/NewApplicationModal";
 import UpdateJobModal from "@/app/components/modals/UpdateJobModal";
+import DeleteItemModal from "./DeleteItemModal";
 
 const ModalManager = () => {
   const {
@@ -16,6 +17,8 @@ const ModalManager = () => {
     isUpdateJobModalOpen,
     selectedProject,
     selectedJob,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
   } = useGlobalContext();
 
   // Determine if any modal is open
@@ -23,6 +26,7 @@ const ModalManager = () => {
     isNewProjectModalOpen ||
     isUpdateProjectModalOpen ||
     isNewJobModalOpen ||
+    isDeleteModalOpen ||
     isUpdateJobModalOpen;
 
   // If no modals are open, return null
@@ -46,8 +50,9 @@ const ModalManager = () => {
       {isNewProjectModalOpen && <NewProjectModal />}
       {isUpdateProjectModalOpen && selectedProject && <UpdateProjectModal />}
       {isNewJobModalOpen && <NewApplicationModal />}
-      {isUpdateJobModalOpen && selectedJob && (
-        <UpdateJobModal application={selectedJob} />
+      {isUpdateJobModalOpen && selectedJob && <UpdateJobModal />}
+      {isDeleteModalOpen && (
+        <DeleteItemModal closeModal={setIsDeleteModalOpen} />
       )}
     </Container>
   );

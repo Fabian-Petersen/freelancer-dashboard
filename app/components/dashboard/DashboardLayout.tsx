@@ -9,8 +9,14 @@ const DashboardLayout = () => {
   return (
     <Box p={4} color={{ base: "gray.700", _dark: "gray.700" }}>
       <Grid
-        templateColumns={{ base: "1fr", lg: "1fr 2fr", xl: "repeat(4, 1fr)" }}
+        templateColumns={{
+          base: "1fr",
+          lg: "repeat(3, 1fr)",
+          xl: "repeat(4, 1fr)",
+        }}
         overflowX={{ base: "hidden" }}
+        p={{ base: 0.5, md: 1, lg: 1.5 }}
+        height="100%"
         gap={4}
       >
         {/* //$  ============================= Chart - Monthly Revenue ======================== */}
@@ -20,7 +26,7 @@ const DashboardLayout = () => {
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 1, lg: 1 }}
+          colSpan={{ base: 1 }}
           borderColor={{ base: "gray.500", _dark: "dark" }}
         >
           <MonthlyRevenueChart />
@@ -47,21 +53,27 @@ const DashboardLayout = () => {
           borderColor={{ base: "gray.500", _dark: "#374151/80" }}
           p={4}
           borderRadius="md"
-          // boxShadow="sm"
           shadow={"sm"}
+          overflowY="auto"
+          height={"100%"}
+          alignSelf={"start"}
         >
           <ApplicationCards />
         </GridItem>
 
         {/* //$  ============================= Table - Projects List =========================== */}
         <GridItem
-          colSpan={{ base: 1, lg: 3 }}
+          colSpan={{ base: 1, lg: 2, xl: 3 }}
           bg={{ base: "white", _dark: "#1d2739" }}
           borderColor={{ base: "gray.500", _dark: "#374151/80" }}
           minWidth="0"
           w="100%"
           p={4}
           borderRadius="md"
+          marginBottom="auto"
+          alignSelf={"start"}
+          overflowY="auto"
+          height={"100%"}
         >
           <ProjectSummaryTable />
         </GridItem>

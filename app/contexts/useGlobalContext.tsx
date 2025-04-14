@@ -5,6 +5,7 @@ import { z } from "zod";
 
 type Project = z.infer<typeof projectSchema>;
 type Job = z.infer<typeof jobSchema>;
+import { ResourceType } from "@/app/utils/api";
 
 // Define the shape of our context state
 type GlobalContextType = {
@@ -26,6 +27,14 @@ type GlobalContextType = {
   // # Jobs Modal - Update Job
   isUpdateJobModalOpen: boolean;
   setIsUpdateJobModalOpen: (isOpen: boolean) => void;
+
+  // *  ========= Delete Items Modal ========= //
+  isDeleteModalOpen: boolean;
+  setIsDeleteModalOpen: (isOpen: boolean) => void;
+  itemToDelete: Project | Job | null;
+  setItemToDelete: (item: Project | Job | null) => void;
+  resourceTypeToDelete: ResourceType | null;
+  setResourceTypeToDelete: (type: ResourceType | null) => void;
 
   // %  ========= Projects State ========= //
   // % State to select as project from the project summary table
@@ -89,6 +98,12 @@ export function GlobalContextProvider({
   // $ Set state for the sidebar
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  // $ Delete Item Modal State
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const [itemToDelete, setItemToDelete] = useState<Project | Job | null>(null);
+  const [resourceTypeToDelete, setResourceTypeToDelete] =
+    useState<ResourceType | null>(null);
+
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
@@ -110,6 +125,12 @@ export function GlobalContextProvider({
       setHoveredCardId,
       isOpen,
       setIsOpen,
+      isDeleteModalOpen,
+      setIsDeleteModalOpen,
+      itemToDelete,
+      setItemToDelete,
+      resourceTypeToDelete,
+      setResourceTypeToDelete,
     }),
     [
       isNewProjectModalOpen,
@@ -122,6 +143,9 @@ export function GlobalContextProvider({
       isNewJobModalOpen,
       hoveredCardId,
       isOpen,
+      isDeleteModalOpen,
+      itemToDelete,
+      resourceTypeToDelete,
     ]
   );
 

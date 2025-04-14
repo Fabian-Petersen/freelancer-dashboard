@@ -168,7 +168,6 @@ const NewApplicationModal = () => {
               rounded="full"
               loading={createJob.isPending}
               loadingText="Submitting"
-              onClick={() => console.log("submit button clicked")}
             >
               Submit
             </Button>

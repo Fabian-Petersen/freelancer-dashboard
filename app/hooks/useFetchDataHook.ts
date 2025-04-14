@@ -1,7 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiService, ResourceType, EntityType } from "../utils/api";
-// import { Project } from "@/types/project";
-// import { Job } from "@/types/job";
 
 // Query key for projects
 // const PROJECTS_PATH: ResourceType = "projects";
@@ -73,9 +71,12 @@ export const useDelete = (resourceType: ResourceType) => {
 
   return useMutation({
     mutationFn: (id: string) => apiService.delete(resourceType, id),
-    onSuccess: () => {
-      // Invalidate the resource query to refetch the updated list
-      queryClient.invalidateQueries({ queryKey: [resourceType] });
+    onSuccess: (data, id) => {
+      // Update the cache manually to prevent the whole application from refreshing on item delete
+      queryClient.setQueryData<T[]>([resourceType], (oldData) => {
+        if (!oldData) return [];
+        return oldData.filter((item) => item.id !== id);
+      });
     },
   });
 };

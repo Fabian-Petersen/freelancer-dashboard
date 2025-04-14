@@ -4,17 +4,17 @@
 import {
   Box,
   Button,
-  HStack,
   Spinner,
   Text,
   Flex,
   Table,
+  Heading,
   IconButton,
 } from "@chakra-ui/react";
 import { z } from "zod";
 
 // $ components
-import ChartHeading from "../charts/ChartHeading";
+// import ChartHeading from "../charts/ChartHeading";
 import ProjectStatusSlider from "./ProjectStatusSlider";
 import { PlusCircle } from "lucide-react";
 import ProjectSummaryMenuButton from "./ProjectSummaryMenuButton";
@@ -28,8 +28,7 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
 
 function ProjectSummaryTable() {
-  const { setIsNewProjectModalOpen, isNewProjectModalOpen } =
-    useGlobalContext();
+  const { setIsNewProjectModalOpen } = useGlobalContext();
 
   // $ Fetch all the projects Data
   const {
@@ -41,7 +40,11 @@ function ProjectSummaryTable() {
 
   if (isPending) {
     return (
-      <Box textAlign="center" py={10}>
+      <Box
+        textAlign="center"
+        py={10}
+        color={{ base: "gray.600", _dark: "white" }}
+      >
         <Spinner size="xl" color="blue.500" />
         <Text mt={4}>Loading projects...</Text>
       </Box>
@@ -68,30 +71,40 @@ function ProjectSummaryTable() {
         w="100%"
         mb={4}
       >
-        <ChartHeading title="Project Summary" />
-        <HStack>
+        <Flex justify={"space-between"} alignItems={"center"} width="100%">
+          <Heading size="md" color="blue.500">
+            Projects Summary
+          </Heading>
           <Button
             colorPalette="teal"
+            width="10rem"
+            maxWidth={{ md: "12rem" }}
             variant="solid"
-            px={4}
-            visibility={{ base: "hidden", lg: "visible" }}
+            p={2}
+            display={{ base: "none", lg: "block" }}
             onClick={() => {
               setIsNewProjectModalOpen(true);
-              console.log("Open New Project Button:", isNewProjectModalOpen);
             }}
           >
-            <PlusCircle /> Add New Project
+            <Flex gap="2" justify={"space-between"} p="">
+              <PlusCircle />
+              <Text>Add New Project</Text>
+            </Flex>
           </Button>
+          {/* //$ Add project Button on Mobile Screen */}
           <IconButton
             colorPalette="teal"
             bgColor={"transparent"}
-            maxWidth={"20%"}
+            maxWidth={"50%"}
             color="teal.500"
-            visibility={{ base: "visible", lg: "hidden" }}
+            display={{ base: "block", lg: "none" }}
+            onClick={() => {
+              setIsNewProjectModalOpen(true);
+            }}
           >
             <PlusCircle />
           </IconButton>
-        </HStack>
+        </Flex>
       </Box>
       <Table.ScrollArea minWidth="100%" maxWidth="100%">
         <Table.Root width="100%">

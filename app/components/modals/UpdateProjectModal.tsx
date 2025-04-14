@@ -79,7 +79,7 @@ const UpdateProjectModal = () => {
     }
 
     const promise = new Promise<void>((resolve) => {
-      setTimeout(() => resolve(), 5000);
+      setTimeout(() => resolve(), 500);
     });
 
     try {
@@ -87,6 +87,7 @@ const UpdateProjectModal = () => {
         id: formData.id,
         entity: formData,
       });
+      console.log(formData);
 
       toaster.promise(promise, {
         success: {
@@ -118,8 +119,6 @@ const UpdateProjectModal = () => {
   if (!selectedProject && isUpdateProjectModalOpen) {
     return null;
   }
-
-  console.log("open modal, modal component:", isUpdateProjectModalOpen);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -207,6 +206,7 @@ const UpdateProjectModal = () => {
               />
             </SimpleGrid>
           </Fieldset.Content>
+
           <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
             <Button
               type="button"

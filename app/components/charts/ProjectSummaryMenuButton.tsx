@@ -1,7 +1,6 @@
 import { Flex, Menu, Box, Portal } from "@chakra-ui/react";
 import { MoreVertical } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useDelete } from "@/app/hooks/useFetchDataHook";
 import { projectSchema } from "@/app/schemas";
 
 import { z } from "zod";
@@ -12,17 +11,25 @@ type Props = {
 };
 
 const ProjectSummaryMenuButton = ({ project }: Props) => {
-  const { setIsUpdateProjectModalOpen, setSelectedProject } =
-    useGlobalContext();
+  const {
+    setIsUpdateProjectModalOpen,
+    setSelectedProject,
+    setIsDeleteModalOpen,
+    setItemToDelete,
+    setResourceTypeToDelete,
+  } = useGlobalContext();
 
-  const deleteProject = useDelete("projects");
+  // $ logic to edit a project
+  const handleEditProject = () => {
+    setIsUpdateProjectModalOpen(true);
+    setSelectedProject(project);
+  };
 
-  const handleDeleteProject = async (id: string) => {
-    try {
-      await deleteProject.mutateAsync(id);
-    } catch (error) {
-      console.error("Error deleting project:", error);
-    }
+  // $ logic to delete a project
+  const handleDeleteProject = () => {
+    setItemToDelete(project);
+    setResourceTypeToDelete("projects");
+    setIsDeleteModalOpen(true);
   };
 
   return (
@@ -46,10 +53,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                 p={1.5}
                 letterSpacing={"0.08rem"}
                 _hover={{ cursor: "pointer", bg: "transparent" }}
-                onClick={() => {
-                  setIsUpdateProjectModalOpen(true);
-                  setSelectedProject(project);
-                }}
+                onClick={handleEditProject}
               >
                 Edit
               </Menu.Item>
@@ -63,7 +67,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                   color: "fg.error",
                   cursor: "pointer",
                 }}
-                onClick={() => project.id && handleDeleteProject(project.id)}
+                onClick={handleDeleteProject}
               >
                 Delete
               </Menu.Item>

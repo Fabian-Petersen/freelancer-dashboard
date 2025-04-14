@@ -67,19 +67,21 @@ const NewProjectModal = () => {
 
   return (
     <form onSubmit={handleSubmit(handleProjectSubmit)}>
-      <Stack gap="4" align="flex-start" maxW="lg" width={"lg"} rounded="lg">
+      <Stack align="flex-start" maxW="lg" width={"lg"} rounded="lg">
         <Fieldset.Root
           size="lg"
           position={"absolute"}
-          maxW="2xl"
-          mx={"auto"}
-          my={"auto"}
+          maxW={{ base: "lg", md: "xl", lg: "2xl" }}
+          mx={{ base: "0px", lg: "auto" }}
+          my={{ base: "0px", lg: "auto" }}
           bgColor={{ base: "white", _dark: "#1d2739" }}
-          p={6}
+          p={5}
           translate={"-50% -50%"}
           left={"50%"}
           top={"50%"}
           rounded="md"
+          border="1px dotted red"
+          height={{ base: "auto", md: "auto" }}
         >
           <Stack>
             <Fieldset.Legend
@@ -94,7 +96,12 @@ const NewProjectModal = () => {
             </Fieldset.HelperText>
           </Stack>
           <Fieldset.Content>
-            <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
+            <SimpleGrid
+              columns={{ base: 1, md: 2 }}
+              mt={4}
+              gap={{ base: "2", md: "4" }}
+              border="1px dashed yellow"
+            >
               <ModalFormInput<FormValues>
                 name="client"
                 label="Client"
@@ -150,7 +157,7 @@ const NewProjectModal = () => {
               />
             </SimpleGrid>
           </Fieldset.Content>
-          <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
+          <Flex gap={4} mt={2} direction="row">
             <Button
               type="button"
               alignSelf="flex-start"
@@ -158,6 +165,7 @@ const NewProjectModal = () => {
                 base: "100%",
                 lg: "8rem",
               }}
+              maxWidth={{ base: "8rem", md: "10rem" }}
               mt={4}
               variant="outline"
               rounded="full"
@@ -178,6 +186,7 @@ const NewProjectModal = () => {
                 base: "100%",
                 lg: "8rem",
               }}
+              maxWidth={{ base: "8rem", md: "10rem" }}
               mt={4}
               colorPalette="teal"
               rounded="full"
