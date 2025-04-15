@@ -14,12 +14,13 @@ import {
 export type NavItemProps = {
   name: string;
   icon: LucideIcon;
-  isActive?: boolean;
+  url: string;
 };
 
 export type PreferencesLinksProps = {
   name: string;
   icon: LucideIcon;
+  url: string;
 };
 
 export type AuthLinks = {
@@ -28,17 +29,17 @@ export type AuthLinks = {
 };
 
 export const navbarLinks: NavItemProps[] = [
-  { name: "dashboard", icon: Home, isActive: true },
-  { name: "Contact Info", icon: Info, isActive: false },
-  { name: "My Team", icon: Users, isActive: false },
-  { name: "Tax Report", icon: FileText, isActive: false },
-  { name: "Billing", icon: DollarSign, isActive: false },
-  { name: "Services", icon: File, isActive: false },
+  { name: "dashboard", icon: Home, url: "/dashboard" },
+  { name: "Contact Info", icon: Info, url: "/info" },
+  { name: "Customer List", icon: Users, url: "/customers" },
+  { name: "Tax Report", icon: FileText, url: "/tax" },
+  { name: "Billing", icon: DollarSign, url: "/billing" },
+  { name: "Services", icon: File, url: "/services" },
 ] as const;
 
 export const PreferencesLinks: PreferencesLinksProps[] = [
-  { name: "Settings", icon: Settings },
-  { name: "Profile", icon: User2 },
+  { name: "Settings", icon: Settings, url: "/settings" },
+  { name: "Profile", icon: User2, url:"profile" },
 ];
 
 export const AuthLinks: AuthLinks[] = [{ name: "Logout", icon: LogOut }];

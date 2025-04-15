@@ -54,9 +54,13 @@ type GlobalContextType = {
   hoveredCardId: string;
   setHoveredCardId: (id: string) => void;
 
-  // * Sidebar Open and Close State
+  // * Sidebar State
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  isActive: boolean;
+  setIsActive: (isActive: boolean) => void;
+  activeItem: string | null;
+  setActiveItem: (activeItem: string) => void;
 };
 // $ State to select a specific job application card on click.
 
@@ -95,15 +99,16 @@ export function GlobalContextProvider({
   // $ Set State when a card is hover to display the menu button for the card
   const [hoveredCardId, setHoveredCardId] = useState<string>("");
 
-  // $ Set state for the sidebar
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
   // $ Delete Item Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<Project | Job | null>(null);
   const [resourceTypeToDelete, setResourceTypeToDelete] =
     useState<ResourceType | null>(null);
 
+  // $ Set state for the sidebar
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [activeItem, setActiveItem] = useState<string | null>(null);
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
@@ -131,6 +136,10 @@ export function GlobalContextProvider({
       setItemToDelete,
       resourceTypeToDelete,
       setResourceTypeToDelete,
+      isActive,
+      setIsActive,
+      activeItem,
+      setActiveItem,
     }),
     [
       isNewProjectModalOpen,
@@ -146,6 +155,8 @@ export function GlobalContextProvider({
       isDeleteModalOpen,
       itemToDelete,
       resourceTypeToDelete,
+      isActive,
+      activeItem,
     ]
   );
 

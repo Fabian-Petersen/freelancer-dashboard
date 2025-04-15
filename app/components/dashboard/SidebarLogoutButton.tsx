@@ -2,8 +2,16 @@
 
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { LogOut } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const SidebarLogoutButton = () => {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Add your logout logic here (e.g., clear tokens, call API)
+    router.push("/"); // Navigate to home page
+  };
+
   return (
     <Button
       width="100%"
@@ -12,7 +20,7 @@ const SidebarLogoutButton = () => {
       rounded={"none"}
       bgColor={{ base: "white", _dark: "#1d2739" }}
       color={{ base: "red.500" }}
-      onClick={() => alert("Logout button clicked")}
+      onClick={handleLogout}
       _hover={{ bgColor: "#222e44", cursor: "pointer", color: "red.600" }}
     >
       <Flex gap={4} alignItems="center" width={"100%"}>

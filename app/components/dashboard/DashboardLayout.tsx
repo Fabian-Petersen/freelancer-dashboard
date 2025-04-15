@@ -1,9 +1,10 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 
-import MonthlyRevenueChart from "../charts/MonthlyRevenueChart";
+// import MonthlyRevenueChart from "../charts/MonthlyRevenueChart";
 import RevenueExpenseChart from "../charts/RevenueExpenseChart";
 import ProjectSummaryTable from "../charts/ProjectSummaryTable";
 import ApplicationCards from "../charts/ApplicationCards";
+import StatsPieChart from "../charts/StatsPieChart";
 
 const DashboardLayout = () => {
   return (
@@ -19,17 +20,19 @@ const DashboardLayout = () => {
         height="100%"
         gap={4}
       >
-        {/* //$  ============================= Chart - Monthly Revenue ======================== */}
+        {/* //$  ============================= Chart - Project Stats YTD Chart ======================== */}
         <GridItem
           bg={{ base: "white", _dark: "#1d2739" }}
-          p={4}
+          // border="1px dashed red"
+          p={2}
+          position="relative"
           borderRadius="md"
           boxShadow="sm"
           height="300px"
           colSpan={{ base: 1 }}
           borderColor={{ base: "gray.500", _dark: "dark" }}
         >
-          <MonthlyRevenueChart />
+          <StatsPieChart />
         </GridItem>
 
         {/* //$  ============================= Chart - Expense & Revenue ====================== */}
@@ -37,7 +40,7 @@ const DashboardLayout = () => {
           bg={{ base: "white", _dark: "#1d2739" }}
           borderColor={{ base: "gray.500", _dark: "#37415180" }}
           color={{ base: "gray.600", _dark: "gray.100" }}
-          p={4}
+          p={2}
           borderRadius="md"
           boxShadow="sm"
           height="300px"

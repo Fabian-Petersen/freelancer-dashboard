@@ -11,7 +11,7 @@ import {
   Heading,
   IconButton,
 } from "@chakra-ui/react";
-// import { toaster } from "@/components/ui/toaster";
+
 import { z } from "zod";
 
 // $ components
@@ -29,6 +29,7 @@ import { useGetAll, useUpdate } from "@/app/hooks/useFetchDataHook";
 
 function ProjectSummaryTable() {
   const { setIsNewProjectModalOpen } = useGlobalContext();
+
   // $Track visual status updates locally
   const [localProjectStatus, setLocalProjectStatus] = useState<
     Record<string, number>
@@ -45,6 +46,9 @@ function ProjectSummaryTable() {
 
   // $ Use the update hook for projects
   const updateProject = useUpdate<Project>("projects");
+
+  // Track which sliders are currently being dragged
+  const [isDragging, setIsDragging] = useState<Record<string, boolean>>({});
 
   if (isPending) {
     return (
@@ -63,7 +67,7 @@ function ProjectSummaryTable() {
     return (
       <Box textAlign="center" py={10} color="red.500">
         <Text>
-          Error loading projects:{" "}
+          Error loading projects...
           {error instanceof Error ? error.message : "Unknown error"}
         </Text>
       </Box>
@@ -72,6 +76,13 @@ function ProjectSummaryTable() {
 
   // $ Handle immediate visual updates without sending to the database
   const handleVisualStatusUpdate = (projectId: string, newStatus: number) => {
+    // Mark this slider as currently being dragged
+    setIsDragging((prev) => ({
+      ...prev,
+      [projectId]: true,
+    }));
+
+    // Update the local status
     setLocalProjectStatus((prev) => ({
       ...prev,
       [projectId]: newStatus,
@@ -85,28 +96,42 @@ function ProjectSummaryTable() {
   ) => {
     try {
       console.log("database status update:", newStatus);
+      // Mark drag as ended for this slider
+      setIsDragging((prev) => ({
+        ...prev,
+        [projectId]: false,
+      }));
+
       await updateProject.mutateAsync({
         id: projectId,
         entity: { status: newStatus },
       });
+      // Keep the local status in sync with wthat was just saved
+      setLocalProjectStatus((prev) => {
+        const newState = { ...prev };
+        delete newState[projectId];
+        return newState;
+      });
     } catch (error) {
       console.error("Error updating project status:", error);
     }
-
-    // Reset the local status to match the database
-    setLocalProjectStatus((prev) => {
-      const newState = { ...prev };
-      delete newState[projectId];
-      return newState;
-    });
   };
 
   // Get the current displayed status (either local or from database)
   const getDisplayStatus = (project: Project) => {
     if (!project.id) return project.status || 0;
-    return localProjectStatus[project.id] !== undefined
-      ? localProjectStatus[project.id]
-      : project.status || 0;
+
+    // If we're tracking a local status for this project and it's either
+    // currently being dragged or we're pending a database update, use the local value
+    if (
+      localProjectStatus[project.id] !== undefined &&
+      (isDragging[project.id] || updateProject.isPending)
+    ) {
+      return localProjectStatus[project.id];
+    }
+
+    // Otherwise use the database value
+    return project.status || 0;
   };
 
   return (
@@ -209,7 +234,7 @@ function ProjectSummaryTable() {
             {Projects && Projects.length > 0 ? (
               Projects.map((project) => {
                 const currentStatus = getDisplayStatus(project);
-                if (!project.id) return null; // Ensure project.id is defined
+                if (!project.id) return null;
                 return (
                   <Table.Row
                     key={project.id}

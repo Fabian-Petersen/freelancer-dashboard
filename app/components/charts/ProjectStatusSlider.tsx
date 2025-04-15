@@ -20,7 +20,7 @@ const ProjectStatusSlider = ({
 
   return (
     <Slider.Root
-      width={{ base: "10rem", xl: "15rem" }}
+      width={{ base: "10", xl: "15rem" }}
       maxWidth={"300px"}
       value={[status]}
       min={0}

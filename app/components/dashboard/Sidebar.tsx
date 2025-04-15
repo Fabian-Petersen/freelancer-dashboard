@@ -13,6 +13,7 @@ import {
 import SidebarNavItem from "./SidebarNavItem";
 import SidebarLogoutButton from "./SidebarLogoutButton";
 import Logo from "../Logo";
+import Link from "next/link";
 
 import {
   navbarLinks,
@@ -24,7 +25,8 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 // $ Sidebar Component
 const Sidebar = () => {
-  const { setIsOpen } = useGlobalContext();
+  const { setIsOpen, setActiveItem, activeItem } = useGlobalContext();
+
   return (
     <Container
       as="nav"
@@ -82,13 +84,15 @@ const Sidebar = () => {
         <List.Root>
           <VStack align="stretch">
             {navbarLinks.map((item) => (
-              <SidebarNavItem
-                key={item.name}
-                icon={item.icon}
-                isActive={item.isActive}
-              >
-                {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-              </SidebarNavItem>
+              <Link href={`${item.url}`} key={item.name}>
+                <SidebarNavItem
+                  icon={item.icon}
+                  isActive={activeItem === item.name}
+                  onClick={() => setActiveItem(item.name)}
+                >
+                  {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                </SidebarNavItem>
+              </Link>
             ))}
             {/* Divider for preferences links */}
             <Box
@@ -107,9 +111,16 @@ const Sidebar = () => {
             </Text>
             {/* Preferences links */}
             {PreferencesLinks.map((item) => (
-              <SidebarNavItem key={item.name} icon={item.icon}>
-                {item.name}
-              </SidebarNavItem>
+              <Link href={`${item.url}`} key={item.name}>
+                <SidebarNavItem
+                  key={item.name}
+                  icon={item.icon}
+                  isActive={activeItem === item.name}
+                  onClick={() => setActiveItem(item.name)}
+                >
+                  {item.name}
+                </SidebarNavItem>
+              </Link>
             ))}
           </VStack>
         </List.Root>
