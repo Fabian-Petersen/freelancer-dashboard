@@ -143,7 +143,10 @@ const Header = () => {
             </Menu.Trigger>
             <Portal>
               <Menu.Positioner>
-                <Menu.Content w="100px" bgColor="white">
+                <Menu.Content
+                  w="100px"
+                  bgColor={{ base: "white", _dark: "#222e44" }}
+                >
                   <Flex gap={2} flexDirection="column" p={2}>
                     <Menu.Item
                       p={1}

@@ -81,7 +81,7 @@ const ApplicationCards = () => {
               key={item.id}
               p={3}
               position="relative"
-              bgColor={{ base: "gray.200/60", _dark: "#222e44" }}
+              bgColor={{ base: "gray.200/80", _dark: "#222e44" }}
               border={{
                 base: "1px solid gray.200",
                 _dark: "1px solid #37415180",
@@ -107,21 +107,21 @@ const ApplicationCards = () => {
                     py={{ base: "3px", lg: "5px" }}
                     bgColor={
                       item.status === "applied"
-                        ? "yellow.200"
+                        ? "yellow.100"
                         : item.status === "on hold"
-                        ? "gray.200"
+                        ? "gray.100"
                         : item.status === "interview"
-                        ? "green.200"
-                        : "red.500"
+                        ? "green.100"
+                        : "red.100"
                     }
                     color={
                       item.status === "applied"
-                        ? "yellow.600"
+                        ? "yellow.500"
                         : item.status === "on hold"
-                        ? "gray.600"
+                        ? "gray.500"
                         : item.status === "interview"
-                        ? "green.600"
-                        : "red.600"
+                        ? "green.500"
+                        : "red.500"
                     }
                   >
                     {item.status}
@@ -154,13 +154,26 @@ const ApplicationCards = () => {
                     rounded={"full"}
                     textTransform={"capitalize"}
                     px={{ base: "7px", lg: "10px" }}
-                    py={{ base: "4px", lg: "4px" }}
+                    py={{ base: "4px", lg: "6px" }}
                     variant={"outline"}
-                    color={{ base: "gray.600", _dark: "white" }}
-                    bgColor={{
-                      base: "gray.200",
-                      _dark: "cyan.400/80",
-                    }}
+                    color={
+                      item.contract === "permanent"
+                        ? "teal.500"
+                        : item.contract === "contract"
+                        ? "cyan.500"
+                        : item.contract === "freelance"
+                        ? "purple.500"
+                        : "red.500"
+                    }
+                    bgColor={
+                      item.contract === "permanent"
+                        ? "teal.100"
+                        : item.contract === "contract"
+                        ? "cyan.100"
+                        : item.contract === "freelance"
+                        ? "purple.100"
+                        : "red.100"
+                    }
                   >
                     {item.contract}
                   </Badge>
@@ -170,12 +183,25 @@ const ApplicationCards = () => {
                     px={{ base: "7px", lg: "10px" }}
                     py={{ base: "4px", lg: "4px" }}
                     variant={"outline"}
-                    color={{ base: "gray.600", _dark: "white" }}
                     outline="none"
-                    bgColor={{
-                      base: "gray.200",
-                      _dark: "teal.400/80",
-                    }}
+                    color={
+                      item.location_type === "remote"
+                        ? "teal.500"
+                        : item.location_type === "on site"
+                        ? "cyan.500"
+                        : item.location_type === "hybrid"
+                        ? "purple.500"
+                        : "red.500"
+                    }
+                    bgColor={
+                      item.location_type === "remote"
+                        ? "teal.100"
+                        : item.location_type === "on site"
+                        ? "cyan.100"
+                        : item.location_type === "hybrid"
+                        ? "purple.100"
+                        : "red.100"
+                    }
                   >
                     {item.location_type}
                   </Badge>

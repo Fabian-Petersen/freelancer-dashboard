@@ -1,5 +1,5 @@
-import { Flex, Menu, Box, Portal } from "@chakra-ui/react";
-import { MoreVertical } from "lucide-react";
+import { Flex, Menu, Box, Portal, Text } from "@chakra-ui/react";
+import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { projectSchema } from "@/app/schemas";
 
@@ -37,6 +37,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
       <Menu.Trigger asChild>
         <Box
           as="button"
+          border="none"
           _hover={{ cursor: "pointer" }}
           color={{ base: "gray.500", _dark: "gray.300" }}
           fontSize={{ base: "0.6rem", lg: "0.5rem" }}
@@ -46,30 +47,41 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>
-          <Menu.Content px={2}>
+          <Menu.Content px={2} bgColor={{ base: "white", _dark: "#222e44" }}>
             <Flex gap={2} flexDirection="column" p={2}>
               <Menu.Item
                 value="rename"
-                p={1.5}
+                p={1}
                 letterSpacing={"0.08rem"}
-                _hover={{ cursor: "pointer", bg: "transparent" }}
+                bgColor="transparent"
+                _hover={{
+                  cursor: "pointer",
+                  color: "blue.500",
+                }}
                 onClick={handleEditProject}
               >
-                Edit
+                <Flex gap={2} align="center">
+                  <Pencil size={16} />
+                  <Text>Edit</Text>
+                </Flex>
               </Menu.Item>
               <Menu.Item
                 value="delete"
-                color="fg.error"
-                p={1.5}
+                color="orange.500"
+                p={1}
+                bgColor="transparent"
                 letterSpacing={"0.08rem"}
                 _hover={{
-                  bg: "bg.error",
-                  color: "fg.error",
                   cursor: "pointer",
+
+                  color: "red.600",
                 }}
                 onClick={handleDeleteProject}
               >
-                Delete
+                <Flex gap={2} align="center">
+                  <Trash2 size={16} />
+                  <Text>Delete</Text>
+                </Flex>
               </Menu.Item>
             </Flex>
           </Menu.Content>
