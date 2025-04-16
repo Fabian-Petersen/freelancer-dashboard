@@ -7,10 +7,11 @@ const Header = () => {
       as="header"
       align="center"
       justify="end"
+      bgColor="transparent"
       w="100%"
       px={4}
       py={3}
-      bgColor={{ base: "white", _dark: "#1d2739" }}
+      height="5rem"
     >
       <Flex
         alignItems="center"
