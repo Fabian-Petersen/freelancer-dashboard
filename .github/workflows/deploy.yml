@@ -4,7 +4,11 @@ on:
     branches: [main]
 
 env:
-  NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+  NEXT_PUBLIC_API_URL:
+    ${{ secrets.NEXT_PUBLIC_API_URL }}
+    # NEXT_PUBLIC_COGNITO_USERPOOL_ID: ${{ secrets.NEXT_PUBLIC_COGNITO_USERPOOL_ID }}
+  # NEXT_PUBLIC_COGNITO_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_COGNITO_CLIENT_ID }}
+  NEXT_PUBLIC_REGION: ${{ secrets.NEXT_PUBLIC_REGION }}
 
 jobs:
   deploy:
@@ -23,8 +27,14 @@ jobs:
       - name: Build
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_COGNITO_USERPOOL_ID: ${{ secrets.NEXT_PUBLIC_COGNITO_USERPOOL_ID }}
+          NEXT_PUBLIC_COGNITO_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_COGNITO_CLIENT_ID }}
+          NEXT_PUBLIC_REGION: ${{ secrets.NEXT_PUBLIC_REGION }}
         run: |
           echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL"
+          echo "NEXT_PUBLIC_COGNITO_USERPOOL_ID=$NEXT_PUBLIC_COGNITO_USERPOOL_ID"
+          echo "NEXT_PUBLIC_COGNITO_CLIENT_ID=$NEXT_PUBLIC_COGNITO_CLIENT_ID"
+          echo "NEXT_PUBLIC_REGION=$NEXT_PUBLIC_REGION"
           npm run build
 
       - name: List build output
@@ -36,6 +46,17 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: af-south-1
+          # Add permissions for Cognito operations
+          role-duration-seconds: 3600
+          role-session-name: GithubActionsCognito
+
+      # Add Cognito configuration validation
+      - name: Validate Cognito Configuration
+        run: |
+          aws cognito-idp describe-user-pool \
+            --user-pool-id ${{ secrets.NEXT_PUBLIC_COGNITO_USERPOOL_ID }} \
+            --query 'UserPool.Id' \
+            --output text
 
       - name: Deploy to S3
         run: |
