@@ -9,8 +9,8 @@ export default function Home() {
       bgColor={{ base: "#f8fafd", _dark: "#101827" }}
       // border="1px dashed red"
       gap="0"
-      p="0 2rem 2rem 2rem"
-      templateRows="5rem 1fr"
+      p={{ base: "0 1rem 1rem 1rem", lg: "0 4rem 2rem 4rem" }}
+      templateRows={{ base: "3rem 1fr", sm: "5rem 1fr" }}
     >
       <GridItem>
         <Header />

@@ -23,11 +23,3 @@ export const jobSchema = z.object({
     errorMap: () => ({ message: "Please select a valid contract type." }),
   }),
 });
-
-export const testSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "first name is required")
-    .max(15, "maximum 15 character allowed"),
-  lastName: z.string().min(1, "last name is required"),
-});

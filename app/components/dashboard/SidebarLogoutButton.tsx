@@ -1,15 +1,35 @@
 "use client";
 
-import { Button, Flex, Text } from "@chakra-ui/react";
-import { LogOut } from "lucide-react";
+import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useRouter } from "next/navigation";
 
+// $ Chakra Components
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { toaster } from "@/components/ui/toaster";
+// $ Icons
+import { LogOut } from "lucide-react";
+
+// $ AWS Functions
+import { awsCognitoSignOut } from "@/app/utils/aws-signout";
+
 const SidebarLogoutButton = () => {
+  const { userAttributes } = useGlobalContext();
   const router = useRouter();
 
-  const handleLogout = () => {
-    // Add your logout logic here (e.g., clear tokens, call API)
-    router.push("/"); // Navigate to home page
+  const handleLogout = async () => {
+    try {
+      await awsCognitoSignOut();
+      toaster.create({
+        type: "info",
+        title: "Logging Out..",
+        description: `Goodbye ${userAttributes?.name}`,
+        duration: 3000,
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+      router.push("/");
+    }
   };
 
   return (

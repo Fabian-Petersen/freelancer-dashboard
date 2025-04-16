@@ -3,6 +3,9 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { projectSchema, jobSchema } from "@/app/schemas";
 import { z } from "zod";
 
+// $ import the user attributes state
+import { FetchUserAttributesOutput } from "@aws-amplify/auth";
+
 type Project = z.infer<typeof projectSchema>;
 type Job = z.infer<typeof jobSchema>;
 import { ResourceType } from "@/app/utils/api";
@@ -61,6 +64,12 @@ type GlobalContextType = {
   setIsActive: (isActive: boolean) => void;
   activeItem: string | null;
   setActiveItem: (activeItem: string) => void;
+
+  // * AWS State
+  userAttributes: FetchUserAttributesOutput | null;
+  setUserAttributes: React.Dispatch<
+    React.SetStateAction<FetchUserAttributesOutput | null>
+  >;
 };
 // $ State to select a specific job application card on click.
 
@@ -109,6 +118,11 @@ export function GlobalContextProvider({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [activeItem, setActiveItem] = useState<string | null>(null);
+
+  // $ AWS Authentication State
+  const [userAttributes, setUserAttributes] =
+    useState<FetchUserAttributesOutput | null>(null);
+
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
     () => ({
@@ -140,6 +154,8 @@ export function GlobalContextProvider({
       setIsActive,
       activeItem,
       setActiveItem,
+      userAttributes,
+      setUserAttributes,
     }),
     [
       isNewProjectModalOpen,
@@ -157,6 +173,7 @@ export function GlobalContextProvider({
       resourceTypeToDelete,
       isActive,
       activeItem,
+      userAttributes,
     ]
   );
 

@@ -42,7 +42,7 @@ function ProjectSummaryTable() {
     isError,
     error,
   } = useGetAll<Project>("projects");
-  console.log("all projects data:", Projects);
+  // console.log("all projects data:", Projects);
 
   // $ Use the update hook for projects
   const updateProject = useUpdate<Project>("projects");
@@ -95,7 +95,7 @@ function ProjectSummaryTable() {
     newStatus: number
   ) => {
     try {
-      console.log("database status update:", newStatus);
+      // console.log("database status update:", newStatus);
       // Mark drag as ended for this slider
       setIsDragging((prev) => ({
         ...prev,

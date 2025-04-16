@@ -15,12 +15,14 @@ import Provider from "./provider";
 import { ColorModeProvider } from "@/components/ui/color-mode";
 import { ChakraProvider } from "@chakra-ui/react";
 import { system } from "@/theme";
+import configureAmplify from "@/aws/amplifyConfig";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  configureAmplify();
   return (
     <html className={inter.className} suppressHydrationWarning>
       <head />
