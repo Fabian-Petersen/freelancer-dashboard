@@ -70,6 +70,19 @@ type GlobalContextType = {
   setUserAttributes: React.Dispatch<
     React.SetStateAction<FetchUserAttributesOutput | null>
   >;
+
+  // *  ========= Confirm SignUp & Resend Code Modal ========= //
+  isConfirmSignUpModalOpen: boolean;
+  setIsConfirmSignUpModalOpen: (isOpen: boolean) => void;
+  isResendCodeModalOpen: boolean;
+  setIsResendCodeModalOpen: (isOpen: boolean) => void;
+
+  signUpEmail: string;
+  setSignUpEmail: (email: string) => void;
+
+  // *  ========= Loading State ========= //
+  formSubmitting: boolean;
+  setFormSubmitting: (isSubmitting: boolean) => void;
 };
 // $ State to select a specific job application card on click.
 
@@ -114,6 +127,14 @@ export function GlobalContextProvider({
   const [resourceTypeToDelete, setResourceTypeToDelete] =
     useState<ResourceType | null>(null);
 
+  // $ Sign Up Modal State
+  const [isConfirmSignUpModalOpen, setIsConfirmSignUpModalOpen] =
+    useState<boolean>(false);
+
+  const [isResendCodeModalOpen, setIsResendCodeModalOpen] =
+    useState<boolean>(false);
+  const [signUpEmail, setSignUpEmail] = useState<string>("");
+
   // $ Set state for the sidebar
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -122,6 +143,9 @@ export function GlobalContextProvider({
   // $ AWS Authentication State
   const [userAttributes, setUserAttributes] =
     useState<FetchUserAttributesOutput | null>(null);
+
+  // $ Form Submitting State
+  const [formSubmitting, setFormSubmitting] = useState<boolean>(false);
 
   // Memoize the context value to prevent unnecessary re-renders
   const value = React.useMemo(
@@ -156,6 +180,14 @@ export function GlobalContextProvider({
       setActiveItem,
       userAttributes,
       setUserAttributes,
+      isConfirmSignUpModalOpen,
+      setIsConfirmSignUpModalOpen,
+      signUpEmail,
+      setSignUpEmail,
+      formSubmitting,
+      setFormSubmitting,
+      isResendCodeModalOpen,
+      setIsResendCodeModalOpen,
     }),
     [
       isNewProjectModalOpen,
@@ -174,6 +206,10 @@ export function GlobalContextProvider({
       isActive,
       activeItem,
       userAttributes,
+      isConfirmSignUpModalOpen,
+      signUpEmail,
+      formSubmitting,
+      isResendCodeModalOpen,
     ]
   );
 

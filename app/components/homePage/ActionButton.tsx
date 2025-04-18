@@ -1,4 +1,5 @@
 "use client";
+// $ This component is used for the login and registration buttons on the landing page
 
 import React from "react";
 import { Button } from "@chakra-ui/react";
@@ -16,7 +17,7 @@ export default function ActionButton({ title }: Props) {
   };
 
   const handleRegister = () => {
-    alert("register");
+    router.push("/register");
   };
 
   return (

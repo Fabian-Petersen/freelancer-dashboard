@@ -17,9 +17,12 @@ import {
 import { BellIcon, SearchIcon, SettingsIcon } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import SidebarToggleButton from "../dashboard/SidebarToggleButton";
-
+// import { useLogout } from "../dashboard/SidebarLogoutButton";
+import { useLogout } from "@/app/utils/aws-signout";
 const Header = () => {
   const { isOpen, setIsOpen } = useGlobalContext();
+  const handleLogout = useLogout();
+
   return (
     <Flex
       as="header"
@@ -201,6 +204,7 @@ const Header = () => {
                         bgColor: "gray.50/10",
                         color: "red.600",
                       }}
+                      onClick={handleLogout}
                     >
                       Sign out
                     </Menu.Item>

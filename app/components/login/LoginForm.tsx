@@ -59,7 +59,8 @@ export default function LoginForm() {
       } else {
         const attributes = await fetchUserAttributes();
         setUserAttributes(attributes);
-        console.log("attributes", attributes);
+        router.push("/dashboard");
+        // console.log("attributes", attributes);
         toaster.create({
           type: "success",
           title: "signing in...",
@@ -67,7 +68,6 @@ export default function LoginForm() {
           duration: 3000,
         });
         console.log("user attributes in the state:", userAttributes);
-        router.push("/dashboard");
       }
 
       // $ Route to the dashboard page if successfull.
@@ -99,7 +99,7 @@ export default function LoginForm() {
         <Fieldset.Root
           size="lg"
           position={"absolute"}
-          width="20rem"
+          width="25rem"
           mx={{ base: "0px", lg: "auto" }}
           my={{ base: "0px", lg: "auto" }}
           bgColor={{ base: "gray.100", _dark: "#1d2739" }}
@@ -114,7 +114,8 @@ export default function LoginForm() {
             <Fieldset.Legend
               color="blue.500"
               fontWeight={"bold"}
-              fontSize={{ base: "1rem", lg: "1.5rem" }}
+              fontSize={{ base: "1.5rem", lg: "2.5rem" }}
+              py={4}
             >
               🔐 Login...
             </Fieldset.Legend>
@@ -159,7 +160,7 @@ export default function LoginForm() {
               colorPalette="teal"
               rounded="full"
               // loading={createProject.isPending}
-              // loadingText="Submitting"
+              loadingText="Submitting"
             >
               Submit
             </Button>

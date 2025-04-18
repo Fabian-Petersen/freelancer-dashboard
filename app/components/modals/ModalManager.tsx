@@ -8,6 +8,8 @@ import UpdateProjectModal from "@/app/components/modals/UpdateProjectModal";
 import NewApplicationModal from "@/app/components/modals/NewApplicationModal";
 import UpdateJobModal from "@/app/components/modals/UpdateJobModal";
 import DeleteItemModal from "./DeleteItemModal";
+// import { ConfirmSignUpModal } from "../register/ConfirmSignUpForm";
+// import { ResendCodeModal } from "../register/ResendCodeForm";
 
 const ModalManager = () => {
   const {
@@ -18,6 +20,8 @@ const ModalManager = () => {
     selectedProject,
     selectedJob,
     isDeleteModalOpen,
+    // isConfirmSignUpModalOpen,
+    // isResendCodeModalOpen,
     setIsDeleteModalOpen,
   } = useGlobalContext();
 
@@ -27,6 +31,8 @@ const ModalManager = () => {
     isUpdateProjectModalOpen ||
     isNewJobModalOpen ||
     isDeleteModalOpen ||
+    // isConfirmSignUpModalOpen ||
+    // isResendCodeModalOpen ||
     isUpdateJobModalOpen;
 
   // If no modals are open, return null
@@ -45,11 +51,14 @@ const ModalManager = () => {
       mx="auto"
       bgColor="black/60"
       zIndex={2000}
+      pointerEvents={"auto"}
     >
       {/* Render the appropriate modal based on which state is true */}
       {isNewProjectModalOpen && <NewProjectModal />}
       {isUpdateProjectModalOpen && selectedProject && <UpdateProjectModal />}
       {isNewJobModalOpen && <NewApplicationModal />}
+      {/* {isConfirmSignUpModalOpen && <ConfirmSignUpModal />} */}
+      {/* {isResendCodeModalOpen && <ResendCodeModal />} */}
       {isUpdateJobModalOpen && selectedJob && <UpdateJobModal />}
       {isDeleteModalOpen && (
         <DeleteItemModal closeModal={setIsDeleteModalOpen} />

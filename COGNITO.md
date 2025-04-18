@@ -51,3 +51,9 @@ console.error("Login error:", error);
 // optionally show a failed login toaster here
 }
 };
+
+## ExpiredCodeException: Invalid code provided, please request a code again
+
+## The code and the email was provided howver this error was received when calling the api.
+
+This error happended because the aws function expect the variables as confirmSignUp(code, email), i had it the other way around in my code with resulted in this error.

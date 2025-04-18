@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import ModalFormInput from "../../components/modals/ModalFormInput";
+import ModalFormInput from "../modals/ModalFormInput";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
+import { useRouter } from "next/navigation";
 
 // $ Chakra Components
 import {
@@ -13,6 +13,7 @@ import {
   Flex,
   Stack,
   SimpleGrid,
+  Box,
   Text,
 } from "@chakra-ui/react";
 import { toaster } from "@/components/ui/toaster";
@@ -24,14 +25,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 // $ Function handling the signin to aws
-import { awsCognitoLogin } from "@/app/utils/aws-signin";
-import { fetchUserAttributes } from "aws-amplify/auth";
+import { awsCognitoSignUp } from "@/app/utils/aws-signup";
 
 type FormValues = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
   const router = useRouter();
-  const { userAttributes, setUserAttributes } = useGlobalContext();
+  const {
+    // setIsConfirmSignUpModalOpen,
+    isConfirmSignUpModalOpen,
+    isResendCodeModalOpen,
+    setSignUpEmail,
+  } = useGlobalContext();
 
   // $ Form Schema
   const {
@@ -45,29 +50,35 @@ export default function RegisterForm() {
   const handleRegisterSubmit = async (data: FormValues) => {
     // $ try-catch to sign into aws cognito
     try {
-      //$ awsLogin is the function handling the signin to aws cognito using amplify "/utils/aws-login.ts"
-      const result = await awsCognitoLogin(data.email, data.password);
-      // $ assign the user attributes to the global state to use where required
-      if (!result) {
-        toaster.create({
-          type: "error",
-          title: "Error!!",
-          description: "The login attempt was unsuccessful",
-          duration: 3000,
-        });
-        return; // prevent going forward if login fails
-      } else {
-        const attributes = await fetchUserAttributes();
-        setUserAttributes(attributes);
-        console.log("attributes", attributes);
+      //$ aws-signup is the file where handling the signin to aws cognito using amplify "/utils/aws-signup.ts"
+      const result = await awsCognitoSignUp(
+        data.name,
+        data.email,
+        data.password
+      );
+
+      // $ Save email for confirmation step
+      setSignUpEmail(data.email);
+
+      if (result.isSignUpComplete) {
         toaster.create({
           type: "success",
-          title: "signing in...",
-          description: `Welcome Back ${attributes?.name}`,
+          title: "You're all set!",
+          description: "You have been signed up and auto-signed in.",
           duration: 3000,
         });
-        console.log("user attributes in the state:", userAttributes);
-        router.push("/dashboard");
+
+        // If you want to route to dashboard or do something else here
+      } else {
+        // Show confirmation modal
+        console.log(
+          "Confirm Modal State:",
+          isConfirmSignUpModalOpen,
+          "result returned from aws:",
+          result.isSignUpComplete
+        );
+        // $ assign the user attributes to the global state to use where required
+        // setIsConfirmSignUpModalOpen(true);
       }
 
       // $ Route to the dashboard page if successfull.
@@ -95,11 +106,17 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit(handleRegisterSubmit)}>
-      <Stack align="flex-start" maxW="lg" width={"lg"} rounded="lg">
+      <Stack
+        align="flex-start"
+        maxW="lg"
+        width={"lg"}
+        rounded="lg"
+        pointerEvents={isResendCodeModalOpen ? "none" : "auto"}
+      >
         <Fieldset.Root
           size="lg"
           position={"absolute"}
-          width="20rem"
+          width="25rem"
           mx={{ base: "0px", lg: "auto" }}
           my={{ base: "0px", lg: "auto" }}
           bgColor={{ base: "gray.100", _dark: "#1d2739" }}
@@ -114,9 +131,10 @@ export default function RegisterForm() {
             <Fieldset.Legend
               color="blue.500"
               fontWeight={"bold"}
-              fontSize={{ base: "1rem", lg: "1.5rem" }}
+              fontSize={{ base: "1.5rem", lg: "2.5rem" }}
+              py={4}
             >
-              🔐 Register Account...
+              🔐 Register...
             </Fieldset.Legend>
             <Fieldset.HelperText>
               Please provide new user details below.
@@ -144,13 +162,21 @@ export default function RegisterForm() {
               />
               <ModalFormInput<FormValues>
                 name="password"
+                type="password"
                 label="Password"
                 register={register}
                 error={errors?.password}
               />
+              <ModalFormInput<FormValues>
+                name="confirmPassword"
+                type="password"
+                label="Confirm Password"
+                register={register}
+                error={errors?.confirmPassword}
+              />
             </SimpleGrid>
           </Fieldset.Content>
-          <Flex width="100%" direction="column" gap={3} pt="0.5rem">
+          <Flex width="100%" direction="column" gap={3} pt="1rem">
             <Button
               type="submit"
               //   width="100%"
@@ -166,9 +192,26 @@ export default function RegisterForm() {
               Submit
             </Button>
           </Flex>
-          <Text fontSize="0.8rem" py="5px">
-            Already have an account? <Link href="/login">Login</Link>
-          </Text>
+          <Flex gap="6">
+            <Text fontSize="0.8rem" py="10px">
+              Already have an account? {""}
+              <Link href="/login">
+                <Box as="span" _hover={{ cursor: "pointer" }}>
+                  Login
+                </Box>
+              </Link>
+            </Text>
+            <Text
+              as="button"
+              fontSize="0.8rem"
+              py="10px"
+              _hover={{ cursor: "pointer" }}
+              onClick={() => router.push("/resend-code")}
+              // border="1px solid red"
+            >
+              Resend Code
+            </Text>
+          </Flex>
         </Fieldset.Root>
       </Stack>
     </form>
