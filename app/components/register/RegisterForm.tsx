@@ -193,10 +193,17 @@ export default function RegisterForm() {
             </Button>
           </Flex>
           <Flex gap="6">
-            <Text fontSize="0.8rem" py="10px">
+            <Text
+              fontSize="0.8rem"
+              py="10px"
+              color={{ base: "gray.600", _dark: "gray.300" }}
+            >
               Already have an account? {""}
               <Link href="/login">
-                <Box as="span" _hover={{ cursor: "pointer" }}>
+                <Box
+                  as="span"
+                  _hover={{ cursor: "pointer", color: "blue.400" }}
+                >
                   Login
                 </Box>
               </Link>
@@ -205,6 +212,7 @@ export default function RegisterForm() {
               as="button"
               fontSize="0.8rem"
               py="10px"
+              color={{ base: "gray.600", _dark: "gray.300" }}
               _hover={{ cursor: "pointer" }}
               onClick={() => router.push("/resend-code")}
               // border="1px solid red"

@@ -12,6 +12,7 @@ import {
   Fieldset,
   Flex,
   Stack,
+  Box,
   SimpleGrid,
   Text,
 } from "@chakra-ui/react";
@@ -146,8 +147,13 @@ export default function LoginForm() {
             </SimpleGrid>
           </Fieldset.Content>
           <Flex width="100%" direction="column" gap={3} pt="0.5rem">
-            <Text fontSize="0.8rem">
-              <Link href="/register">Forgot your password? </Link>
+            <Text
+              fontSize="0.8rem"
+              color={{ base: "gray.600", _dark: "gray.300" }}
+            >
+              <Link href="/register">
+                <Box as="span">Forgot password?</Box>
+              </Link>
             </Text>
 
             <Button
@@ -165,8 +171,17 @@ export default function LoginForm() {
               Submit
             </Button>
           </Flex>
-          <Text fontSize="0.8rem" py="5px">
-            Don’t have an account? <Link href="/register">Sign up</Link>
+          <Text
+            fontSize="0.8rem"
+            py="1rem"
+            color={{ base: "gray.600", _dark: "gray.300" }}
+          >
+            Don’t have an account?{" "}
+            <Link href="/register">
+              <Box as="span" _hover={{ color: "blue.400" }}>
+                Sign up
+              </Box>
+            </Link>
           </Text>
         </Fieldset.Root>
       </Stack>
