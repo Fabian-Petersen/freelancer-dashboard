@@ -6,18 +6,18 @@ import ModalFormInput from "./ModalFormInput";
 import { Button, Fieldset, Flex, Stack, SimpleGrid } from "@chakra-ui/react";
 
 // $ React-Hook-Form, zod & schema
-import { jobSchema } from "@/app/schemas";
-import { z } from "zod";
+import { taskSchema } from "@/app/schemas";
+import { Task } from "@/app/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-type FormValues = z.infer<typeof jobSchema>;
+type FormValues = Task;
 
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useCreate } from "../../hooks/useFetchDataHook";
 
 const NewApplicationModal = () => {
-  const { setIsNewJobModalOpen } = useGlobalContext();
+  const { setIsNewTaskModalOpen } = useGlobalContext();
 
   // $ Form Schema
   const {
@@ -26,22 +26,22 @@ const NewApplicationModal = () => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(jobSchema),
+    resolver: zodResolver(taskSchema),
   });
 
   // $ State to open the modal to add a new project
-  const createJob = useCreate("applications");
-  const handleJobSubmit = async (formData: FormValues) => {
+  const createTask = useCreate("tasks");
+  const handleTaskSubmit = async (formData: FormValues) => {
     const promise = new Promise<void>((resolve) => {
       setTimeout(() => resolve(), 2000);
     });
 
     try {
-      await createJob.mutateAsync(formData);
+      await createTask.mutateAsync(formData);
       toaster.promise(promise, {
         success: {
-          title: "New Job Application",
-          description: "Job Successfully Created",
+          title: "New Task",
+          description: "Task Successfully Created",
         },
         error: {
           title: "Upload Failed",
@@ -50,20 +50,20 @@ const NewApplicationModal = () => {
         loading: { title: "Uploading...", description: "Please wait" },
       });
       // $ Close the modal and reset form
-      setIsNewJobModalOpen(false);
+      setIsNewTaskModalOpen(false);
       reset();
     } catch (error) {
       toaster.create({
         title: "Error!!",
-        description: "An error occured creating new application",
+        description: "An error occured creating new task",
         type: "error",
       });
-      console.error("Error creating application:", error);
+      console.error("Error creating task:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(handleJobSubmit)}>
+    <form onSubmit={handleSubmit(handleTaskSubmit)}>
       <Stack gap="4" align="flex-start" maxW="lg" width={"lg"} rounded="lg">
         <Fieldset.Root
           size="lg"
@@ -85,7 +85,7 @@ const NewApplicationModal = () => {
               fontWeight={"bold"}
               fontSize={{ base: "1rem", lg: "1.5rem" }}
             >
-              New Job Applciation Details
+              New Task Details
             </Fieldset.Legend>
             <Fieldset.HelperText>
               Please enter the details below.
@@ -93,47 +93,36 @@ const NewApplicationModal = () => {
           </Stack>
           <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
             <ModalFormInput<FormValues>
-              name="job_title"
-              label="Job Title"
+              name="task_title"
+              label="Task Title"
               register={register}
-              error={errors?.job_title}
+              error={errors?.task_title}
             />
             <ModalFormInput<FormValues>
-              name="company"
-              label="company"
+              name="description"
+              type="textarea"
+              label="description"
               register={register}
-              error={errors?.company}
+              error={errors?.description}
             />
             <ModalFormInput<FormValues>
-              name="contract"
-              label="Contract Type"
+              name="priority"
+              label="Priority"
               register={register}
-              error={errors?.contract}
-            />
-            <ModalFormInput<FormValues>
-              name="city"
-              label="City"
-              register={register}
-              error={errors?.city}
-            />
-            <ModalFormInput<FormValues>
-              name="location_type"
-              label="location"
-              register={register}
-              error={errors?.location_type}
+              error={errors?.priority}
             />
             <ModalFormInput<FormValues>
               name="status"
-              label="status"
+              label="Status"
               register={register}
               error={errors?.status}
             />
             <ModalFormInput<FormValues>
-              name="date_applied"
-              label="Date Applied"
+              name="due_date"
+              label="Due Date"
               type="date"
               register={register}
-              error={errors.date_applied}
+              error={errors.due_date}
             />
           </SimpleGrid>
           <Flex gap={4} mt={2} direction={{ base: "column", lg: "row" }}>
@@ -150,9 +139,9 @@ const NewApplicationModal = () => {
               color={{ base: "gray.600", _dark: "gray.200" }}
               _hover={{ bgColor: "red.300", color: "white" }}
               onClick={() => {
-                setIsNewJobModalOpen(false);
+                setIsNewTaskModalOpen(false);
               }}
-              disabled={createJob.isPending}
+              disabled={createTask.isPending}
             >
               Cancel
             </Button>
@@ -166,7 +155,7 @@ const NewApplicationModal = () => {
               mt={4}
               colorPalette="teal"
               rounded="full"
-              loading={createJob.isPending}
+              loading={createTask.isPending}
               loadingText="Submitting"
             >
               Submit

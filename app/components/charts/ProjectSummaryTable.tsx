@@ -12,16 +12,13 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 
-import { z } from "zod";
-
 // $ components
 import ProjectStatusSlider from "./ProjectStatusSlider";
 import { PlusCircle } from "lucide-react";
 import ProjectSummaryMenuButton from "./ProjectSummaryMenuButton";
 
 // $ types
-import { projectSchema } from "@/app/schemas";
-type Project = z.infer<typeof projectSchema>;
+import { Project } from "@/app/schemas";
 
 // $ functions
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";

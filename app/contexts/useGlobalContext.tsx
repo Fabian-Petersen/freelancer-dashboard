@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 import { projectSchema, jobSchema } from "@/app/schemas";
+import { Task } from "@/app/schemas";
 import { z } from "zod";
 
 // $ import the user attributes state
@@ -31,11 +32,20 @@ type GlobalContextType = {
   isUpdateJobModalOpen: boolean;
   setIsUpdateJobModalOpen: (isOpen: boolean) => void;
 
+  // *  ========= Tasks Modal ========= //
+  // # Tasks Modal - Create Task
+  isNewTaskModalOpen: boolean;
+  setIsNewTaskModalOpen: (isOpen: boolean) => void;
+
+  // # Tasks Modal - Update Task
+  isUpdateTaskModalOpen: boolean;
+  setIsUpdateTaskModalOpen: (isOpen: boolean) => void;
+
   // *  ========= Delete Items Modal ========= //
   isDeleteModalOpen: boolean;
   setIsDeleteModalOpen: (isOpen: boolean) => void;
-  itemToDelete: Project | Job | null;
-  setItemToDelete: (item: Project | Job | null) => void;
+  itemToDelete: Project | Job | Task | null;
+  setItemToDelete: (item: Project | Job | Task | null) => void;
   resourceTypeToDelete: ResourceType | null;
   setResourceTypeToDelete: (type: ResourceType | null) => void;
 
@@ -52,6 +62,11 @@ type GlobalContextType = {
   // # State to select as job from the applications status cards
   selectedJob: Job | null;
   setSelectedJob: (application: Job | null) => void;
+
+  // #  ========= Tasks State ========= //
+  // # State to select as task from the tasks status cards
+  selectedTask: Task | null;
+  setSelectedTask: (task: Task | null) => void;
 
   // # State to display the menu button for the job card when hovered over
   hoveredCardId: string;
@@ -118,12 +133,22 @@ export function GlobalContextProvider({
   // $ New Job Modal State
   const [isNewJobModalOpen, setIsNewJobModalOpen] = useState<boolean>(false);
 
+  // $ Update Task Modal State
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isUpdateTaskModalOpen, setIsUpdateTaskModalOpen] =
+    useState<boolean>(false);
+
+  // $ New Task Modal State
+  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState<boolean>(false);
+
   // $ Set State when a card is hover to display the menu button for the card
   const [hoveredCardId, setHoveredCardId] = useState<string>("");
 
   // $ Delete Item Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const [itemToDelete, setItemToDelete] = useState<Project | Job | null>(null);
+  const [itemToDelete, setItemToDelete] = useState<Project | Job | Task | null>(
+    null
+  );
   const [resourceTypeToDelete, setResourceTypeToDelete] =
     useState<ResourceType | null>(null);
 
@@ -188,6 +213,12 @@ export function GlobalContextProvider({
       setFormSubmitting,
       isResendCodeModalOpen,
       setIsResendCodeModalOpen,
+      isNewTaskModalOpen,
+      setIsNewTaskModalOpen,
+      setSelectedTask,
+      selectedTask,
+      isUpdateTaskModalOpen,
+      setIsUpdateTaskModalOpen,
     }),
     [
       isNewProjectModalOpen,
@@ -210,6 +241,9 @@ export function GlobalContextProvider({
       signUpEmail,
       formSubmitting,
       isResendCodeModalOpen,
+      isNewTaskModalOpen,
+      selectedTask,
+      isUpdateTaskModalOpen,
     ]
   );
 

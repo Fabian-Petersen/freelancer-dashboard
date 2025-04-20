@@ -5,7 +5,7 @@ import { Grid, GridItem, Text, Flex, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function MainContent() {
+export default function HomePageContent() {
   const router = useRouter();
   return (
     <Grid

@@ -25,7 +25,7 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 // $ Sidebar Component
 const Sidebar = () => {
-  const { setIsOpen, setActiveItem, activeItem } = useGlobalContext();
+  const { setIsOpen, setActiveItem, activeItem, isOpen } = useGlobalContext();
 
   return (
     <Container
@@ -37,8 +37,13 @@ const Sidebar = () => {
       bg={{ base: "white", _dark: "#1d2739" }}
       borderRight={{ base: "1px solid white", _dark: "1px solid #37415180" }}
       overflow-y="auto"
-      zIndex="100"
-      height={"100vh"}
+      height="100vh"
+      transform={{
+        base: isOpen ? "translateX(0)" : "translateX(-100%)",
+        lg: "translateX(0)",
+      }}
+      transition="transform 0.3s ease"
+      zIndex="1000"
       p={2}
     >
       <Box

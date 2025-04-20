@@ -1,7 +1,12 @@
+"use client";
+
 import LoginForm from "../components/login/LoginForm";
 import { Box } from "@chakra-ui/react";
+import { usePathname } from "next/navigation";
 
 export default function Login() {
+  const path = usePathname();
+  console.log("Current path:", path);
   return (
     <Box
       as="main"

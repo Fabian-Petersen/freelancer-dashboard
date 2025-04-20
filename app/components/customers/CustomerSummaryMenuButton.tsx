@@ -7,7 +7,7 @@ type Props = {
   project: Project;
 };
 
-const ProjectSummaryMenuButton = ({ project }: Props) => {
+const CustomerSummaryMenuButton = ({ project }: Props) => {
   const {
     setIsUpdateProjectModalOpen,
     setSelectedProject,
@@ -90,4 +90,4 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
   );
 };
 
-export default ProjectSummaryMenuButton;
+export default CustomerSummaryMenuButton;

@@ -8,8 +8,6 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 
 type ModalDeleteItemProps = {
   closeModal: (isOpen: boolean) => void;
-  // resource: EntityType;
-  // deleteItem: (item: EntityType) => void;
 };
 
 const DeleteItemModal = ({ closeModal }: ModalDeleteItemProps) => {
@@ -35,7 +33,11 @@ const DeleteItemModal = ({ closeModal }: ModalDeleteItemProps) => {
       toaster.create({
         title: "Success",
         description: `${
-          resourceTypeToDelete === "projects" ? "Project" : "Job application"
+          resourceTypeToDelete === "projects"
+            ? "Project"
+            : resourceTypeToDelete === "tasks"
+            ? "Task"
+            : "Job application"
         } deleted successfully`,
         type: "success",
         duration: 3000,

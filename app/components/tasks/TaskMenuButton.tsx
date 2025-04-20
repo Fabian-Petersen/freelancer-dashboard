@@ -1,33 +1,34 @@
-import { Flex, Menu, Box, Portal, Text } from "@chakra-ui/react";
+import { Box, Menu, Portal, Flex, Text } from "@chakra-ui/react";
 import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { Project } from "@/app/schemas";
 
-type Props = {
-  project: Project;
+import { Task } from "@/app/schemas";
+
+type TaskMenuButtonProps = {
+  task: Task;
 };
 
-const ProjectSummaryMenuButton = ({ project }: Props) => {
+const TaskMenuButton = ({ task }: TaskMenuButtonProps) => {
   const {
-    setIsUpdateProjectModalOpen,
-    setSelectedProject,
+    setIsUpdateTaskModalOpen,
+    setSelectedTask,
     setIsDeleteModalOpen,
     setItemToDelete,
     setResourceTypeToDelete,
   } = useGlobalContext();
 
-  // $ logic to edit a project
-  const handleEditProject = (e: React.MouseEvent<HTMLDivElement>) => {
+  // $ logic to edit a task
+  const handleEditTask = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setIsUpdateProjectModalOpen(true);
-    setSelectedProject(project);
+    setIsUpdateTaskModalOpen(true);
+    setSelectedTask(task);
   };
 
-  // $ logic to delete a project
-  const handleDeleteProject = (e: React.MouseEvent<HTMLDivElement>) => {
+  // $ logic to delete a task
+  const handleDeleteTask = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setItemToDelete(project);
-    setResourceTypeToDelete("projects");
+    setItemToDelete(task);
+    setResourceTypeToDelete("tasks");
     setIsDeleteModalOpen(true);
   };
 
@@ -36,7 +37,6 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
       <Menu.Trigger asChild>
         <Box
           as="button"
-          border="none"
           _hover={{ cursor: "pointer" }}
           color={{ base: "gray.500", _dark: "gray.300" }}
           fontSize={{ base: "0.6rem", lg: "0.5rem" }}
@@ -58,7 +58,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                   cursor: "pointer",
                   color: "blue.500",
                 }}
-                onClick={handleEditProject}
+                onClick={handleEditTask}
               >
                 <Flex gap={2} align="center">
                   <Pencil size={16} />
@@ -75,7 +75,7 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
                   cursor: "pointer",
                   color: "red.600",
                 }}
-                onClick={handleDeleteProject}
+                onClick={handleDeleteTask}
               >
                 <Flex gap={2} align="center">
                   <Trash2 size={16} />
@@ -90,4 +90,4 @@ const ProjectSummaryMenuButton = ({ project }: Props) => {
   );
 };
 
-export default ProjectSummaryMenuButton;
+export default TaskMenuButton;

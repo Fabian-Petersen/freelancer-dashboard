@@ -3,10 +3,18 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { Container } from "@chakra-ui/react";
 
 // Import modals
+// $ Project Modal
 import NewProjectModal from "@/app/components/modals/NewProjectModal";
 import UpdateProjectModal from "@/app/components/modals/UpdateProjectModal";
+
+// $ Applications Modal
 import NewApplicationModal from "@/app/components/modals/NewApplicationModal";
 import UpdateJobModal from "@/app/components/modals/UpdateJobModal";
+
+// $ Tasks Modal
+import NewTaskModal from "@/app/components/modals/NewTaskModal";
+import UpdateTaskModal from "@/app/components/modals/UpdateTaskModal";
+
 import DeleteItemModal from "./DeleteItemModal";
 // import { ConfirmSignUpModal } from "../register/ConfirmSignUpForm";
 // import { ResendCodeModal } from "../register/ResendCodeForm";
@@ -20,6 +28,8 @@ const ModalManager = () => {
     selectedProject,
     selectedJob,
     isDeleteModalOpen,
+    isNewTaskModalOpen,
+    isUpdateTaskModalOpen,
     // isConfirmSignUpModalOpen,
     // isResendCodeModalOpen,
     setIsDeleteModalOpen,
@@ -30,6 +40,8 @@ const ModalManager = () => {
     isNewProjectModalOpen ||
     isUpdateProjectModalOpen ||
     isNewJobModalOpen ||
+    isNewTaskModalOpen ||
+    isUpdateTaskModalOpen ||
     isDeleteModalOpen ||
     // isConfirmSignUpModalOpen ||
     // isResendCodeModalOpen ||
@@ -57,6 +69,8 @@ const ModalManager = () => {
       {isNewProjectModalOpen && <NewProjectModal />}
       {isUpdateProjectModalOpen && selectedProject && <UpdateProjectModal />}
       {isNewJobModalOpen && <NewApplicationModal />}
+      {isNewTaskModalOpen && <NewTaskModal />}
+      {isUpdateTaskModalOpen && <UpdateTaskModal />}
       {/* {isConfirmSignUpModalOpen && <ConfirmSignUpModal />} */}
       {/* {isResendCodeModalOpen && <ResendCodeModal />} */}
       {isUpdateJobModalOpen && selectedJob && <UpdateJobModal />}

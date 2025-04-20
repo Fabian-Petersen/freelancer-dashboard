@@ -26,12 +26,15 @@ const Header = () => {
   return (
     <Flex
       as="header"
+      position="sticky"
       align="center"
       justify="end"
       w="100%"
+      bg="white"
       px={4}
       py={3}
       bgColor={{ base: "white", _dark: "#1d2739" }}
+      boxShadow="10px 0 10px rgba(0, 0, 0, 0.2)"
     >
       <Flex
         alignItems="center"

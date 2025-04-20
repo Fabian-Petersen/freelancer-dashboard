@@ -2,16 +2,16 @@ import { Flex, Box } from "@chakra-ui/react";
 import { ColorModeButton } from "@/components/ui/color-mode";
 import ActionButton from "./ActionButton";
 
-const Header = () => {
+const HomePageHeader = () => {
   return (
     <Flex
       as="header"
       align="center"
       justify="end"
-      bgColor="transparent"
+      bgColor={{ base: "#f8fafd", _dark: "#101827" }}
       w="100%"
-      // px={4}
-      // py={3}
+      px={4}
+      py={3}
       // border="1px solid red"
       height={{ base: "3rem", sm: "5rem" }}
     >
@@ -43,4 +43,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HomePageHeader;

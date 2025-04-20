@@ -10,9 +10,7 @@ import JobsMenuButton from "./JobsMenuButton";
 // $ modals
 
 // $ types
-import { z } from "zod";
-import { jobSchema } from "@/app/schemas";
-type Job = z.infer<typeof jobSchema>;
+import { Job } from "@/app/schemas";
 
 // $ functions
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
