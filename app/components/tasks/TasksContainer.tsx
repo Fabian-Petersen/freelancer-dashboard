@@ -1,6 +1,14 @@
 // TaskContainer.tsx
 import { useState } from "react";
-import { Box, Text, Flex, Spinner, Heading } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Spinner,
+  Heading,
+  Button,
+  Badge,
+} from "@chakra-ui/react";
 
 import { Task } from "@/app/schemas";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";
@@ -58,6 +66,7 @@ const TaskContainer = () => {
           Tasks.map((task: Task) => (
             <Box
               key={task.id}
+              position="relative"
               p={3}
               bgColor={{ base: "gray.200/80", _dark: "#222e44" }}
               border={{
@@ -67,35 +76,31 @@ const TaskContainer = () => {
               borderRadius="lg"
               color={{ base: "gray.600", _dark: "white" }}
               _hover={{ cursor: "pointer" }}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setOpenTaskId((prevId) =>
                   prevId === task.id ? "" : task.id || ""
                 );
               }}
             >
               <Flex direction="column" gap={2}>
-                <Flex justify="space-between" align="center">
-                  <Text
-                    fontSize={{ base: "0.6rem", lg: "0.7rem" }}
-                    textTransform="capitalize"
-                    color={
-                      task.status === "todo"
-                        ? "yellow.600"
-                        : task.status === "in progress"
-                        ? "blue.600"
-                        : "green.600"
-                    }
-                  >
-                    {task.status}
-                  </Text>
+                <Flex>
                   <Text
                     fontSize={{ base: "0.6rem", lg: "0.7rem" }}
                     color="green.500"
                   >
                     Created on {formatDate(task.due_date)}
                   </Text>
-                  <TaskMenuButton task={task} />
                 </Flex>
+                {/*  // $ ================== Menu Button ================== */}
+                <Box
+                  onClick={(e) => e.stopPropagation()}
+                  position="absolute"
+                  top="2"
+                  right="2"
+                >
+                  <TaskMenuButton task={task} />
+                </Box>
                 <Text
                   fontWeight="bold"
                   fontSize={{ base: "0.9rem", xl: "0.8rem" }}
@@ -113,20 +118,57 @@ const TaskContainer = () => {
                     {task.description}
                   </Text>
                 )}
-                <Text
-                  fontSize={{ base: "0.625rem", xl: "0.75rem" }}
-                  textTransform="capitalize"
-                  color={
-                    task.priority === "low"
-                      ? "green.500"
-                      : task.priority === "medium"
-                      ? "orange"
-                      : "red.400"
-                  }
-                >
-                  {/* <Box as="span">Priority - {""}</Box> */}
-                  {task.priority}
-                </Text>
+                <Flex gap={2}>
+                  <Badge
+                    fontSize={{ base: "0.625rem", xl: "0.75rem" }}
+                    px="8px"
+                    py="4px"
+                    rounded="17px"
+                    width="fit-content"
+                    textTransform="capitalize"
+                    color={
+                      task.priority === "low"
+                        ? "green.500"
+                        : task.priority === "medium"
+                        ? "orange"
+                        : "red.400"
+                    }
+                    bgColor={
+                      task.priority === "low"
+                        ? "green.100"
+                        : task.priority === "medium"
+                        ? "orange"
+                        : "red.100"
+                    }
+                  >
+                    {/* <Box as="span">Priority - {""}</Box> */}
+                    {task.priority}
+                  </Badge>
+                  <Badge
+                    fontSize={{ base: "0.6rem", lg: "0.7rem" }}
+                    textTransform="capitalize"
+                    px="8px"
+                    py="4px"
+                    rounded="17px"
+                    width="fit-content"
+                    color={
+                      task.status === "todo"
+                        ? "yellow.600"
+                        : task.status === "in progress"
+                        ? "blue.600"
+                        : "green.600"
+                    }
+                    bgColor={
+                      task.status === "todo"
+                        ? "yellow.100"
+                        : task.status === "in progress"
+                        ? "blue.100"
+                        : "green.100"
+                    }
+                  >
+                    {task.status}
+                  </Badge>
+                </Flex>
               </Flex>
             </Box>
           ))

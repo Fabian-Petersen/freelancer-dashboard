@@ -1,4 +1,4 @@
-"use job_title";
+"use task_title";
 import { useEffect } from "react";
 
 // $ Chakra UI Components
@@ -14,8 +14,8 @@ import { useGlobalContext } from "@/app/contexts/useGlobalContext";
 import { useUpdate } from "../../hooks/useFetchDataHook";
 
 // $ types
-import { jobSchema } from "@/app/schemas";
-type FormValues = z.infer<typeof jobSchema>;
+import { taskSchema } from "@/app/schemas";
+type FormValues = z.infer<typeof taskSchema>;
 
 // $ React-Hook-Form, zod & schema
 import { z } from "zod";
@@ -24,10 +24,10 @@ import { useForm } from "react-hook-form";
 
 const UpdateTaskModal = () => {
   const {
-    setIsUpdateJobModalOpen,
-    isUpdateJobModalOpen,
-    selectedJob,
-    setSelectedJob,
+    setIsUpdateTaskModalOpen,
+    isUpdateTaskModalOpen,
+    selectedTask,
+    setSelectedTask,
   } = useGlobalContext();
 
   // $ Form Schema
@@ -37,36 +37,36 @@ const UpdateTaskModal = () => {
     reset,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(jobSchema),
-    defaultValues: selectedJob
+    resolver: zodResolver(taskSchema),
+    defaultValues: selectedTask
       ? {
-          job_title: selectedJob.job_title,
-          company: selectedJob.company,
-          city: selectedJob.city,
-          date_applied: new Date(selectedJob.date_applied),
-          location_type: selectedJob.location_type,
-          status: selectedJob.status,
-          contract: selectedJob.contract,
-          id: selectedJob.id,
+          task_title: selectedTask.task_title,
+          description: selectedTask.description,
+          status: selectedTask.status,
+          due_date: new Date(selectedTask.due_date),
+          created_at: selectedTask.created_at
+            ? new Date(selectedTask.created_at)
+            : new Date(),
+          id: selectedTask.id,
         }
       : undefined,
   });
 
   // Reset the form when project changes
   useEffect(() => {
-    if (selectedJob) {
+    if (selectedTask) {
       reset({
-        job_title: selectedJob.job_title,
-        company: selectedJob.company,
-        id: selectedJob.id,
-        city: selectedJob.city,
-        date_applied: new Date(selectedJob.date_applied),
-        location_type: selectedJob.location_type,
-        status: selectedJob.status,
-        contract: selectedJob.contract,
+        task_title: selectedTask.task_title,
+        description: selectedTask.description,
+        status: selectedTask.status,
+        due_date: new Date(selectedTask.due_date),
+        created_at: selectedTask.created_at
+          ? new Date(selectedTask.created_at)
+          : new Date(),
+        id: selectedTask.id,
       });
     }
-  }, [selectedJob, reset]);
+  }, [selectedTask, reset]);
 
   // Use the update hook for applications (not projects)
   const updateJob = useUpdate<FormValues>("applications");
@@ -105,9 +105,9 @@ const UpdateTaskModal = () => {
       });
 
       // Close the modal after successful update
-      setIsUpdateJobModalOpen(false);
-      // Reset the selected project
-      setSelectedJob(null);
+      setIsUpdateTaskModalOpen(false);
+      // ResetTaske selected project
+      setSelectedTask(null);
     } catch (error) {
       toaster.create({
         title: "Error",
@@ -119,7 +119,7 @@ const UpdateTaskModal = () => {
   };
 
   // Don't render the modal if no Job is selected
-  if (!selectedJob && isUpdateJobModalOpen) {
+  if (!selectedTask && isUpdateTaskModalOpen) {
     return null;
   }
 
@@ -156,47 +156,43 @@ const UpdateTaskModal = () => {
           <Fieldset.Content>
             <SimpleGrid columns={{ base: 1, md: 2 }} mt={4} gap={4}>
               <ModalFormInput<FormValues>
-                name="job_title"
-                label="Job Title"
+                name="task_title"
+                label="Title"
                 register={register}
-                error={errors?.job_title}
+                error={errors?.task_title}
               />
               <ModalFormInput<FormValues>
-                name="company"
-                label="company"
+                name="description"
+                label="description"
                 register={register}
-                error={errors?.company}
-              />
-              <ModalFormInput<FormValues>
-                name="contract"
-                label="Contract Type"
-                register={register}
-                error={errors?.contract}
-              />
-              <ModalFormInput<FormValues>
-                name="city"
-                label="City"
-                register={register}
-                error={errors?.city}
-              />
-              <ModalFormInput<FormValues>
-                name="location_type"
-                label="location"
-                register={register}
-                error={errors?.location_type}
+                error={errors?.description}
               />
               <ModalFormInput<FormValues>
                 name="status"
-                label="status"
+                label="Status"
                 register={register}
                 error={errors?.status}
               />
               <ModalFormInput<FormValues>
-                name="date_applied"
-                label="Date Applied"
+                name="priority"
+                label="Priority"
+                register={register}
+                error={errors.priority}
+              />
+              <ModalFormInput<FormValues>
+                name="created_at"
+                label="Task Created"
+                disabled={true}
                 type="date"
                 register={register}
-                error={errors.date_applied}
+                error={errors?.created_at}
+              />
+              <ModalFormInput<FormValues>
+                name="due_date"
+                label="Due Date"
+                type="date"
+                register={register}
+                error={errors.due_date}
               />
             </SimpleGrid>
           </Fieldset.Content>
@@ -212,10 +208,10 @@ const UpdateTaskModal = () => {
               rounded="full"
               color={{ base: "gray.600", _dark: "gray.200" }}
               _hover={{ bgColor: "red.300", color: "white" }}
-              onClick={() => setIsUpdateJobModalOpen(false)}
+              onClick={() => setIsUpdateTaskModalOpen(false)}
               disabled={updateJob.isPending}
             >
-              Cancel
+              Task Cancel
             </Button>
             <Button
               type="submit"

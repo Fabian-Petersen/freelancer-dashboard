@@ -30,19 +30,18 @@ const TaskCard = ({ task }: { task: Task }) => {
       zIndex={10}
       color={{ base: "gray.700", _dark: "white" }}
     >
-      <Flex justify="space-between" mb={2}>
-        <Badge
-          colorScheme={statusColor[task.status]}
-          textTransform="capitalize"
-        >
+      <Flex justify="space-between" mb={2} width="100%" border="1px dashed red">
+        <Text color={statusColor[task.status]} textTransform="capitalize">
           {task.status}
-        </Badge>
-        <Text fontSize="xs" color="green.500">
-          {`Created ${FormatDate(task.created_at)}`}
+        </Text>
+        <Text fontSize="sm" color="green.500">
+          {`Created ${
+            task.created_at ? FormatDate(task.created_at) : "unknown date"
+          }`}
         </Text>
       </Flex>
       <Text fontWeight="bold" fontSize="md" textTransform="capitalize">
-        {task.title}
+        {task.task_title}
       </Text>
       <Text fontSize="sm" color="gray.500">
         {task.description}

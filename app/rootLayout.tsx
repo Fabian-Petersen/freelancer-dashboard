@@ -30,8 +30,8 @@ export default function RootLayout({
 }) {
   configureAmplify();
   const path = usePathname();
-  const excludedPaths = ["/", "/login/", "/register/"];
-  console.log("Current path:", path);
+  const excludedPaths = ["/", "/login/", "/register/", "/resend-code/"];
+  // console.log("Current path:", path);
   return (
     <html className={inter.className} suppressHydrationWarning>
       <head />
@@ -69,7 +69,7 @@ export default function RootLayout({
 
                     {/* Show HomePageHeader only on root path */}
                     {path === "/" && (
-                      <GridItem>
+                      <GridItem colSpan={3}>
                         <HomePageHeader />
                       </GridItem>
                     )}

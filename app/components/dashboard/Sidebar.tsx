@@ -14,6 +14,7 @@ import SidebarNavItem from "./SidebarNavItem";
 import SidebarLogoutButton from "./SidebarLogoutButton";
 import Logo from "../Logo";
 import Link from "next/link";
+import Seperator from "../sidebar/Seperator";
 
 import {
   navbarLinks,
@@ -34,7 +35,7 @@ const Sidebar = () => {
       top="0"
       left="0"
       width={{ lg: "240px" }}
-      bg={{ base: "white", _dark: "#1d2739" }}
+      bgColor={{ base: "rgba(29,39,57,0.1)", _dark: "#1d2739" }}
       borderRight={{ base: "1px solid white", _dark: "1px solid #37415180" }}
       overflow-y="auto"
       height="100vh"
@@ -71,14 +72,17 @@ const Sidebar = () => {
         <X size={20} />
       </IconButton>
 
-      <Flex height="100vh" direction={"column"} gap={1} mt={"5rem"}>
-        <Box
-          height="1px"
-          border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
-          my={4}
-        />
+      <Flex
+        height="100vh"
+        direction={"column"}
+        gap={1}
+        mt={"5rem"}
+        color={{ base: "gray.700", _dark: "white" }}
+      >
+        <Seperator height="0.5px" />
         <Text
-          color={{ base: "gray.200", _dark: "white" }}
+          // color={{ base: "gray.700", _dark: "white" }}
+          color="inherit"
           fontSize={{ base: "0.75rem", lg: "0.8rem" }}
           paddingBottom="0.2rem"
         >
@@ -94,21 +98,19 @@ const Sidebar = () => {
                   icon={item.icon}
                   isActive={activeItem === item.name}
                   onClick={() => setActiveItem(item.name)}
+                  url={item.url}
                 >
                   {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
                 </SidebarNavItem>
               </Link>
             ))}
             {/* Divider for preferences links */}
-            <Box
-              height="1px"
-              border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
-              my={4}
-            />
+
+            <Seperator height="0.5px" />
             {/* // $ Middle Section */}
 
             <Text
-              color={{ base: "gray.200", _dark: "white" }}
+              color="inherit"
               fontSize={{ base: "0.75rem", lg: "0.8rem" }}
               paddingBottom="0.2rem"
             >
@@ -120,6 +122,7 @@ const Sidebar = () => {
                 <SidebarNavItem
                   key={item.name}
                   icon={item.icon}
+                  url={item.url}
                   isActive={activeItem === item.name}
                   onClick={() => setActiveItem(item.name)}
                 >
@@ -129,11 +132,7 @@ const Sidebar = () => {
             ))}
           </VStack>
         </List.Root>
-        <Box
-          h="1px"
-          border={{ base: "1px solid white", _dark: "1px solid #37415180" }}
-          my={4}
-        />
+        <Seperator height="0.5px" />
         {/* Logout at the very bottom */}
       </Flex>
       <Box

@@ -39,7 +39,7 @@ export const navbarLinks: NavItemProps[] = [
 
 export const PreferencesLinks: PreferencesLinksProps[] = [
   { name: "Settings", icon: Settings, url: "/settings" },
-  { name: "Profile", icon: User2, url:"profile" },
+  { name: "Profile", icon: User2, url: "profile" },
 ];
 
 export const AuthLinks: AuthLinks[] = [{ name: "Logout", icon: LogOut }];

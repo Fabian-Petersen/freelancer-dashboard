@@ -14,6 +14,7 @@ type FormInputProps<TFieldValues extends FieldValues> = {
   placeholder?: string;
   register: UseFormRegister<TFieldValues>;
   error?: FieldError;
+  disabled?: boolean;
 };
 
 const ModalFormInput = <TFieldValues extends FieldValues>({
@@ -22,6 +23,7 @@ const ModalFormInput = <TFieldValues extends FieldValues>({
   placeholder,
   register,
   error,
+  disabled,
   type = "text",
 }: FormInputProps<TFieldValues>) => {
   return (
@@ -37,6 +39,7 @@ const ModalFormInput = <TFieldValues extends FieldValues>({
         id={String(name)}
         type={String(type)}
         placeholder={placeholder}
+        disabled={disabled}
         borderColor={{ base: "gray.400/40", _dark: "gray.500/50" }}
         color={{ base: "gray.700", _dark: "gray.50/60" }}
         _placeholder={{ color: "inherit" }}

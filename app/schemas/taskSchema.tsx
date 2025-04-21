@@ -12,4 +12,11 @@ export const taskSchema = z.object({
       message: "Date is required and must be a valid date",
     }),
   }),
+  created_at: z.coerce
+    .date({
+      errorMap: () => ({
+        message: "Date is required and must be a valid date",
+      }),
+    })
+    .optional(),
 });

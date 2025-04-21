@@ -4,7 +4,7 @@ const Logo = () => (
   <Image
     h="200px"
     w="250px"
-    color="white"
+    color={{ base: "gray.600", _dark: "white" }}
     fit="contain"
     bg="transparent"
     fontSize={100}

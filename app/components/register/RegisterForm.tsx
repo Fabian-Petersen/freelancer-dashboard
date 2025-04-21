@@ -4,7 +4,7 @@ import React from "react";
 import ModalFormInput from "../modals/ModalFormInput";
 import Link from "next/link";
 import { useGlobalContext } from "@/app/contexts/useGlobalContext";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 // $ Chakra Components
 import {
@@ -30,7 +30,7 @@ import { awsCognitoSignUp } from "@/app/utils/aws-signup";
 type FormValues = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
-  const router = useRouter();
+  // const router = useRouter();
   const {
     // setIsConfirmSignUpModalOpen,
     isConfirmSignUpModalOpen,
@@ -48,6 +48,7 @@ export default function RegisterForm() {
   });
 
   const handleRegisterSubmit = async (data: FormValues) => {
+    console.log("handle Submit Register Form Clicked");
     // $ try-catch to sign into aws cognito
     try {
       //$ aws-signup is the file where handling the signin to aws cognito using amplify "/utils/aws-signup.ts"
@@ -178,6 +179,7 @@ export default function RegisterForm() {
           </Fieldset.Content>
           <Flex width="100%" direction="column" gap={3} pt="1rem">
             <Button
+              onClick={() => console.log("register form submit clicked")}
               type="submit"
               //   width="100%"
               //   width={{
@@ -192,33 +194,44 @@ export default function RegisterForm() {
               Submit
             </Button>
           </Flex>
-          <Flex gap="6">
-            <Text
-              fontSize="0.8rem"
-              py="10px"
-              color={{ base: "gray.600", _dark: "gray.300" }}
-            >
+          <Flex
+            gap="4"
+            fontSize="0.8rem"
+            py="5px"
+            color={{ base: "gray.600", _dark: "gray.300" }}
+            align="center"
+          >
+            <Text fontSize="inherit" py="inherit" color="inherit">
               Already have an account? {""}
               <Link href="/login">
                 <Box
                   as="span"
-                  _hover={{ cursor: "pointer", color: "blue.400" }}
+                  _hover={{ cursor: "pointer", color: "blue.500" }}
                 >
                   Login
                 </Box>
               </Link>
             </Text>
-            <Text
-              as="button"
-              fontSize="0.8rem"
-              py="10px"
-              color={{ base: "gray.600", _dark: "gray.300" }}
-              _hover={{ cursor: "pointer" }}
-              onClick={() => router.push("/resend-code")}
-              // border="1px solid red"
+            <Button
+              asChild
+              variant="plain"
+              size="xs"
+              fontSize="inherit"
+              p="0"
+              py="5px"
+              color="inherit"
+              _hover={{ cursor: "default" }}
             >
-              Resend Code
-            </Text>
+              <Link href="/resend-code">
+                Resend
+                <Box
+                  as="span"
+                  _hover={{ cursor: "pointer", color: "teal.500" }}
+                >
+                  Code
+                </Box>
+              </Link>
+            </Button>
           </Flex>
         </Fieldset.Root>
       </Stack>
