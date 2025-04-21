@@ -7,7 +7,6 @@ import {
   List,
   VStack,
   Container,
-  Separator,
   IconButton,
 } from "@chakra-ui/react";
 import SidebarNavItem from "./SidebarNavItem";
@@ -34,8 +33,8 @@ const Sidebar = () => {
       position="fixed"
       top="0"
       left="0"
-      width={{ lg: "240px" }}
-      bgColor={{ base: "rgba(29,39,57,0.1)", _dark: "#1d2739" }}
+      width={{ base: "230px", lg: "240px" }}
+      bgColor={{ base: "rgba(29,39,57)", _dark: "#1d2739" }}
       borderRight={{ base: "1px solid white", _dark: "1px solid #37415180" }}
       overflow-y="auto"
       height="100vh"
@@ -81,14 +80,13 @@ const Sidebar = () => {
       >
         <Seperator height="0.5px" />
         <Text
-          // color={{ base: "gray.700", _dark: "white" }}
-          color="inherit"
+          color={{ base: "gray.100", _dark: "white" }}
           fontSize={{ base: "0.75rem", lg: "0.8rem" }}
           paddingBottom="0.2rem"
         >
           Main Menu
         </Text>
-        <Separator />
+        {/* <Separator /> */}
         {/* Main navigation links */}
         <List.Root>
           <VStack align="stretch">
@@ -110,7 +108,7 @@ const Sidebar = () => {
             {/* // $ Middle Section */}
 
             <Text
-              color="inherit"
+              color={{ base: "gray.100", _dark: "white" }}
               fontSize={{ base: "0.75rem", lg: "0.8rem" }}
               paddingBottom="0.2rem"
             >

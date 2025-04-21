@@ -10,14 +10,13 @@ export default function HomePageContent() {
   return (
     <Grid
       width="100%"
-      maxWidth={"8xl"}
+      maxWidth={"9xl"}
       height="100%"
-      py={{ base: "30px", lg: "100px" }}
+      py={{ base: "30px", md: "80px", lg: "100px" }}
       templateColumns={{ base: "1fr", sm: "repeat(2, 1fr)" }}
       templateRows={{ base: "auto 1fr", sm: "1fr" }}
-      gap={{ base: 0 }}
-      // border="1px dashed red"
-      mx="auto"
+      gap={{ base: 0, sm: 0 }}
+      // border="1px dashed blue"
     >
       <GridItem
         height={{ lg: "100%" }}
@@ -32,9 +31,14 @@ export default function HomePageContent() {
           height={{ base: "auto", sm: "100%" }}
         >
           <Text
-            fontSize={{ base: "2rem", sm: "2.3rem", lg: "3.5rem", xl: "4rem" }}
-            lineHeight={{
+            fontSize={{
               base: "2.5rem",
+              sm: "2.3rem",
+              lg: "3.5rem",
+              xl: "4rem",
+            }}
+            lineHeight={{
+              base: "2.9rem",
               sm: "2.5rem",
               lg: "4rem",
               xl: "4.5rem",
@@ -57,9 +61,9 @@ export default function HomePageContent() {
             colorPalette="teal"
             mt={{ base: "0rem", lg: "2rem" }}
             width={{ base: "8rem", xl: "10rem" }}
-            py={{ base: "1rem", lg: "1.5rem" }}
+            p={{ base: "0.8rem 0.7rem", lg: "1.5rem 1.2rem" }}
             rounded="5rem"
-            fontSize={{ base: "0.9rem", xl: "1rem" }}
+            fontSize={{ base: "0.8rem", xl: "1rem" }}
             onClick={() => router.push("/dashboard")}
             _hover={{ color: "teal.100", cursor: "pointer" }}
           >

@@ -1,14 +1,6 @@
 // TaskContainer.tsx
 import { useState } from "react";
-import {
-  Box,
-  Text,
-  Flex,
-  Spinner,
-  Heading,
-  Button,
-  Badge,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Spinner, Heading, Badge } from "@chakra-ui/react";
 
 import { Task } from "@/app/schemas";
 import { useGetAll } from "@/app/hooks/useFetchDataHook";

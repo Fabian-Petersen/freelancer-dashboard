@@ -8,7 +8,7 @@ const CardItem = () => {
   return (
     <>
       {dashboardCardData.map((card) => (
-        <Container key={card.id} position="relative">
+        <Container key={card.id} position="relative" width="100%">
           <Flex
             direction="column"
             gap={{ base: "2", xl: "3" }}

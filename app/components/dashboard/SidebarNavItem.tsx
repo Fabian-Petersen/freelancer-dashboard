@@ -21,7 +21,7 @@ const SidebarNavItem = ({
   icon: Icon,
   children,
   onClick,
-  isActive,
+  // isActive,
   url,
 }: NavItemProps) => {
   const path = usePath();
@@ -39,8 +39,8 @@ const SidebarNavItem = ({
       borderLeftColor={"blue.500"}
       // borderLeftRadius={0}
       width="100%"
-      color={isActive ? "blue.500" : { base: "gray.600", _dark: "white" }}
-      bgColor={path === url ? "rgb(216, 221, 230)" : ""}
+      color="gray.100"
+      bgColor={path === url ? "gray.500" : ""}
       _hover={{
         // bg: "blue.600",
         color: path === url ? "" : "teal.500",

@@ -39,7 +39,7 @@ const DashboardLayout = () => {
           borderRadius="md"
           boxShadow="sm"
           height="300px"
-          colSpan={{ base: 2, lg: 3 }}
+          colSpan={{ base: 2, xl: 3 }}
         >
           <RevenueExpenseChart />
         </GridItem>

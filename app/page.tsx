@@ -5,9 +5,10 @@ export default function Home() {
   return (
     <Container
       as="main"
-      height={{ base: "100vh" }}
       bgColor={{ base: "#f8fafd", _dark: "#101827" }}
-      p={{ base: "0 1rem 1rem 1rem", lg: "0 4rem 2rem 4rem" }}
+      p={{ base: "0 1rem 1rem 1rem", lg: "0 4rem 0rem 4rem" }}
+      // border="1px solid yellow"
+      height="100%"
     >
       <HomePageContent />
     </Container>

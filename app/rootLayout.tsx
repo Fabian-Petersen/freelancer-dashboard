@@ -49,8 +49,8 @@ export default function RootLayout({
                       md: "240px 1fr",
                     }}
                     templateRows={{
-                      base: "1fr",
-                      md: "4.2rem auto",
+                      base: "auto 1fr",
+                      md: "auto 1fr",
                     }}
                     width="100%"
                     height="100vh"
@@ -61,6 +61,7 @@ export default function RootLayout({
                       <GridItem
                         colSpan={1}
                         rowSpan={2}
+                        height="100%"
                         // border="1px dashed yellow"
                       >
                         <Sidebar />
@@ -69,7 +70,7 @@ export default function RootLayout({
 
                     {/* Show HomePageHeader only on root path */}
                     {path === "/" && (
-                      <GridItem colSpan={3}>
+                      <GridItem colSpan={3} height="4rem" py="0.6rem">
                         <HomePageHeader />
                       </GridItem>
                     )}
@@ -77,7 +78,10 @@ export default function RootLayout({
                     {/* Show Header on all paths except /, /login, /register */}
                     {!excludedPaths.includes(path) && (
                       <GridItem
-                        colStart={2}
+                        colStart={{ base: 1, sm: 1, lg: 2 }}
+                        colSpan={{ base: 1, sm: 3 }}
+                        height="4.2rem"
+                        // py={{ base: "3rem" }}
                         // border="1px dashed red"
                         rowStart={1}
                       >
@@ -85,8 +89,10 @@ export default function RootLayout({
                       </GridItem>
                     )}
                     <GridItem
-                      colStart={2}
+                      colStart={path === "/" ? 1 : { sm: 1, lg: 2 }}
+                      colSpan={path === "/" ? 3 : { base: 1, sm: 2, lg: 3 }}
                       rowStart={2}
+                      height="100%"
                       // border="1px dotted red"
                     >
                       {children}
